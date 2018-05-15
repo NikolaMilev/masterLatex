@@ -1,16 +1,88 @@
 \chapter{Mašinsko učenje}
 
-Mašinsko učenje počelo je da stiče veliku popularnost devedesetih godina prošlog veka zahvaljujući potrebi da se uči iz ogromne količine dostupnih podataka i uspešnosti ovog pristupa u tome. Za popularizaciju mašinskog učenja početkom 21. veka najzaslužnije su neuronske mreže, u toj meri da je mašinsko učenje često poistovećeno s njima. Ovo, naravno, nije tačno; sem neuronskih mreža, postoje razne druge tehnike, kao što su metod potpornih vektora, genetski algoritmi, itd. \\
+Mašinsko učenje počelo je da stiče veliku popularnost devedesetih godina prošlog veka zahvaljujući potrebi i mogućnosti da se uči iz ogromne količine dostupnih podataka i uspešnosti ovog pristupa u tome. Za popularizaciju mašinskog učenja početkom 21. veka najzaslužnije su neuronske mreže, u toj meri da je pojam mašinskog učenja često poistovećen sa pojmom neuronskih mreža. Ovo, naravno, nije tačno; sem neuronskih mreža, postoje razne druge tehnike, kao što su metod potpornih vektora, genetski algoritmi, itd. \par
 
-Mašinsko učenje nastalo je iz čovekove želje da oponaša prirodne mehanizme učenja kod čoveka i životinja i korišćenja dobijenih rezultata u cilju praktične upotrebe. Termin mašinsko učenje prvi je upotrebio pionir veštačke inteligencije, Artur Semjuel \footnote{\url{https://en.wikipedia.org/wiki/Machine_learning}}. Doprineo je razvoju veštačke inteligencije istražujući igru dame (eng. checkers) i tražeći način da stvori računarski program koji na osnovu iskusva može da savlada ovu igru. \footnote{\url{http://infolab.stanford.edu/pub/voy/museum/samuel.html}} \\
+Mašinsko učenje nastalo je iz čovekove želje da oponaša prirodne mehanizme učenja kod čoveka i životinja kao jedne od osnovnih svojstava inteligencije i korišćenja dobijenih rezultata u cilju praktične upotrebe. Termin mašinsko učenje prvi je upotrebio pionir veštačke inteligencije, Artur Semjuel\footnote{\url{https://en.wikipedia.org/wiki/Machine_learning}}, koji je doprineo razvoju veštačke inteligencije istražujući igru dame (eng. checkers) i tražeći način da stvori računarski program koji na osnovu iskusva može da savlada ovu igru\footnote{\url{http://infolab.stanford.edu/pub/voy/museum/samuel.html}}. \par
 
-Mašinsko učenje može se definisati kao disciplina koja se bavi izgradnjom prilagodljivih računarskih sistema koji su sposobni da poboljšaju svoje performanse koristeći informacije iz iskustva \footnote{\url{http://poincare.matf.bg.ac.rs/~janicic/courses/vi.pdf}}. No, u biti mašinskog učenja leži generalizacija (dedukcija). Dve vrste zaključivanja, indukcija\footnote{Indukcija -- zaključivanje od pojedinačnog ka opštem} i dedukcija \footnote{Dedukcija -- zaključivanje od opšteg ka konkretnom} imaju svoje odgovarajuće discipline u sklopu veštačke inteligencije: mašinsko učenje i automatsko rezonovanje. Kao što se indukcija i dedukcija razlikuju, i mašinsko učenje i automatsko rezonovanje imaju različite oblasti primene. Automatsko rezonovanje zasnovano je na matematičkoj logici i koristi se kada problem čovek relativno lako može formulisati ali ga, često zbog velikog prostora mogućih rešenja, ne može jednostavno rešiti. U ovoj oblasti, neophodno je dobiti apsolutno tačna rešenja, ne dopuštajući nikakav nivo greške.
-Pri mašinskom učenju, teže je formalno definisati problem jer postoji relativno visok nivo apstrakcije. Čovek neke od ovih problema lako rešava a neke ne. Ukoliko je neophodno napraviti sistem koji prepoznaje lica na slikama, kako definisati problem? Od čega se tačno sastoji lice? Metodama automatskog rezonovanja bilo bi nemoguće definisati ovaj problem i rešiti ga. Mašinsko učenje, s druge strane, pokazalo se kao dobar pristup. \\
+Mašinsko učenje može se definisati kao disciplina koja se bavi izgradnjom prilagodljivih računarskih sistema koji su sposobni da poboljšaju svoje performanse koristeći informacije iz iskustva \footnote{\url{http://poincare.matf.bg.ac.rs/~janicic/courses/vi.pdf}}. No, u biti mašinskog učenja leži generalizacija, tj. indukcija. Dve vrste zaključivanja, indukcija\footnote{Indukcija -- zaključivanje od pojedinačnog ka opštem} i dedukcija\footnote{Dedukcija -- zaključivanje od opšteg ka konkretnom} imaju svoje odgovarajuće discipline u sklopu veštačke inteligencije: mašinsko učenje i automatsko rezonovanje. Kao što se indukcija i dedukcija razlikuju, i mašinsko učenje i automatsko rezonovanje imaju različite oblasti primene. Automatsko rezonovanje zasnovano je na matematičkoj logici i koristi se kada problem čovek relativno lako može formulisati ali ga, često zbog velikog prostora mogućih rešenja, ne može jednostavno rešiti. U ovoj oblasti, neophodno je dobiti apsolutno tačna rešenja, ne dopuštajući nikakav nivo greške.
+Pri mašinskom učenju, teže je formalno definisati problem jer postoji relativno visok nivo apstrakcije. Čovek neke od ovih problema lako rešava a neke ne. Ukoliko je neophodno napraviti sistem koji prepoznaje lica na slikama, kako definisati problem? Od čega se tačno sastoji lice? Metodama automatskog rezonovanja bilo bi nemoguće definisati ovaj problem i rešiti ga. Mašinsko učenje, s druge strane, pokazalo se kao dobar pristup. Ono što je još karakteristično za mašinsko učenje jeste da rešenje ne mora biti savršeno tačno, iako se tome teži, i nivo odstupanja zavisi od problema i konteksta primene. \par
+
 
 Ova oblast je kroz manje od 20 godina od popularizacije postala deo svakodnevnice. U sklopu društvene mreže Fejsbuk (eng. Facebook) implementiran je sistem za prepoznavanje lica koji preporučuje profile osoba koje se nalaze na slikama. Razni veb servisi koriste metode mašinskog učenja radi stvaranja sistema za preporuke (artikala u prodavnicama, video sadržaja na platformama za njihovo gledanje, itd.) i sistema za detekciju prevara. Mnoge firme koje se bave trgovinom na berzi imaju sisteme koji automatski trguju deonicama. U medicini, jedna od primena mašinskog učenja jeste za uspostavljanje dijagnoze. Još neke primene su u marketingu, za procesiranje prirodnih jezika, bezbednost, itd.
 
-
-
+[ODNOS MASINSKOG UCENJA I OSTALIH OBLASTI MATEMATIKE]
 \section{Vrste mašinskog učenja}
 
-Tri vrste mašinskog učenja su nadgledano učenje (eng. supervised learning), nenadgledano učenje (eng. unsupervised learning) i učenje potkrepljivanjem (eng. reinforcement learning). Iako mnogi autori dele mašinsko učenje na samo nadgledano i nenadgledano, postoji razlika između učenja potkrepljivanjem i preostale dve vrste. U nastavku su dati opisi pristupa nadgledanog i nenadgledanog učenja. Učenju uslovljavanjem, kao centralnoj temi ovog rada, posvećeno je više pažnje u poglavlju [GLAVA O RL]. 
+Kada se priča o određenoj vrsti mašinskog učenja, podrazumevaju se vrste problema, kao i načini za njihovo rešavanje. Prema problemima koji se rešavaju, mašinsko učenje deli se na tri vrste: nadgledano učenje (eng. supervised learning), nenadgledano učenje (eng. unsupervised learning) i učenje potkrepljivanjem (eng. reinforcement learning). Iako se podela mnogih autora sastoji samo iz nadgledano i nenadgledanog učenja, postoji razlika između učenja potkrepljivanjem i preostale dve vrste. U nastavku su dati opisi pristupa nadgledanog i nenadgledanog učenja. Učenju uslovljavanjem, kao centralnoj temi ovog rada, posvećeno je više pažnje u poglavlju [GLAVA O RL]. 
+
+\subsection{Nadgledano mašinsko učenje}
+
+Pri nadgledanom mašinskom učenju, date su vrednosti ulaza i izlaza koje im odgovaraju za određeni broj slučajeva. Sistem treba na osnovu već datih veza za pojedinačne parove da ustanovi kakva veza postoji između tih parova i izvrši generalizaciju, odnosno, ukoliko ulazne podatke označimo sa $x$ a izlazne sa $y$, sistem treba da odredi funkciju $f$ takvu da 
+\begin{center}
+	$y \approx f(x)$
+\end{center}
+Pri uspešno rešenom problemu nadgledanog učenja, funkcija $f$ davaće tačna rešenja i za podatke koji do sada nisu viđeni.
+Ulazne vrednosti nazivaju se atributima (eng. features) a izlazne ciljnim promenljivima (eng. target values). Ovim opisom nije određema dimenzionalnost ni za ulazne ni za izlazne promenljive, iako je dimenzija izlazne promenljive uglavnom 1. Funkcija $f$ naziva se modelom. \par
+Skup svih mogućih funkcija odgovarajuće dimenzionalnosti bio bi previše veliki za pretragu i zbog toga se uvode pretpostavke o samom modelu. Pretpostavlja da je definisan skup svih dopustivih modela i da je potrebno naći najpogodniji element tog skupa. Najčešće je taj skup određen parametrima, tj. uzima se da funkcija zavisi od nekog parametra $w$ koji je u opštem slušaju višedimenzioni i funkcija se označava kao $f_w(x)$.
+
+\par
+Neophodno je uvesti funkciju greške modela (eng. loss function), odnosno funkciju koja opisuje koliko dati model dobro određuje izlaz za dati ulaz. Ova funkcija se najčešće označava sa $L$ i $L(y, f_w(x))$ predstavlja razliku između željene i dobijene vrednosti za pojedinačni par promenljivih. No, nijedan par promenljivih nije dovoljan za opis kvaliteta modela već treba naći funkciju koja globalno ocenjuje odstupanje modela od stvarnih vrednosti. U praksi, podrazumeva se postojanje uzorka:
+\begin{center}
+	$D=\{(x_i, y_i)|i=1,...,N\}$
+\end{center}
+i uvodi se empirijski rizik, odnosno sledeća funkcija:
+\begin{center}
+	$E(w, D) = \frac{1}{N}\sum_{i=1}^{N}L(y_i, f_w(x_i))$
+\end{center}
+koja se još naziva prosečnom greškom. Takođe se skup $D$ često ne navodi i njegovo postojanje se podrazumeva. Uobičajeno, algoritmi nadgledanog mašinskog učenja zasnivaju se na minimizaciji prosečne greške. Ipak, treba imati u vidu da ovaj pristup nije teorijski zagarantovan i da to zavisi od skupa modela po kom se vrši minimizacija. \par
+
+Postoje dva osnovna tipa nadgledanog mašinskog učenja:
+\begin{itemize}
+	\item Klasifikacija 
+	\item Regresija
+\end{itemize}
+
+Klasifikacija (eng. classification) predstavlja oblast mašinskog učenja gde je cilj predvideti klasu u kojoj se ciljna promenljiva nalazi. Neki od primera klasifikacije su svrstavanje slika na one koje sadrže ili ne sadrže lice, označavanje nepoželjne (spam) elektronske pošte i prepoznavanje objekata na slikama. 
+Najjednostavniji primer klasifikacije može se videti na slici \ref{fig:bin_klas}, gde su trouglovima označeni podaci iznad prave $y=2x+1$ a krugovima podaci ispod date prave.
+
+\begin{figure}
+	\centering
+	\resizebox{.8\linewidth}{!}{\input{img/bin_cls.pgf}}
+	\caption{Binarna klasifikacija u skladu sa položajem tačaka u odnosu na pravu $2x+1$}
+	\label{fig:bin_klas}
+\end{figure}
+
+\par
+Regresija se odnosi na skup problema (i rešenja) u kojima je ciljna promenljiva neprekidna. Na primer, cene nekretnina mogu se predvideti na osnovu površine, lokacije, populacije koja živi u komšiluku, itd. Često korišćena vrsta regresije jeste linearna regresija. U slučaju linearne regresije, podrazumeva se da je funkcija $f_w(x)$ linearna u odnosu na parametar $w$. Iako se ovo na prvi pogled čini kao prilično jako ograničenje, to nije slučaj; kako za atribute ne postoji zahtev za linearnosti, oni pre pravljenja linearne kombinacije mogu biti proizvoljno transformisani. Primer linearne regresije jeste aproksimacija polinomom:
+\begin{center}
+	$f_w(x) = w_0 + \sum_{i=1}^{N}w_ix^i$
+\end{center}
+
+\subsection{Nenadgledano mašinsko učenje}
+
+Nenadgledano učenje obuhvata skup problema (i njihovih rešenja) u kojima sistem prihvata ulazne podatke bez izlaznih. Ovo znači da sistem sam mora da zaključi kakve zakonitosti važe u podacima.  Kako nije moguće odrediti preciznost sistema pa je cilj naći najbolji model u odnosu na neki kriterijum koji je unapred zadat.
+Jedan primer nenadgledanog mašinskog učenja je klasterovanje: sistem grupiše neoznačene podatke u odnosu na  neki kriterijum koji nije unapred poznat. Svaka grupa (klaster) sastoji se iz podataka koji su međusobno slični i različiti od elemenata preostalih grupa u odnosu na taj kriterijum. Jednostavan primer klasterovanja po numeričkim atributima x i y može se videti na slici \ref{fig:klaster}.
+	
+\begin{figure}
+	\centering
+	\resizebox{.8\linewidth}{!}{\input{img/cluster.pgf}}
+	\caption{Klasterovanje}
+	\label{fig:klaster}
+\end{figure}
+
+\section{Dizajn sistema za mašinsko učenje}
+Koraci ml-a \\
+Pretprocesiranje
+Malo o podacima (test trening)
+Da li je regresija polinomom linearna?
+
+\section{Problemi pri mašinskom učenju}
+
+
+Kao što je podrazumevano pri pomenu pojma generalizacije, nije dovoljno odrediti funkciju koja dobro određuje izlazne vrednosti na osnovu promenljivih nad kojima se uči već je poželjno i novim ulaznim podacima dodeliti tačnu izlaznu vrednost. Odavde se može videti da će loš sistem za mašinsko učenje izuzetno dobro naučiti da preslikava ulazne vrednosti iz skupa za učenje u odgovarajuće izlazne vrednosti ali u situaciji kada se iz tog skupa izađe, sistem neće davati zadovoljavajuće rezultate. Ovaj problem ima svoje ime: preprilagođavanje. Postoji i problem potprilagođavanja, koji podrazumeva da se sistem nije dovoljno prilagodio podacima. I preprilagođavanje i potprilagođavanje predstavljaju veliki problem ukoliko do njih dođe. \par
+Na još jedan od mogućih problema nailazi se u slučaju neprikladnih podataka. Moguće je da ulazni atributi ne daju dovoljno informacija o izlaznim. Takođe je moguće da podataka jednostavno nema dovoljno. U ovom slučaju, sistem ne dobija dovoljno bogat skup informacija kako bi uspešno izvršio generalizaciju. S druge strane, moguće je da postoji prevelika količina podataka. Tada se pribegava pažljivom odabiru podataka koji se koriste za učenje ali ovo u opštem slučaju  treba izbegavati jer su podaci izuzetno vredan element procesa mašinskog učenja. Još jedan problem vezan za podatke može biti njihova nepotpunost. Na primer, moguće je da u nekim instancama postoje nedostajuće vrednosti atributa. \par
+Kako je najčešče potrebno pretprocesirati podatke u sklopu procesa mašinskog učenja, moguće je da u ovom procesu dođe do greške. Primera radi, prilikom rada sa konvolutivnim neuronskim mrežama, o kojima će biti reči u jednom od narednih glava, nekada se slike  u boji pretvaraju u crno-bele. Ako se primeni transformacija koja onemogućuje detektovanje objekata koji su različiti u početnoj slici, sistem neće moći da ih razlikuje. 
+
+
+[ONO ZA RGB U GRAY U DQN BI BILO SOLIDNO OVDE UBACITI] \par
+Neadekvatnost algoritma, optimizacije, greske u evaluaciji, interpretaciji modela, implementaciji
