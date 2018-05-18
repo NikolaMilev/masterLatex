@@ -14,12 +14,14 @@
 \setlength{\parskip}{1em}
 \setlength{\baselineskip}{1.6em} % ovo mozda menjati
 \renewcommand{\figurename}{Slika}
+% margine
 \usepackage[
 	a4paper,	
 	margin=2cm, 
 	left=2.5cm		
 	]{geometry}
 	
+% linkovi
 \usepackage{color}   %May be necessary if you want to color links
 \usepackage{hyperref}
 \hypersetup{
@@ -28,10 +30,31 @@
     linkcolor=black,  %choose some color if you want links to stand out
 }	
 
+% indentacija liste
 \setlist[itemize,1]{leftmargin=\dimexpr +2cm}
 
-\begin{document}
+% podesavanje headera
+\usepackage{fancyhdr}
+\setlength{\headheight}{20pt}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\leftmark}
+\rhead{\thepage}
 
+% podesavanje headera za strane gde pocinju poglavlja (plain style)
+\fancypagestyle{plain}{%
+\fancyhf{}
+\rhead{\thepage}
+\setlength{\headheight}{20pt}}
+
+
+%\rfoot{Page \thepage}
+
+% skidam broj sa sadrzaja
+
+
+\begin{document}
+\pagenumbering{roman}
 \begin{titlepage}
     \begin{center}
         \vspace*{1cm}
@@ -55,10 +78,13 @@
     \end{center}
 \end{titlepage}
 
+\newpage ~ \thispagestyle{empty}
 
+\addtocontents{toc}{\protect\thispagestyle{empty}}
 \tableofcontents{}
-\newpage
 
+\newpage
+\pagenumbering{arabic}
 \include{tex/uvod}
 \include{tex/masinsko_ucenje}
 
@@ -66,6 +92,7 @@
 \chapter{Konvolutivne neuronske mreže}
 \chapter{Markovljevi procesi odlučivanja}
 \chapter{Učenje potkrepljivanjem}
+\label{ch:rl}
 \chapter{DQN}
 \chapter{Detalji implementacije}
 \end{document}
