@@ -3,7 +3,7 @@
 \documentclass[12pt]{report}
 \usepackage{fontspec}
 \usepackage{lmodern}
-%\usepackage{indentfirst} % pise u uputstvu da ne treba
+\usepackage{indentfirst} % pise u uputstvu da ne treba
 \usepackage[ddmmyyyy]{datetime}
 \renewcommand*\contentsname{Sadržaj}
 \usepackage{url}
@@ -29,6 +29,10 @@
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=black,  %choose some color if you want links to stand out
 }	
+
+%tikz
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning} 
 
 % indentacija liste
 \setlist[itemize,1]{leftmargin=\dimexpr +2cm}
@@ -89,11 +93,23 @@
 \include{tex/masinsko_ucenje}
 
 \chapter{Neuronske mreže}
+\label{ch:nn}
 \chapter{Konvolutivne neuronske mreže}
+\label{ch:cnn}
 \chapter{Markovljevi procesi odlučivanja}
+\label{ch:mdp}
+
 \chapter{Učenje potkrepljivanjem}
 \label{ch:rl}
+
 \chapter{DQN}
+\label{ch:dqn}
+
 \chapter{Detalji implementacije}
+\label{ch:implementacija}
+
+\chapter{Eskperimentisanje sa elementima algoritma DQN}
+\label{ch:eksperimenti}
+
 \end{document}
 

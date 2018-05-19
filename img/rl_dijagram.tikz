@@ -1,0 +1,32 @@
+\tikzset{
+    %Define standard arrow tip
+    >=stealth',
+    %Define style for boxes
+    okruzenje/.style={
+           rectangle,
+           rounded corners,
+           draw=black, very thick,
+           text width=6.5em,
+           minimum height=5em,
+           text centered},
+    agent/.style={
+           ellipse,
+           draw=black, very thick,
+           text width=4.5em,
+           minimum height=3em,
+           text centered},   
+    % Define arrow style
+    pil/.style={
+           ->,
+           thick}
+}
+
+\begin{tikzpicture}[node distance=1cm, auto,]
+
+\node[okruzenje] (okruzenje) {OKRUŽENJE} ;
+\node [agent, below left=7em of okruzenje] (agent) {AGENT} ;
+
+\draw (agent) edge[->, out=0, in=-90] node[right=0.5em] {AKCIJA} (okruzenje);
+\draw (okruzenje) edge[->, out=180, in=90] node[align=left,left=0.5em] {NAGRADA\\~\\STANJE} (agent) ;
+
+\end{tikzpicture}
