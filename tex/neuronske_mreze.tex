@@ -1,0 +1,43 @@
+\chapter{Neuronske mreže}
+\label{ch:nn}
+
+Neuronske mreže (eng. neural network) predstavljaju danas izuzetno popularan vid mašinskog učenja. Sastoje se iz slojeva neurona koji su međusobno povezani. Ovakvi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoze u medicini, igranje igara itd. Neuronskim mrežama može se aproksimirati proizvoljna neprekidna funkcija. Pun naziv je veštačka neuronska mreža (eng. artificial neural network, skr. ANN) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse\footnote{Sinapsa je struktura koja omogućuje komunikaciju između neurona.}. Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
+
+\par
+Postoji nekoliko različitih vrsta neuronskih mreža. Tipičan primer jesu neuronske mreže sa propagacijom unapred. Ime proističe iz činjenice da podaci teku od ulaza mreže do izlaza, bez postojanja ikakve povratne sprege. Neuronske mreže sa propagacijom unapred sastoje se iz slojeva neurona, osnovnih gradivnih jedinica. Ukoliko se u ovaj model uvede neki tip povratne sprege, tada se govori o rekurentnim neuronskim mrežama. Pri radu sa slikama i raznim drugim vrstama signala, najčešće se koriste konvolutivne neuronske mreže, o kojima će biti reči kasnije. Ono što je zajedničko je da su neuronske mreže sposobne za izdvajanje određenih karakteristika u podacima koji se obrađuju. To znači da se vrši kreiranje novih atributa na osnovu već postojećih. Ovo se naziva ekstrakcijom atributa i smatra se da je to jedan od najbitnijih razloga za delotvornost neuronskih mreža.
+
+\section{Neuronske mreže sa propagacijom unapred}
+
+Neuronske mreže jedna su od najkorišćenijih vrsta neuronskih mreža. Gradivni elementi ovakvog modela, neuroni (koji se još nazivaju i jedinicama), organizuju se u slojeve koji se nadovezuju i time čine neuronsku mrežu. Organizacija neurona i slojeva predstavlja arhitekturu mreže. Prvi sloj mreže naziva se ulaznim slojem dok se poslednji sloj naziva izlaznim slojem. Neuroni prvog sloja kao argumente primaju ulaze mreže dok neuroni svakog od preostalih slojeva kao svoje ulaze prihvataju izlaze prethodnog sloja. Broj slojeva mreže određuje njenu dubinu. Termin "duboko učenje" nastao je baš iz ove terminologije. Svi slojevi koji svoje izlaze prosleđuju narednom sloju nazivaju se skrivenim slojevima.  Mreže sa više od jednog skrivenog sloja nazivaju se dubokim neuronskim mrežama. 
+
+
+\par
+Svaki neuron opisuje se pomoću vektora $w = (w_0, ..., w_n)$ koji se naziva vektorom težina. Ulazni parametrar $x = (x_1, ..., x_n)$ linearno se transformiše na sledeći način:
+\begin{center}
+	$f_w(x) = w_0 + \sum_{i=1}^{n} x_nw_n $
+\end{center}
+a zatim se primenjuje takozvana aktivaciona funkcija, $g$. Izlaz iz neurona je $g(f_w(x))$ i, uprkos linearnosti prve transformacije, izlaz ne mora biti linearna transformacija ulaza, tj. $g$ nije linearna funkcija. Za $g$ se bira nelinearna funkcija jer se u suprotnom komponovanjem funkcija $f_w$ i $g$ opet dobija linearna funkcija; na ovaj način, mreža bi predstavljala linearnu funkciju i ne bi bilo moguće njom aproksimirati nelinearne funkcije dovoljno dobro. Vrednost $w_0$ naziva se slobodnim članom. \\
+
+[SLIKA NEURONA]
+
+Model se formalno definiše na sledeći način:
+\begin{center}
+	$ h_0 = x $  \\
+	$ h_i = g(W_ih_{i-1} + w_{i0})$, za $i=1, ..., L$
+\end{center}
+gde je $x$ vektor ulaza u mrežu predstavljen kao kolona, $W_i$ je matrica čija $j$-ta vrsta predstavlja vektor težina $j$-tog neurona u sloju $i$ a $w_{i0}$ je kolona slobodnih članova svih jedinica u sloju $i$. Funkcija $g$ je nelinearna aktivaciona funkcija i za vektor $t=(t_1, ..., t_n)$, $g(t)$ predstavlja kolonu $(g(t_1), ..., g(t_n))^T$. Na ovaj način dobija se funkcija čiji su parametri $W_i$ i $w_{i0}$ za $i=1,...,L$. Ako se parametri označe sa $w$, tada je model funkcija $f_w$.  
+
+[MOZDA O TEOREMI O UNIVERZALNOJ APROKSIMACIJI?]
+
+[SLIKA NEKE MREZE]
+
+
+
+[AKTIVACIONE FUNKCIJE]
+
+Uvod  (prosiriti?) \\
+Vrste NN \\
+Aktivacione funkcije \\
+Perceptron / neuron (da li?) \\
+Gradijentni spust, Propagacija unazad \\
+Primene i ograničenja \\
