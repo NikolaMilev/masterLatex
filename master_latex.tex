@@ -10,15 +10,18 @@
 \usepackage{enumitem}
 \renewcommand{\chaptername}{}
 \usepackage{pgf}
+\usepackage{amsmath}
 \usepackage{import}
+\usepackage{graphicx}
 \setlength{\parskip}{1em}
 \setlength{\baselineskip}{1.6em} % ovo mozda menjati
 \renewcommand{\figurename}{Slika}
+\usepackage{amsfonts}
 % margine
 \usepackage[
 	a4paper,	
-	margin=2cm, 
-	left=2.5cm		
+	margin=2.5cm, 
+	left=3cm		
 	]{geometry}
 	
 % linkovi
@@ -59,8 +62,10 @@
 
 \begin{document}
 \pagenumbering{roman}
+% sredi margine za naslovnu!
 \begin{titlepage}
     \begin{center}
+    
         \vspace*{1cm}
         \hrule
         \vspace*{1cm}
@@ -68,6 +73,9 @@
         \vspace*{1cm}
         \hrule
         \vspace{1cm}
+        
+		\resizebox{.2\linewidth}{!}{\includegraphics{img/matf_logo}}
+		
         \begin{center}
         	Matematički fakultet \\
         	Univerzitet u Beogradu
