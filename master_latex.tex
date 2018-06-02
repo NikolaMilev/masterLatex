@@ -11,6 +11,7 @@
 \renewcommand{\chaptername}{}
 \usepackage{pgf}
 \usepackage{amsmath}
+\usepackage{commath}
 \usepackage{import}
 \usepackage{graphicx}
 \setlength{\parskip}{1em}
@@ -54,13 +55,19 @@
 \rhead{\thepage}
 \setlength{\headheight}{20pt}}
 
+% sledeca dva su da mi pokazuje broj pored jednacine samo ako postoji referenca
+% na nju negde u tekstu!
+\usepackage{mathtools}  
+\mathtoolsset{showonlyrefs}
 
 %\rfoot{Page \thepage}
 
 % skidam broj sa sadrzaja
 
+% nadji nacin samo da prikazes broj samo pored formula na koje postoji referenca!
 
 \begin{document}
+
 \pagenumbering{roman}
 % sredi margine za naslovnu!
 \begin{titlepage}

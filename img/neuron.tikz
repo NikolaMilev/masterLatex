@@ -1,0 +1,35 @@
+
+\tikzset{basic/.style={draw,text width=1em,text badly centered}}
+\tikzset{input/.style={basic,circle}}
+\tikzset{weights/.style={text width=1em, text badly centered}}
+\tikzset{functions/.style={basic,circle}}
+
+    \begin{tikzpicture}
+        \node[functions] (center) {};
+        \node[below of=center,font=\scriptsize,text width=4em] {Aktivaciona funkcija};
+        %\draw[thick] (0.5em,0.5em) -- (0,0.5em) -- (0,-0.5em) -- (-0.5em,-0.5em);
+        %\draw (0em,0.75em) -- (0em,-0.75em);
+        \draw (0em,0em) -- (-0.6em,0em);
+        \draw (0em,0em) -- (0.5em, 0.5em) ;
+        \node[right of=center] (right) {};
+            \path[draw,->] (center) -- (right);
+        \node[functions,left=3em of center] (left) {$\sum$};
+            \path[draw,->] (left) -- (center);
+        \node[weights,left=3em of left] (2) {} -- (2) node[input,left of=2] (l2) {$x_2$};
+        \node[above=-0.1em of 2] (ww2) {$w_2$} ;
+            %\path[draw,->] (l2) -- (2);
+            \path[draw,->] (l2) -- (left);
+        \node[below of=2] (dots) {} -- (dots) node[left of=dots] (ldots) {$\vdots$};
+        \node[above=-0.7em of dots] (wn) {$w_n$} ;
+        \node[weights,below of=dots] (n) {} -- (n) node[input,left of=n] (ln) {$x_n$};
+            %\path[draw,->] (ln) -- (n);
+            \path[draw,->] (ln) -- (left);
+        \node[weights,above of=2] (1) {$w_1$} -- (1) node[input,left of=1] (l1) {$x_1$};
+            %\path[draw,->] (l1) -- (1);
+            \path[draw,->] (l1) -- (left);
+        \node[weights,above of=1] (0) {} -- (0) node[input,left of=0] (l0) {$1$};
+        \node[weights, below=-0.3em of 0] (w0) {$w_0$} ;
+            %\path[draw,->] (l0) -- (0);
+            \path[draw,->] (l0) -- (left);
+        \node[below=0.5em of ln,font=\scriptsize] {Ulazi};
+    \end{tikzpicture}
