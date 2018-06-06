@@ -89,7 +89,13 @@ Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspod
 \subsection{Optimizacija}
 \label{subsec:optimizacija}
 
-Ukoliko je neuronska mreža predstavljena kao funkcija $f_w$, gde su $w$ parametri mreže, neophodno je izvršiti minimizaciju\footnote{Naravno, optimizacioni metodi primenjuju se i na maksimizaciju ali je u slučaju mašinskog učenja najčešće neophodno minizovati funkciju greške.} funkcije koja predstavlja kriterijum kvaliteta aproksimacije. Problem optimizacije u slučaju neuronskih mreža težak je zbog nekonveksnosti. Ona čini neke metode teško primenljivim ili izuzetno sporim. Moguće je i završiti u lokalnom optimumu funkcije. Uobičajeno se koriste metodi zasnovani na gradijentu funkcije. Postoje metodi drugog reda, zasnovani na hesijanu \footnote{Hesijan je matrica parcijalnih izvoda drugog reda.} ali je njegovo računanje u slučaju većeg broja parametara preskupo.
+Ukoliko je neuronska mreža predstavljena kao funkcija $f_w$, gde su $w$ parametri mreže, neophodno je izvršiti minimizaciju\footnote{Naravno, optimizacioni metodi primenjuju se i na maksimizaciju ali je u slučaju mašinskog učenja najčešće neophodno minizovati funkciju greške.} funkcije koja predstavlja kriterijum kvaliteta aproksimacije. Problem optimizacije u slučaju neuronskih mreža težak je zbog nekonveksnosti. Ona čini neke metode teško primenljivim ili izuzetno sporim. Moguće je i završiti u lokalnom optimumu funkcije. Uobičajeno se koriste metodi zasnovani na gradijentu funkcije. Postoje metodi drugog reda, zasnovani na hesijanu \footnote{Hesijan je matrica parcijalnih izvoda drugog reda.} ali je njegovo računanje u slučaju većeg broja parametara preskupo. \par
+Učenje funkcioniše na sledeći način za fiksirane ulaze $x$ posmatra se njima uparen izlaz $y$ i $f_w(x)$ a zatim i $L(y, f_w(x))$, odnosno funkcija greške između stvarne i očekivane vrednosti. Koristeći algoritam propagacije unazad (\ref{subsub:backprop}) uz neki od algoritama za optimizaciju, vrši se minimzacija funkcije $L$ u odnosu na parametre mreže, $w$. 
+%Jedna od najčešće korišćenih funkcija greške pri regresiji je srednjekvadratna greška:
+%\begin{equation}
+%	L(y, \hat{y}) =\frac{1}{2}\norm{y-\hat{y}}_2^2 = \frac{1}{2}\sum_{i=1}^{2} (y_i - \hat{y}_i)^2
+%\end{equation}
+%Kako su pri minimizaciji $L$ za određeni par $x,y$ jedino težine nepoznate, u nastavku će %$L(w)$ označavati funkciju greške za neki par.
 
 \subsubsection{Metod gradijentnog spusta i stohastičkog gradijentnog spusta}
 
@@ -104,34 +110,39 @@ Gradijent funkcije u tački $x$ predstavlja pravac i smer najbržeg rasta funkci
 Metod gradijentnog spusta jedan je od najstarijih metoda  optimizacije. Iterativnim pristupom minimizuje se konveksna diferencijabilna funkcija. Polazeći od nasumično odabrane tačke i prateći pravac i smer gradijenta u svakom koraku, dolazi se do minimuma funkcije. Iterativni korak definisan je na sledeći način:
 \begin{equation}
 	\label{eq:gradijentni_spust}
-	x_{i+1} = x_k - \alpha_i \nabla L(x_i), i=0, 1, 2, ... ,
+	w_{k+1} = w_k - \alpha_k \nabla L(w_k), k=0, 1, 2, ... ,
 \end{equation}
-gde je $x_0$ ta nasumično odabrana početna tačka a $\alpha_i$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng. learning rate). Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe sledeći uslovi čiji je naziv Robins Monroovi uslovi \footnote{\url{https://en.wikipedia.org/wiki/Stochastic_approximation}} :
-
+gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng. learning rate). 
+Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 \begin{equation}
-	 \sum_{i=0}^{\infty} \alpha_i = \infty \hspace{2cm} \sum_{i=0}^{\infty} \alpha_i^2 < \infty 
+	\frac{1}{2N}\sum_{i=1}^{N} \norm{y_i - f_w(x_i)}_2^2
+\end{equation}
+
+Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe Robins Monroovi uslovi\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_approximation}} :
+\begin{equation}
+	 \sum_{k=0}^{\infty} \alpha_k = \infty \hspace{2cm} \sum_{k=0}^{\infty} \alpha_k^2 < \infty 
 	\end{equation}
-Jednostavniji pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako i važi $\alpha_k = \alpha$.
+Jednostavniji pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako $k$ važi $\alpha_k = \alpha$.
 \par
-Postavlja se i pitanje koliko koraka načiniti pre zaustavljanja. U praksi se koristi nekoliko kriterijuma kao što su zaustavljanje kada su dve uzastopne vrednosti $x_i$ i $x_{i+1}$ dovoljno bliske, kada su vrednosti funkcije za dve uzastopne vrednosti dovoljno bliske ali se može zaustaviti i nakon unapred određenog broja koraka. Postoji još kriterijuma i moguće ih je kombinovati.
+Postavlja se i pitanje koliko koraka načiniti pre zaustavljanja. U praksi se koristi nekoliko kriterijuma kao što su zaustavljanje kada su dve uzastopne vrednosti $w_k$ i $w_{k+1}$ dovoljno bliske, kada su vrednosti funkcije za dve uzastopne vrednosti dovoljno bliske ali se može zaustaviti i nakon unapred određenog broja koraka. Postoji još kriterijuma i moguće ih je kombinovati.
 \par
-Iako jednostavan i široko primenljiv metod optimizacije, gradijentni spust nije najbolji izbor. Naime, pravac najbržeg uspona funkcije nije uvek i pravac koji osigurava najbrže približavanje optimumu funkcije. U praksi, gradijentni spust ume da proizvodi cik-cak kretanje koje dovodi do spore konvergencije.
+Iako jednostavan i široko primenljiv metod optimizacije, gradijentni spust nije najbolji izbor. Naime, pravac najbržeg uspona funkcije nije uvek i pravac koji osigurava najbrže približavanje optimumu funkcije. U praksi, gradijentni spust ume da proizvodi cik-cak kretanje koje dovodi do spore konvergencije. Takođe, za jedan iterativni korak neophodno je proći kroz sve parove ulaza i izlaza, što u slučaju velikog skupa podataka za obučavanje može biti jako velika količina podataka.
 \par
 Za obučavanje neuronskih mreža češće se koristi metod stohastičkog gradijentnog spusta. Pretpostavka je da je funkcija koja se optimizuje oblika:
 
 \begin{equation}
-		L(x) = \frac{1}{N}\sum_{i=1}^{N} L_i(x)	
+		L(w) = \frac{1}{N}\sum_{i=1}^{N} L_i(w)	
 \end{equation}
 odnosno da se može predstaviti kao prosek nekih $N$ funkcija. Kako je neuronska mreža jedan od metoda mašinskog učenja, na raspolaganju je skup za obučavanje pa se funkcija greške na celom skupu može predstaviti kao prosek grešaka na pojedinačnim instancama skupa. Novi oblik 
 jednakosti ~\eqref{eq:gradijentni_spust} je:
 \begin{equation}
-	x_{i+1} = x_k - \alpha_i \bigg( \frac{1}{N}\sum_{i=1}^{N} \nabla L_i(x) \bigg)\text{,~} i=0,1,2, ... 
+	w_{k+1} = w_k - \alpha_k \bigg( \frac{1}{N}\sum_{i=1}^{N} \nabla L_i(w_k) \bigg)\text{,~} k=0,1,2, ... 
 \end{equation}.
 Pri korišćenju stohastičkog gradijentnog spusta za minimizaciju funkcije greške, iterativni korak izgleda ovako:
 \begin{equation}
-	x_{k+1} = x_k - \alpha \nabla L_i(x_k) 
-\end{equation},
-gde postoje razni načini za odabir $i$ u nekom koraku, kao što je $i=k (mod N) + 1$, gde je $N$ veličina skupa za obučavanje. Još jedan primer je nasumični odabir instance u svakom koraku. Kakav god način izbora bio, neophodno je iskoristiti sve greške. Moguće je proći greške iz skupa za obučavanje i nekoliko puta dok se ne postigne željeni nivo aproksimacije. 
+	w_{k+1} = w_k - \alpha \nabla L_i(w_k) 
+\end{equation}
+Postoje razni načini za odabir $i$ u nekom koraku, kao što je $i=k (mod N) + 1$, gde je $N$ veličina skupa za obučavanje. Još jedan primer je nasumični odabir instance u svakom koraku. Kakav god način izbora bio, neophodno je iskoristiti sve greške. Moguće je proći greške iz skupa za obučavanje i nekoliko puta dok se ne postigne željeni nivo aproksimacije. 
 \par
 Kako ova aproksimacija može biti prilično neprecizna, pribegava se kompromisu: prilikom iterativnog koraka ne koriste se pojedinačne instance već prosek nekog podskupa skupa za obučavanje (eng. minibatch). Pri treniranju neuronskih mreža, ovo je uobičajeni pristup.
 \par
@@ -141,19 +152,20 @@ Postoje razni metodi optimizacije koji se koriste pri mašinskom učenju. Neki m
 
 \subsubsection{RMSProp}
 
-Algoritam RMSProp (eng. root mean square propagation) predložio je Džof Hinton na jednom od svojih predavanja na sajtu Kursera~\footnote{\url{http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja jeste čuvanje dosadašnjeg otežanog proseka kvadrata norme gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\circ$ obeležava množenje pojedinačnih elemenata vektora odgovarajućim elementom drugog vektora.
+Algoritam RMSProp (eng. root mean square propagation) predložio je Džof Hinton na jednom od svojih predavanja na sajtu Kursera~\footnote{\url{http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
 \begin{equation}
 	\begin{gathered}
 		g_0 = 0 \\
-		g_{k+1} = \gamma g_k + (1 - \gamma)\nabla L(x_k) \circ \nabla L(x_k)
+		g_{k+1} = \gamma g_k + (1 - \gamma)\nabla L(w_k) \odot \nabla L(w_k) \\
+		\alpha_0 = \alpha \\
+		\alpha_{k+1} = \frac{\alpha_k}{1+d(k+1)}	
 	\end{gathered}
 \end{equation}
 Tada se iterativni korak definiše: 
 \begin{equation}
-	x_{k+1} = x_k - \frac{\alpha}{\sqrt{g_k + \varepsilon}} \nabla L(x_k)
+	w_{k+1} = w_k - \frac{\alpha_{k+1}}{\sqrt{g_{k+1}} + \varepsilon} \nabla L(w_k)
 \end{equation}
-Ono što treba imati na umu jeste da se ova operacija vrši za svaki element vektora $x_{k+1}$.
-Parametar $\gamma$ pripada poluotvorenom intervalu $\left[0, 1\right) $. U svom predavanju, Hinton predlaže da njegova vrednost bude $0.9$. Preporučena vrednost za veličinu koraka odnosno stopu učenja, u oznaci $\alpha$, je $0.001$. Parametar $\varepsilon$ služi da bi se izbeglo deljenje nulom i obično je reda veličine $10^{-8}$.   
+Sve operacije vrše se pokoordinatno. Parametar $\gamma$ pripada poluotvorenom intervalu $\left[0, 1\right) $. U svom predavanju, Hinton predlaže da njegova vrednost bude $0.9$. Preporučena vrednost za veličinu koraka odnosno stopu učenja, u oznaci $\alpha$, je $0.001$ dok $d$ označava faktor opadanja za parametar $\alpha$. Parametar $\varepsilon$ služi da bi se izbeglo deljenje nulom i obično je reda veličine $10^{-8}$.
 
 \subsubsection{Adam}
 
@@ -163,37 +175,62 @@ Adam (eng. adaptive moment estimation) jedan je od najčešćih algoritama za op
 	\begin{gathered}
 			m_0 = 0 \\
 			v_0 = 0 \\ 
-			m_{k+1} = \beta_1 m_k + (1-\beta_1) \nabla L(x_k) \\
-			v_{k+1} = \beta_2 v_k + (1-\beta_2) \norm{\nabla L(x_k)}^2
+			m_{k+1} = \beta_1 m_k + (1-\beta_1) \nabla L(w_k) \\
+			v_{k+1} = \beta_2 v_k + (1-\beta_2) \nabla L(w_k) \odot \nabla L(w_k) 
 	\end{gathered}
 \end{equation}
 
 Ocena prvog momenta, $m_0$, predstavlja otežani prosek pravca kretanja dok ocena drugog momenta, $v_0$, predstavlja otežani prosek kvadrata norme gradijenata. Međutim, ove dve ocene su pristrasne ka početnoj vrednosti, u ovom slučaju $0$\footnote{Ovde se misli na $0$ vektor istih dimenzija kao $x_k$ u slučaju prvog momenta i skalar $0$ u slučaju drugog momenta}. Da bi se to ispravilo, vrši se sledeća korekcija:
 \begin{equation}
 	\begin{gathered}
-		\hat{m_{k+1}} = \frac{m_{k+1} }{1 - \beta_1^{k+1}} \\
-		\hat{v_{k+1}} = \frac{v_{k+1} }{1 - \beta_2^{k+1}}
+		\hat{m}_{k+1} = \frac{m_{k+1} }{1 - \beta_1^{k+1}} \\
+		\hat{v}_{k+1} = \frac{v_{k+1} }{1 - \beta_2^{k+1}}
 	\end{gathered}
 \end{equation}
-Na kraju, iterativni korak je:
+Na kraju, iterativni korak dat je ispod. Dodavanje skalara $\varepsilon$ na vektor $\hat{v_{k+1}}$ predstavlja dodavanje tog skalara svakom članu datog vektora. Korenovanje, deljenje i oduzimanje vrše se pokoordinatno.
 \begin{equation}
-	x_{k+1} = x_k - \alpha \frac{\hat{m_{k+1}}}{\sqrt{\hat{v_{k+1}}} + \varepsilon}
+	w_{k+1} = w_k - \alpha \frac{\hat{m}_{k+1}}{\sqrt{\hat{v}_{k+1}} + \varepsilon}
 \end{equation}
 
-Parametar $\alpha$ naziva se veličina koraka ili stopa učenja. Vrednosti parametara $\beta_1$ i $\beta_2$ ograničene su na skup $\left[0, 1\right) $ i preporučene vrednosti su $0.9$ i $0.999$, redom, dok se za $\varepsilon$ preporučuje vrednost $10^{-8}$. Kao i u algoritmu RMSProp, svrha parametra $\varepsilon$ je izbegavanje deljenja sa nulom.
+Parametar $\alpha$ naziva se veličina koraka ili stopa učenja. Vrednosti parametara $\beta_1$ i $\beta_2$ ograničene su na skup $\left[0, 1\right) $ i preporučene vrednosti su $0.9$ i $0.999$, redom, dok se za $\varepsilon$ preporučuje vrednost $10^{-8}$. Kao i u algoritmu RMSProp, svrha parametra $\varepsilon$ je izbegavanje deljenja sa nulom. Takođe nalik algoritmu RMSProp opisanom iznad, moguće je uvesti stopu opadanja parametra $\alpha$.
 \par
 Intuicija kojom se vodi algoritam Adam jeste da dužina svakog koraka zavisi od osobina funkcije u regionu u kom se trenutno vrši optimizacija. Ovaj algoritam pokazao se kao superioran u odnosu na ostale algoritme za optimizaciju, u opštem slučaju.
 
 
 
 \subsubsection{Metod propagacije unazad}
+\label{subsub:backprop}
 
-E, ovo je zajebano.
+Metod propagacije unazad jedan je od najznačajnijih algoritama pri radu sa neuronskim mrežama. Zasniva se na korišćenju parcijalnog izvoda složene funkcije kako bi se izračunao gradijent funkcije koju predstavlja neuronska mreža. Na primer, ukoliko su date funkcije $g: \mathbb{R}^n \rightarrow \mathbb{R}^m$ i $f: \mathbb{R}^m \rightarrow \mathbb{R}$, tada se parcijalni izvod funkcije $f \circ g $ odnosno $f(g)$ po $i$-toj promenljivoj za $i=1,...,n$ računa:
+\begin{equation}
+	\partial_i (f \circ g) = \sum_{j=1}^{m} (\partial_j f \circ g) \partial_i g_j 
+\end{equation}
+Svaka iteracija algoritma propagacije unazad sastoji se od tri koraka:
+\begin{itemize}
+	\item Proširivanja do sada izračunatog parcijalnog izvoda izvodom aktivacione funkcije za dati sloj po pravilima računanja parcijalnog izvoda složene funkcije;
+	\item Računanja vrednosti gradijenta prema parametrima jedinica datog sloja. Kako se pre aktivacione funkcije računa linearna kombinacija, ovaj gradijent je vektor vrednosti koji taj sloj dobija i ovaj korak se vrši množenjem tim vektorom;
+	\item Proširivanja do sada izračunatog parcijalnog izvoda izvodom te linearne kombinacije po ulazima prateći pravilo za računanje parcijalnog izvoda složene funkcije.
+\end{itemize}
+
+Jednostavan primer rada algoritma propagacije unazad za složenu funkciju $f \circ g \circ h$ izgleda:
+\begin{equation}
+	\begin{aligned}
+		f(g(h(x)))' &= \\
+		&= f'(g(h(x)))g(h(x))' \\ 
+		&= f'(g(h(x)))g'(h(x))h(x)' \\ 
+		&= f'(g(h(x)))g'(h(x))h'(x) \\
+	\end{aligned}
+\end{equation}
+
+Sada su prikazani potpuni alati za optimizaciju neuronske mreže sa propagacijom unapred. Treba imati u vidu da je algoritam propagacije unazad računski skup i da pri radu sa velikim neuronskim mrežama proces učenja može biti jako skup. Takođe, sem težina same neuronske mreže, na proces učenja utiču razni drugi parametri kao što su arhitektura mreže, podela podataka na skupove za obučavanje i testiranje i parametri algoritama za optimizaciju. Ovi parametri nazivaju se metaparametrima i neretko je neophodno pokušavati razne njihove kombinacije dok ponašanje mreže ne dostigne željeni nivo. Često se umesto traženja metaparametara pribegava korišćenju unapred poznate kombinacije za koju je već pokazano da daje željene rezultate pri rešavanju nekog problema.
+
+\section{Konvolutivne neuronske mreže}
+
+
 
 %[STOHASTICKI SPUST] \\
 %[BACKPROP] \\ 
 %[ADAM/RMSPROP?] -- bar procitaj\\ 
-
 
 
 [MOZDA O TEOREMI O UNIVERZALNOJ APROKSIMACIJI?]
