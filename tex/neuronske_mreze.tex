@@ -224,27 +224,56 @@ Jednostavan primer rada algoritma propagacije unazad za složenu funkciju $f \ci
 
 Sada su prikazani potpuni alati za optimizaciju neuronske mreže sa propagacijom unapred. Treba imati u vidu da je algoritam propagacije unazad računski skup i da pri radu sa velikim neuronskim mrežama proces učenja može biti jako skup. Takođe, sem težina same neuronske mreže, na proces učenja utiču razni drugi parametri kao što su arhitektura mreže, podela podataka na skupove za obučavanje i testiranje i parametri algoritama za optimizaciju. Ovi parametri nazivaju se metaparametrima i neretko je neophodno pokušavati razne njihove kombinacije dok ponašanje mreže ne dostigne željeni nivo. Često se umesto traženja metaparametara pribegava korišćenju unapred poznate kombinacije za koju je već pokazano da daje željene rezultate pri rešavanju nekog problema.
 
+\subsection{Prednosti i mane}
+
+Neuronske mreže pokazale su se kao jako korisne za rešavanje praktičnih problema zbog svoje izuzetne fleksibilnosti. Međutim, za proces obučavanja neuronske mreže neophodno je imati veliku količinu podataka. Proces učenja može biti izuzetno spor, posebno ukoliko se uvede isprobavanje raznih vrednosti metaparametara. Velika fleksibilnost može izazvati i preprilagođavanje podacima i time učiniti performanse mreže nad novim podacima lošim. Postoje i problemi pri optimizaciji kao što su takozvani problemi nestajućih i eksplodirajućih gradijenata. Iako su u stanju da konstruišu nove atribute na osnovu starih, struktura obučene mreže nije čitljiva za ljude. U nekim situacijama, ovo može izazvati probleme. Na primer, ukoliko klijent podnese zahtev za kredit i neuronska mreža odluči da nije podoban, nije moguće objasniti razlog odbijanja. Neuronske mreže takođe su dosta računski i razvojno zahtevne. Nekada će neki već poznat algoritam dati sasvim zadovoljavajuće rešenje dok razvoj neuronske mreže može biti skup i po pitanju vremena razvijanja sistema i po pitanju kasnijeg rada sistema. 
+Kako ne postoje teorijske smernice za rad sa neuronskim mrežama, odluke vezane za razvoj sistema neophodno je donositi empirijski.
+
 \section{Konvolutivne neuronske mreže}
 
+Konvolutivne neuronske mreže (eng. convolutional neural networks; skraćeno CNN), nekad nazivane samo konvolutivne mreže, često se koriste pri obradi signala kao što su slike. Razlog za njihovu uspešnost u ovom poslu je sposobnost konstruisanja novih atributa ali iz sirovog signala. Za konstruisanje novih atributa nije neophodna ljudska intervencija već mreža sama treba da ustanovi koja svojstva signala su bitna učenjem takozvanih filtera. Kako je iz jednostavnijih atributa neophodno konstruisati složenije, konvolutivne mreže skoro uvek su duboke mreže.
+\par 
+Opšta arhitektura konvolutivne neuronske mreže podrazumeva smenjivanje dve vrste slojeva, konvolutivnih, na koje se primenjuje nelinearna aktivaciona funkcija, i agregacionih (eng. pooling), koji će biti opisani u nastavku. Nekada se ista vrsta sloja ponavlja više puta. Na izlaze poslednjih od ovakvih slojeva obično se nadovezuje mreža sa propagacijom unapred zarad učenja nad atributima koje su prethodni slojevi konstruisali. 
 
 
-%[STOHASTICKI SPUST] \\
-%[BACKPROP] \\ 
-%[ADAM/RMSPROP?] -- bar procitaj\\ 
+\subsection{Konvolucija i konvolutivni slojevi} 
+Osnovna operacija koju koriste konvolutivne mreže jeste konvolucija, po kojoj je ovaj tip modela i dobio ime. Konvolucija dve funkcije, $f$ i $g$ obeležava se simbolom $\ast$ i u neprekidnom slučaju izgleda:
+\begin{equation}
+	(f \ast g)(x) = \int_{}^{}f(t)g(x-t)dt 
+\end{equation}
+Neprekidni slučaj nije uvek moguće primeniti i najčešće se koristi dvodimenziona diskretna konvolucija. Neka su $f$ i $g$ matrice dimenzija $m\times n$ i $p \times q$. Konvolucija matrica $f$ i $g$ data je izrazom:
+\begin{equation}
+	\label{eq:conv}
+	(f \ast g)_{i,j} = \sum_{k=0}^{p-1}\sum_{l=0}^{q-1} f_{i-k, j-l}g_{k,l}
+\end{equation}
+Ovaj izraz računa se za sve (ispravne) kombinacije indeksa $i$ i $j$ i dobijena matrica je konvolucija matrica $f$ i $g$.
+U ovom radu, ovaj oblik konvolucije je bitan i biće jedini razmatran. Matrica $f$ naziva se ulazom a $g$ filterom ili kernelom jer se pomoću nje izdvajaju neke informacije iz ulaza. Oduzimanje indeksa u sumi može biti zamenjeno sabiranjem; u ovom kontekstu nema bitne razlike. 
+\par 
+Treba primetiti da izraz \eqref{eq:conv} nije definisan za sve $i$ i $j$. Bitno je da su svi indeksi u svojim granicama. Ovo znači da će rezultat primene konvolucije biti manje dimenzije nego početna matrica $f$. Kako to nekada nije poželjno, uvodi se proširivanje (eng. padding) matrice $f$ takvo da rezultat konvolucije bude istih dimenzija kao početna matrica $f$. Jedan od načina da se ovo postigne je da se proširuje nulama ili da se proširi vrednostima koje su na obodu matrice $f$. Uz to, neretko se prekače izračunavanje za neke $i$ i $j$, u zavisnosti od određenog pomeraja (eng. stride). 
+\par 
+Konvolutivni sloj sastoji se takođe od jedinica, kao i sloj u neuronskoj mreži sa propagacijom unapred, ali je bitna razlika to što sve jedinice jednog konvolutivnog sloja dele parametre, odnosno filter. Ovo znači da se primena jednog sloja u konvolutivnoj mreži može posmatrati kao prevlačenje filtera koji je predstavljen tim parametrima preko celog signala. U jednodimenzionom slučaju, jedinice sloja su organizovane u niz a u dvodimenzionom slučaju u matricu. U dvodimenzionom slučaju, primena jedinice na poziciji $(i,j)$ može se shvatiti kao konkretizacija izraza \eqref{eq:conv} gde je $f$ izlaz prethodnog sloja (eventualno proširen) a $g$ matrica parametara datog sloja. 
+\par 
+Kao što je pomenuto, u konvolutivnoj mreži pojavljuju se i slojevi agregacije. Oni predstavljaju primenu neke funkcije agregacije nad nekim delom prethodnog sloja. I ovde je moguće uvesti pomeraj.  Jedan primer je agregacija maksimumom gde se za svaku okolinu određene veličine računa maksimalni element i daje kao izlaz na odgovarajućoj poziciji.  Pri agregaciji dolazi do gubitka informacije o tome gde se tačno nalazi neko svojstvo, što je često prihvatljivo ponašanje. Na primer, pri detekciji lica, u slučaju da je zaključeno da slika sadrži nos i dva oka, bez obzira na njihovu poziciju, jako je mala verovatnoća da ne sadrži i lice. Agregacija smanjuje dimenzije narednih slojeva pa se smanjuje broj parametara u njima i time računska zahtevnost opada. 
+
+\subsection{Prednosti i mane}
 
 
-[MOZDA O TEOREMI O UNIVERZALNOJ APROKSIMACIJI?]
+U neuronskim mrežama sa propagacijom unapred, veze između dva sloja neurona uglavnom su guste, odnosno jedan neuron prihvata izlaze svih ili velikog broja neurona iz prethodnog sloja. Prilikom korišćenja konvolutivnih neuronskih mreža, jedna primena filtera ne koristi sve informacije iz prethodnog sloja. Na ovaj način se dosta smanjuje broj operacija za izračunavanje izlaza mreže i postiže se veća memorijska efikasnost.
+\par 
+Težine jednog neurona u neuronskoj mreži sa propagacijom unapred koriste se tačno jednom pri izračunavanju izlaza mreže. S druge strane, jedan filter primenjuje se na sve pozicije ulaza\footnote{U zavisnosti od pomeraja i proširivanja, postoje slučajevi kada se neki elementi u nekom koraku zanemaruju ali se filter uvek prevlači preko ulaza.} tako da je iskorišćenost njegovih parametara dosta veća nego u slučaju klasičnog neurona. Ova pojava naziva se deljenjem parametara.
+\par Još jedno bitno svojstvo konvolutivnih neuronskih mreža je to što su neosetljive na translaciju. Tačnije, translacija ulaza pa primena konvolucije ima isti efekat kao primena konvolucije koju prati translacija.
 
-[SLIKA NEKE MREZE]
 
 
 
-[AKTIVACIONE FUNKCIJE]
 
-Uvod  (prosiriti?) \\
-Vrste NN \\
-Aktivacione funkcije \\
-Perceptron / neuron (da li?) \\
-Gradijentni spust, Propagacija unazad \\
-Primene i ograničenja \\
-Nešto o normalizaciji??? Regularizaciji
+% [MOZDA O TEOREMI O UNIVERZALNOJ APROKSIMACIJI?]
+%[SLIKA NEKE MREZE]
+%[AKTIVACIONE FUNKCIJE]
+%Uvod  (prosiriti?) \\
+%Vrste NN \\
+%Aktivacione funkcije \\
+%Perceptron / neuron (da li?) \\
+%Gradijentni spust, Propagacija unazad \\
+%Primene i ograničenja \\
+%Nešto o normalizaciji??? Regularizaciji
