@@ -2,6 +2,8 @@
 
 \documentclass[12pt]{report}
 \usepackage{fontspec}
+\usepackage[english,serbian]{babel}
+\usepackage{microtype}
 \usepackage{lmodern}
 \usepackage{indentfirst} % pise u uputstvu da ne treba
 \usepackage[ddmmyyyy]{datetime}
@@ -21,8 +23,7 @@
 % margine
 \usepackage[
 	a4paper,	
-	margin=2.5cm, 
-	left=3cm		
+	margin=2.5cm		
 	]{geometry}
 	
 % linkovi
@@ -39,14 +40,14 @@
 \usetikzlibrary{shapes,arrows,positioning} 
 
 % indentacija liste
-\setlist[itemize,1]{leftmargin=\dimexpr +2cm}
+\setlist[itemize,1]{leftmargin=\dimexpr +1.5cm}
 
 % podesavanje headera
 \usepackage{fancyhdr}
 \setlength{\headheight}{20pt}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\leftmark}
+\lhead{\leftmark} % \fontsize{10}{12} \selectfont -- mozes da ubacis u \lhead{}\\
 \rhead{\thepage}
 
 % podesavanje headera za strane gde pocinju poglavlja (plain style)
