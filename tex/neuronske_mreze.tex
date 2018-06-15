@@ -1,7 +1,7 @@
 \chapter{Neuronske mreže}
 \label{ch:nn}
 
-Neuronske mreže (eng. \foreignlanguage{english}{neural networks}) predstavljaju danas izuzetno popularan vid mašinskog učenja. Ovi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoza u medicini, igranje igara itd. [Neuronskim mrežama može se aproksimirati proizvoljna neprekidna funkcija.] Pun naziv je veštačka neuronska mreža (eng. artificial neural network, skr. ANN) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse\footnote{Sinapsa je struktura koja omogućuje komunikaciju između neurona.}. Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
+Neuronske mreže (eng.~{\em neural networks}) predstavljaju danas izuzetno popularan vid mašinskog učenja. Ovi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoza u medicini, igranje igara itd. [Neuronskim mrežama može se aproksimirati proizvoljna neprekidna funkcija.] Pun naziv je veštačka neuronska mreža (eng.~{\em artificial neural network}, skr.~{\em ANN}) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse\footnote{Sinapsa je struktura koja omogućuje komunikaciju između neurona.}. Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
 
 \par
 Postoji nekoliko različitih vrsta neuronskih mreža. Tipičan primer jesu neuronske mreže sa propagacijom unapred. Ime proističe iz činjenice da podaci teku od ulaza mreže do izlaza, bez postojanja ikakve povratne sprege. Neuronske mreže sa propagacijom unapred sastoje se iz slojeva neurona. Ukoliko se u ovaj model uvede neki tip povratne sprege, tada se govori o rekurentnim neuronskim mrežama. Pri radu sa slikama i raznim drugim vrstama signala, najčešće se koriste konvolutivne neuronske mreže, o kojima će biti reči kasnije. Ono što je zajedničko je da su neuronske mreže sposobne za izdvajanje određenih karakteristika u podacima koji se obrađuju. To znači da se vrši kreiranje novih atributa na osnovu već postojećih. Taj proces naziva se ekstrakcijom atributa i smatra se da je to jedan od najbitnijih razloga za delotvornost neuronskih mreža.
@@ -10,7 +10,7 @@ Za uspeh neuronskih mreža zaslužna je njihova fleksibilnost ali su rezultati d
 
 \section{Neuronske mreže sa propagacijom unapred}
 
-Neuronske mreže sa propagacijom unapred jedna su od najkorišćenijih vrsta neuronskih mreža. Gradivni elementi ovakvog modela, neuroni (koji se još nazivaju i jedinicama), organizuju se u slojeve koji se nadovezuju i time čine neuronsku mrežu. Organizacija neurona i slojeva, uključujući i veze između neurona, predstavlja arhitekturu mreže. Prvi sloj mreže naziva se ulaznim slojem dok se poslednji sloj naziva izlaznim slojem. Neuroni prvog sloja kao argumente primaju ulaze mreže dok neuroni svakog od preostalih slojeva kao svoje ulaze prihvataju izlaze prethodnog sloja. Svi slojevi koji svoje izlaze prosleđuju narednom sloju nazivaju se skrivenim slojevima. Mreže sa više od jednog skrivenog sloja nazivaju se dubokim neuronskim mrežama.  Broj slojeva mreže određuje njenu dubinu. Termin "duboko učenje" nastao je baš iz ove terminologije.
+Neuronske mreže sa propagacijom unapred jedna su od najkorišćenijih vrsta neuronskih mreža. Gradivni elementi ovakvog modela, neuroni (koji se još nazivaju i jedinicama), organizuju se u slojeve koji se nadovezuju i time čine neuronsku mrežu. Organizacija neurona i slojeva, uključujući i veze između neurona, predstavlja arhitekturu mreže. Prvi sloj mreže naziva se ulaznim slojem dok se poslednji sloj naziva izlaznim slojem. Neuroni prvog sloja kao argumente primaju ulaze mreže dok neuroni svakog od preostalih slojeva kao svoje ulaze prihvataju izlaze prethodnog sloja. Svi slojevi koji svoje izlaze prosleđuju narednom sloju nazivaju se skrivenim slojevima. Mreže sa više od jednog skrivenog sloja nazivaju se dubokim neuronskim mrežama.  Broj slojeva mreže određuje njenu dubinu. Termin duboko učenje nastao je baš iz ove terminologije.
 
 
 \par
@@ -70,17 +70,17 @@ Najčešće korišćene aktivacione funkcije su:
 
 Sigmoidna funkcija bila je najkorišćenija aktivaciona funkcija pri radu sa neuronskim mrežama. Ograničena je (sve slike nalaze se u intervalu $(-1, 1)$), monotona i diferencijabilna u svakoj tački skupa $\mathbb{R}$. Međutim, što se argument više udaljava od nule, to nagib funkcije postaje manji. To znači da će gradijent funkcije biti mali i da će učenje teći jako sporo. \\
 Tangens hiperbolički srodan je sigmoidnoj funkciji ($tanh(x) = 2\sigma (x) - 1$) ali je imala veći uspeh od sigmoidne funkcije.  U okolini nule, ova funkcija slična je identičkoj, što olakšava učenje. Međutim, i pri korišćenju ove funkcije može se naići na problem sa malim gradijentima ukoliko se argument dovoljno udalji od nule.\\
-Uprkos tome što za razliku od prethodne dve funkcije nije ni ograničena ni diferencijabilna u svim tačkama domena, danas je ispravljena linearna jedinica najpopularniji izbor za aktivacionu funkciju. Funkcija je jednaka identitetu desno od nule i stoga se gradijent ne menja. Takođe, verovatnoća da se traži gradijent u tački u kojoj funkcija nije diferencijabilna je mala. Ipak, ni ova funkcija nije bez mana; problem često pravi deo levo od nule, gde je funkcija konstantna. To znači da je gradijent nula i da se prilikom optimizacije težine neurona neće izmeniti. Zbog nedostatka promene, može se desiti da neki neuroni u mreži postanu pasivni, tj. da im izlaz postane $0$. Za ovaj problem postoje rešenja; jedno jeste da izlaz funkcije desno od nule ne bude konstanta $0$ već $\alpha x$, za neko malo $\alpha$. Ta modifikovana ReLU funkcija naziva se nakošena ispravljena linearna jedinica (eng. leaky rectified linear unit). 
+Uprkos tome što za razliku od prethodne dve funkcije nije ni ograničena ni diferencijabilna u svim tačkama domena, danas je ispravljena linearna jedinica najpopularniji izbor za aktivacionu funkciju. Funkcija je jednaka identitetu desno od nule i stoga se gradijent ne menja. Takođe, verovatnoća da se traži gradijent u tački u kojoj funkcija nije diferencijabilna je mala. Ipak, ni ova funkcija nije bez mana; problem često pravi deo levo od nule, gde je funkcija konstantna. To znači da je gradijent nula i da se prilikom optimizacije težine neurona neće izmeniti. Zbog nedostatka promene, može se desiti da neki neuroni u mreži postanu pasivni, tj. da im izlaz postane $0$. Za ovaj problem postoje rešenja; jedno jeste da izlaz funkcije desno od nule ne bude konstanta $0$ već $\alpha x$, za neko malo $\alpha$. Ta modifikovana ReLU funkcija naziva se nakošena ispravljena linearna jedinica (eng.~{\em leaky rectified linear unit}). 
 \\
 Iako sve ove funkcije imaju prednosti i mane u odnosu na preostale, ne postoji jedinstveni izbor nego je na osnovu problema neophodno zaključiti koju je aktivacionu funkciju najbolje koristiti.
 
 \subsubsection{Izlazni sloj}
 
-Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje vezu izmedju ulaza i izlaza, i klasifikaciji, svrstavanje ulaznih vektora u jednu od konačnog broja kategorija. Pri regresiji, u poslednjem sloju ne primenjuje se aktivaciona funkcija. Proces optimizacije svodi se na minimizaciju funkcije greške. Kod rešavanja problema klasifikacije (u $N$ kategorija), koristi se funkcija mekog maksimuma (eng. softmax):
+Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje vezu izmedju ulaza i izlaza, i klasifikaciji, svrstavanje ulaznih vektora u jednu od konačnog broja kategorija. Pri regresiji, u poslednjem sloju ne primenjuje se aktivaciona funkcija. Proces optimizacije svodi se na minimizaciju funkcije greške. Kod rešavanja problema klasifikacije (u $N$ kategorija), koristi se funkcija mekog maksimuma (eng.~{\em softmax}):
 \begin{equation}
 	softmax(x) = \bigg( \cfrac{e^{x_1}}{\sum_{i=1}^{N} e^{x_i}}, ~...~, \cfrac{e^{x_N}}{\sum_{i=1}^{N} e^{x_i}} \bigg)
 \end{equation}
-Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng. maximum likelihood estimate), odnosno traži se maksimum sledećeg izraza: 
+Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng.~{\em maximum likelihood estimate}), odnosno traži se maksimum sledećeg izraza: 
 \begin{equation}
 	P(y_1, ..., y_N | x_1, ..., x_N)
 \end{equation}.
@@ -111,7 +111,7 @@ Metod gradijentnog spusta jedan je od najstarijih metoda  optimizacije. Iterativ
 	\label{eq:gradijentni_spust}
 	w_{k+1} = w_k - \alpha_k \nabla L(w_k), k=0, 1, 2, ... ,
 \end{equation}
-gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng. learning rate). 
+gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng.~{\em learning rate}). 
 Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 \begin{equation}
 	\frac{1}{2N}\sum_{i=1}^{N} \norm{y_i - f_w(x_i)}_2^2
@@ -143,7 +143,7 @@ Pri korišćenju stohastičkog gradijentnog spusta za minimizaciju funkcije gre�
 \end{equation}
 Postoje razni načini za odabir $i$ u nekom koraku, kao što je $i=k (mod N) + 1$, gde je $N$ veličina skupa za obučavanje. Još jedan primer je nasumični odabir instance u svakom koraku. Kakav god način izbora bio, neophodno je iskoristiti sve greške. Moguće je proći greške iz skupa za obučavanje i nekoliko puta dok se ne postigne željeni nivo aproksimacije. 
 \par
-Kako ova aproksimacija može biti prilično neprecizna, pribegava se kompromisu: prilikom iterativnog koraka ne koriste se pojedinačne instance već prosek nekog podskupa skupa za obučavanje (eng. minibatch). Pri treniranju neuronskih mreža, ovo je uobičajeni pristup.
+Kako ova aproksimacija može biti prilično neprecizna, pribegava se kompromisu: prilikom iterativnog koraka ne koriste se pojedinačne instance već prosek nekog podskupa skupa za obučavanje (eng.~{\em minibatch}). Pri treniranju neuronskih mreža, ovo je uobičajeni pristup.
 \par
 Ovom aproksimacijom mogu se izbeći lokalni minimumi funkcije. Metod stohastičkog gradijentnog spusta manje je računski zahtevna od gradijentnog spusta ali je manje precizna i neophodan je veći broj iteracija kako bi se dostigao minimum.
 \par
@@ -151,7 +151,7 @@ Postoje razni metodi optimizacije koji se koriste pri mašinskom učenju. Neki m
 
 \subsubsection{RMSProp}
 
-Algoritam RMSProp (eng. root mean square propagation) predložio je Džof Hinton na jednom od svojih predavanja na sajtu Kursera~\footnote{\url{http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
+Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džof Hinton na jednom od svojih predavanja na sajtu Kursera~\footnote{\url{http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
 \begin{equation}
 	\begin{gathered}
 		g_0 = 0 \\
@@ -168,7 +168,7 @@ Sve operacije vrše se pokoordinatno. Parametar $\gamma$ pripada poluotvorenom i
 
 \subsubsection{Adam}
 
-Adam (eng. adaptive moment estimation) jedan je od najčešćih algoritama za optimizaciju korišćen pri obučavanju neuronskih mreža. Algoritam Adam zasnovan je na korišćenju ocena prvog i drugog momenta gradijenta, datim sledećim formulama:
+Adam (eng.~{\em adaptive moment estimation}) jedan je od najčešćih algoritama za optimizaciju korišćen pri obučavanju neuronskih mreža. Algoritam Adam zasnovan je na korišćenju ocena prvog i drugog momenta gradijenta, datim sledećim formulama:
 
 \begin{equation}
 	\begin{gathered}
@@ -231,9 +231,9 @@ Kako ne postoje teorijske smernice za rad sa neuronskim mrežama, odluke vezane 
 \section{Konvolutivne neuronske mreže}
 \label{sec:cnn}
 
-Konvolutivne neuronske mreže (eng. convolutional neural networks; skraćeno CNN), nekad nazivane samo konvolutivne mreže, često se koriste pri obradi signala kao što su slike. Razlog za njihovu uspešnost u ovom poslu je sposobnost konstruisanja novih atributa ali iz sirovog signala. Za konstruisanje novih atributa nije neophodna ljudska intervencija već mreža sama treba da ustanovi koja svojstva signala su bitna učenjem takozvanih filtera. Kako je iz jednostavnijih atributa neophodno konstruisati složenije, konvolutivne mreže skoro uvek su duboke mreže.
+Konvolutivne neuronske mreže (eng.~{\em convolutional neural networks}; skr.~{\em CNN}), nekad nazivane samo konvolutivne mreže, često se koriste pri obradi signala kao što su slike. Razlog za njihovu uspešnost u ovom poslu je sposobnost konstruisanja novih atributa ali iz sirovog signala. Za konstruisanje novih atributa nije neophodna ljudska intervencija već mreža sama treba da ustanovi koja svojstva signala su bitna učenjem takozvanih filtera. Kako je iz jednostavnijih atributa neophodno konstruisati složenije, konvolutivne mreže skoro uvek su duboke mreže.
 \par 
-Opšta arhitektura konvolutivne neuronske mreže podrazumeva smenjivanje dve vrste slojeva, konvolutivnih, na koje se primenjuje nelinearna aktivaciona funkcija, i agregacionih (eng. pooling), koji će biti opisani u nastavku. Nekada se ista vrsta sloja ponavlja više puta. Na izlaze poslednjih od ovakvih slojeva obično se nadovezuje mreža sa propagacijom unapred zarad učenja nad atributima koje su prethodni slojevi konstruisali. 
+Opšta arhitektura konvolutivne neuronske mreže podrazumeva smenjivanje dve vrste slojeva, konvolutivnih, na koje se primenjuje nelinearna aktivaciona funkcija, i agregacionih (eng.~{\em pooling}), koji će biti opisani u nastavku. Nekada se ista vrsta sloja ponavlja više puta. Na izlaze poslednjih od ovakvih slojeva obično se nadovezuje mreža sa propagacijom unapred zarad učenja nad atributima koje su prethodni slojevi konstruisali. 
 
 
 \subsection{Konvolucija i konvolutivni slojevi} 
@@ -249,7 +249,7 @@ Neprekidni slučaj nije uvek moguće primeniti i najčešće se koristi dvodimen
 Ovaj izraz računa se za sve (ispravne) kombinacije indeksa $i$ i $j$ i dobijena matrica je konvolucija matrica $f$ i $g$.
 U ovom radu, ovaj oblik konvolucije je bitan i biće jedini razmatran. Matrica $f$ naziva se ulazom a $g$ filterom ili kernelom jer se pomoću nje izdvajaju neke informacije iz ulaza. Oduzimanje indeksa u sumi može biti zamenjeno sabiranjem; u ovom kontekstu nema bitne razlike. 
 \par 
-Treba primetiti da izraz \eqref{eq:conv} nije definisan za sve $i$ i $j$. Bitno je da su svi indeksi u svojim granicama: $i-k$ i $j-l$ treba da budu nenegativni i manji od, redom, $m$ i $n$. Dimenzija novodobijene matrice biće $m-k+1 \times n-l+1$ odnosno rezultat primene konvolucije manje je dimenzije nego početna matrica $f$. Kako to nekada nije poželjno, uvodi se proširivanje (eng. padding) matrice $f$ takvo da rezultat konvolucije bude istih dimenzija kao početna matrica $f$. Jedan od načina da se ovo postigne je da se proširuje nulama ili da se proširi vrednostima koje su na obodu matrice $f$. Uz to, neretko se prekače izračunavanje za neke $i$ i $j$, u zavisnosti od određenog pomeraja (eng. stride). 
+Treba primetiti da izraz \eqref{eq:conv} nije definisan za sve $i$ i $j$. Bitno je da su svi indeksi u svojim granicama: $i-k$ i $j-l$ treba da budu nenegativni i manji od, redom, $m$ i $n$. Dimenzija novodobijene matrice biće $m-k+1 \times n-l+1$ odnosno rezultat primene konvolucije manje je dimenzije nego početna matrica $f$. Kako to nekada nije poželjno, uvodi se proširivanje (eng.~{\em padding}) matrice $f$ takvo da rezultat konvolucije bude istih dimenzija kao početna matrica $f$. Jedan od načina da se ovo postigne je da se proširuje nulama ili da se proširi vrednostima koje su na obodu matrice $f$. Uz to, neretko se prekače izračunavanje za neke $i$ i $j$, u zavisnosti od određenog pomeraja (eng.~{\em stride}). 
 \par 
 Konvolutivni sloj sastoji se takođe od jedinica, kao i sloj u neuronskoj mreži sa propagacijom unapred, ali je bitna razlika to što sve jedinice jednog konvolutivnog sloja dele parametre, odnosno filter. Ovo znači da se primena jednog sloja u konvolutivnoj mreži može posmatrati kao prevlačenje filtera koji je predstavljen tim parametrima preko celog signala. Ova pojava naziva se deljenjem parametara. U jednodimenzionom slučaju, jedinice sloja su organizovane u niz a u dvodimenzionom slučaju u matricu. U dvodimenzionom slučaju, primena jedinice na poziciji $(i,j)$ može se shvatiti kao konkretizacija izraza \eqref{eq:conv} gde je $f$ izlaz prethodnog sloja (eventualno proširen) a $g$ matrica parametara datog sloja. Umesto primene jednog filtera po sloju, obično postoji više filtera koji se paralelno primenjuju na izlaz prethodnog sloja. Ovakvi konvolutivni slojevi nazivaju se višekanalnim slojevima. Isto tako, nekada se filteri primenjuju na više kanala izlaza prethodnog sloja u isto vreme.
 \par 

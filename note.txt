@@ -1,0 +1,6 @@
+Koristio sam xelatex za prevodjenje.
+Zbog bibliografije moras da prevodis ovako:
+1. xelatex-om
+2. bibtex-om
+3. xelatex-om
+4. xelatex-om
