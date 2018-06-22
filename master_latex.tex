@@ -71,7 +71,8 @@
 \addto{\captionsserbian}{\renewcommand{\bibname}{Literatura}}
 \bibliographystyle{plain}
 
-
+%\newcommand\eqdef{\stackrel{\mathclap{\footnotesize\mbox{def}}}{=}}
+\newcommand{\eqdef}{\ensuremath{\stackrel{\text{def}}{=}}}
 
 \begin{document}
 
@@ -114,9 +115,8 @@
 \include{tex/uvod}
 \include{tex/masinsko_ucenje}
 \include{tex/neuronske_mreze}
+\include{tex/mdp}
 
-\chapter{Markovljevi procesi odlučivanja}
-\label{ch:mdp}
 
 \chapter{Učenje potkrepljivanjem}
 \label{ch:rl}

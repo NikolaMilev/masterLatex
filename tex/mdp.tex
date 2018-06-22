@@ -1,0 +1,34 @@
+\chapter{Markovljevi procesi odlučivanja}
+\label{ch:mdp}
+
+Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja i numeričke nagrade. Još jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat teorijski opis Markovljevih procesa odlučivanja.
+\par 
+Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. Skup nagrada,  $\mathcal{R}$, je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se interakcijom agenta sa okruženjem. Putanja može biti i konačna i beskonačna.
+Neophodno je definisati i funkciju prelaska, $p$:
+\begin{equation}
+	p(s', r ~|~ s, a) \eqdef P(S_{t+1} = s', R_{t+1} = r ~|~ S_t = s, A_t = a)
+\end{equation}
+koja predstavlja verovatnoću prelaska u stanje $s'$ i dobijanje nagrade $r$ pod uslovom da je u stanju $s$ preduzeta akcija $a$. Markovljevi procesi odlučivanja imaju takozvano Markovljevo svojstvo tj. osobinu da trenutno stanje i nagrada zavise isključivo od prethodnog stanja i u njemu preduzete akcije a ne od cele putanje koja je dovela do datog stanja. Formalno, ovo svojstvo zapisuje se sledećom jednakošću:
+\begin{equation}
+	P(S_t, R_t ~|~ S_0, A_0, R_1, ..., S_{t-1}, A_{t-1}) = P(S_t, R_t ~|~ S_{t-1}, A_{t-1})
+\end{equation}
+
+U odnosu na putanju do trenutka $t$, može se govoriti o dugoročnoj nagradi, koja se još naziva i dobitkom:
+\begin{equation}
+	G_t = \sum_{i=0}^{\infty} \gamma^iR_t+i+1
+\end{equation}
+Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje $\gamma$ na $1$ uzrokuje u smatranju svih nagrada putanje jednako bitnim.
+\par 
+Sada je moguće dati formalnu definiciju: Markovljev proces odlučivanja je uređena petorka $(\mathcal{S}, \mathcal{A}, \mathcal{R}, p, \gamma)$. Ova definicija je prilično jednostavna a ipak je dovoljno fleksibilna za formalne opise raznih modela. Ukoliko, na primer, treba modelirati okruženje takvo da u stanju $s$ akcija $a$ nije dozvoljena tada će $p(s', r ~|~ s, a)$ biti $0$ za sve $s'$ i $r$. Ako su skupovi $\mathcal{S}$, $\mathcal{A}$ i $\mathcal{R}$ konačni, tada se za Markovljev proces odlučivanja kaže da je konačan.
+\par 
+- vrednost stanja
+- q funkcija
+- politika
+- Belman?
+
+%gde je $\mathcal{S}$ skup stanja, $\mathcal{A}$ skup svih mogućih akcija, $\mathcal{R}$ je skup nagrada, $p$ je funkcija prelaska i $\gamma$ je metaparametar umanjenja.
+
+- motivacija \\
+- formalna postavka \\
+- mozda neko objasnjenje \\
+- mozda neki primer \\
