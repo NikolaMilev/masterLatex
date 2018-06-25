@@ -11,8 +11,6 @@ Za uspeh neuronskih mreža zaslužna je njihova fleksibilnost, ali se rezultati 
 \section{Neuronske mreže sa propagacijom unapred}
 
 Neuronske mreže sa propagacijom unapred jedna su od najkorišćenijih vrsta neuronskih mreža. Gradivni elementi ovakvog modela, neuroni (koji se još nazivaju i jedinicama), organizuju se u slojeve koji se nadovezuju i time čine neuronsku mrežu. Organizacija neurona i slojeva, uključujući i veze između neurona, predstavlja arhitekturu mreže. Prvi sloj mreže naziva se ulaznim slojem dok se poslednji sloj naziva izlaznim slojem. Neuroni prvog sloja kao argumente primaju ulaze mreže dok neuroni svakog od preostalih slojeva kao svoje ulaze prihvataju izlaze prethodnog sloja. Svi slojevi koji svoje izlaze prosleđuju narednom sloju nazivaju se skrivenim slojevima. Mreže sa više od jednog skrivenog sloja nazivaju se dubokim neuronskim mrežama.  Broj slojeva mreže određuje njenu dubinu. Termin duboko učenje nastao je baš iz ove terminologije.
-
-
 \par
 Svaki neuron opisuje se pomoću vektora $w = (w_0, ..., w_n)$ koji se naziva vektorom težina. Ulazni vektor $x = (x_1, ..., x_n)$ linearno se transformiše na sledeći način:
 \begin{equation}
@@ -41,6 +39,7 @@ i, uprkos linearnosti prve transformacije, izlaz ne mora biti linearna transform
 
 Model, tj. neuronska mreža, formalno se definiše na sledeći način:
 \begin{equation}
+	\label{eq:nn}
 	\begin{gathered}
 		h_0 = x  \\
 	 	h_i = g_i(W_ih_{i-1} + w_{i0}) \text{,~za~} i=1, ..., L
@@ -124,7 +123,7 @@ Metod gradijentnog spusta jedan je od najstarijih metoda  optimizacije. Iterativ
 gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng.~{\em learning rate}). 
 Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 \begin{equation}
-	\frac{1}{2N}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
+	\frac{1}{2}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
 \end{equation}
 
 Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe Robins Monroovi uslovi:\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_approximation}}
@@ -209,6 +208,30 @@ Intuicija kojom se vodi algoritam Adam jeste da dužina svakog koraka zavisi od 
 
 \subsubsection{Metod propagacije unazad}
 \label{subsub:backprop}
+
+Do sada je objašnjeno kako iskoristiti gradijent funkcije radi nalaženja odgovarajućih parametara funkcije. Međutim, računanje gradijenta u slučaju neuronskih mreža izuzetno je zahtevan proces. U ovu svrhu koristi se metod propagacije unazad (eng.~{\em back propagation}). Prilikom obučavanja mreže, cilj je minimizovati funkciju greške, $L(w)$, gde $w$ predstavlja parametre mreže. Ulazi i izlazi mreže ne nalaze se u ovom zapisu jer su u konkretnom slučaju fiksirani i neophodno je izvršiti izmenu parametara mreže tako da funkcija greške bude što manja. 
+\par 
+Iz jednakosti \eqref{eq:nn} jasno je da neuronska mreža predstavlja složenu funkciju a, kako je funkcija $L$ mera odstupanja vrednosti koje mreža predviđa i željenih vrednosti, tada je i $L$ složena funkcija. Izvod složene funkcije $g \circ h$ računa se na sledeći način:
+\begin{equation}
+	(g \circ h)' = (g' \circ h)h'
+\end{equation}
+Ovo pravilo može se primeniti i kada kompoziciju čine više od dve funkcije.
+\par 
+Kako neuronske mreže skoro uvek sadrže više od jednog parametra, koristi se pravilo za računanje parcijalnog izvoda složene funkcije više promenljivih. Neka su date funkcije $h:\mathbb{R}^m\rightarrow\mathbb{R}^k$ i $g:\mathbb{R}^k\rightarrow\mathbb{R}$. Tada se parcijalni izvod funkcije $g \circ h$ po $i$-toj promenljivoj računa koristeći sledeće pravilo:
+\begin{equation}
+	\partial_i(g \circ h) = \sum_{j=1}^{k}(\partial_j g \circ h) \partial_i h_j	
+\end{equation}
+gde $h_j$ označava $j$-tu komponentu funkcije $h$ a $\partial_j g$ parcijalni izvod funkcije $g$ po $j$-tom argumentu. Metod propagacije unazad koristi ovo pravilo za izračunavanje parcijalnih izvoda po svim parametrima mreze. Počinje se od izlaznog sloja i kreće se ka ulaznom, odakle potiče ime metoda. Čuva se do sada akumulirani izvod funkcije. Za svaki sloj računa se izvod po parametrima tekućeg sloja i dosadašnji akumulirani izvod proširuje se izvodom tekućeg sloja. Kako jedan sloj predstavlja linearnu kombinaciju izlaza prethodnog sloja i parametara mreže na koju je primenjena aktivaciona funkcija, neophodno je računati izvode i aktivacione funkcije i te linearne kombinacije.
+\par 
+Sada su dati svi alati za optimizaciju neuronske mreže sa propagacijom unapred. Treba imati u vidu da proces obučavanja velikih neuronskih mreža može biti izuzetno skup. Takođe, na sam proces učenja mogu uticati razni faktori kao što su arhitektura mreže, podela podataka na skupove za obučavanje i testiranje ili parametri algoritma za optimizaciju. Ovi faktori nazivaju se metaparametrima (eng.~{\em hyperparameter}) i neretko je neophodno isprobati razne njihove kombinacije dok ponašanje mreže ne dostigne željeni nivo. Često se umesto traženja metaparametara pribegava korišćenju unapred ispitanih vrednosti za koje je već pokazano da daju željene rezultate pri rešavanju nekog problema.
+
+
+%\par 
+%Ovaj metod danas je široko korišćen, najpre za obučavanje neuronskih mreža ali ima i druge primene kao što su...
+
+
+% $f: \mathbb{R} \rightarrow \mathbb{R}$
+%\frac{\partial (g \circ h)}{\partial w_i} = \sum_{j=1}^{k} \frac{\partial g}{\partial h_j} \frac{\partial h_j}{\partial w_i} 
 
 
 

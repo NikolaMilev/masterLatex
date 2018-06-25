@@ -15,9 +15,9 @@ koja predstavlja verovatnoću prelaska u stanje $s'$ i dobijanje nagrade $r$ pod
 
 U odnosu na putanju do trenutka $t$, može se govoriti o dugoročnoj nagradi, koja se još naziva i dobitkom:
 \begin{equation}
-	G_t = \sum_{i=0}^{\infty} \gamma^iR_t+i+1
+	G_t = \sum_{i=0}^{\infty} \gamma^iR_{t+i+1}
 \end{equation}
-Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje $\gamma$ na $1$ uzrokuje u smatranju svih nagrada putanje jednako bitnim.
+Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje vrednosti $\gamma$ na $1$ ukazuje na to da se smatra da su sve nagrade putanje jednako bitne.
 \par 
 Sada je moguće dati formalnu definiciju: Markovljev proces odlučivanja je uređena petorka $(\mathcal{S}, \mathcal{A}, \mathcal{R}, p, \gamma)$. Ova definicija je prilično jednostavna a ipak je dovoljno fleksibilna za formalne opise raznih modela. Ukoliko, na primer, treba modelirati okruženje takvo da u stanju $s$ akcija $a$ nije dozvoljena tada će $p(s', r ~|~ s, a)$ biti $0$ za sve $s'$ i $r$. Ako su skupovi $\mathcal{S}$, $\mathcal{A}$ i $\mathcal{R}$ konačni, tada se za Markovljev proces odlučivanja kaže da je konačan.
 \par 
