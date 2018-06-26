@@ -243,8 +243,39 @@ Kako ne postoje teorijske smernice za rad sa neuronskim mrežama, odluke vezane 
 \section{Konvolutivne neuronske mreže}
 \label{sec:cnn}
 
+Konvolutivne neuronske mreže (eng.~{\em convolutional neural network}), kraće nazivane konvolutivne mreže, su oblik neuronskih mreža specijalizovan za učenje nad signalima, kao što su zvuk ili slike. Kao što je nagovešteno nazivom ove vrste modela, u srži konvolutivnih neuronskih mreža leži operacija pod nazivom konvolucija.
+\par 
+Konvolucija funkcija $I$ i $K$ obeležava se sa $I \ast K$ i data je narednim izrazom:
+\begin{equation}
+	(I \ast K)(x) = \sum_{t}^{} I(t)K(x-t) = \sum_{t}^{} I(x-t)K(t)
+\end{equation}
+Ovim izrazom definisana je jednodimenziona diskretna konvolucija. Neretko se sreće i dvodimenziona konvolucija koja se definiše na sledeći način:
+\begin{equation}
+	(I \ast K)(x, y) = \sum_{m}^{}\sum_{n}^{} I(m, n)K(x-m, y-n) = \sum_{m}^{}\sum_{n}^{} I(x-m, y-n)K(m, n)
+\end{equation}
+U prethodnim jednakostima nisu zapisana ograničenja za argumente jer bi to zakomplikovalo zapis, ali naravno, treba paziti na to da su $I$ i $K$ definisani za sve argumente. Takođe, iz datih jednakosti vidi se da je operacija komutativna. Konvolucija se može definisati i u više dimenzija.
+\par 
+U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal. U tom slučaju, $I(x)$ označava vrednost signala na poziciji $x$ i analogno za dvodimenzioni signal. Nad tim signalom i nekim filterima primenjuje se konvolucija. Svrha te primene je određivanje prisustva nekih šablona tj. karakteristika u signalu. Primer tih šablona su uspravne ili vodoravne linije na slici. Na ovaj način konstruišu se novi atributi na osnovu ulaza. Konvolutivnom primenom filtera na prethodno konstruisane atribute moguće je konstruisati i složenije atribute. Vrednosti ovih filtera biće naučene u toku obučavanja mreže. Filteri su obično dosta manjih dimenzija od slike i, ukoliko je ulazni signal obeležen sa $I$ a filter $K$, tada su drugi zapisi u jednakostima datim iznad intuitivniji za shvatanje.
+\par 
+Rezultat primene konvolucije za sve validne $x$ i $y$ manjih je dimenzija od početnog signala, $I$. Ukoliko je signal $I$ dimenzija $k \times l$ a filter $K$ dimenzija $p \times q$, tada je $I \ast K$ dimenzija najviše dimenzija $k-p+1 \times l-q+1$. Moguće je i preskakati neke $x$ i $y$ prilikom računanja konvolucije, što dodatno smanjuje dimenziju rezultata. Na primer, moguće je računati konvoluciju za svako drugo $x$ i svako drugo $y$. Razlika između uzastopnih pozicija naziva se pomerajem (eng.~{\em stride}). Takodje je moguće proširiti $I$ nekim vrednostima kako vrednosti na rubu ne bi izgubile na značaju. Često se proširivanje (eng.~{\em padding}) vrši nulama ili vrednostima koje se nalaze na rubu.
+\par 
+Još jedan bitan pojam pri radu sa konvolutivnim mrežama jeste agregacija. Primena agregacije na signal podrazumeva da se za svaku oblast određenih dimenzija izračunati neki izraz, poput proseka ili maksimuma. Svrha agregacije jeste stvaranje otpornosti na male translacije signala. Agregacijom se takođe postiže dalje smanjenje dimenzija izlaza u odnosu na ulaz, što smanjuje memorijske zahteve za kasnije slojeve. I pri agregaciji se nekada koristi pomeraj različit od $1$. Ipak, u slučaju da je neophodno sačuvati informaciju o tome gde je neki atribut pronađen, agregacija nije pogodna.
+\subsection{Svojstva konvolucije}
+Konvolucija ima nekoliko svojstava koji konvolutivne neuronske mreže čine pogodnijim za učenje nad signalom. Prvo takvo svojstvo su proređene interakcije (eng.~{em sparse interactions}). Jedna jedinica sloja predstavlja jedan filter i primena tog filtera podrazumeva njegovu konvolutivnu primenu na sve moguće pozicije ulaza. Ova primena može se posmatrati kao prevlačenje filtera preko ulaza. To znači da su parametri jedne jedinice u stvari vrednosti filtera. Kako je filter obično dimenzija dosta manjih od dimenzija ulaza, ovo znači da je smanjen broj parametara jedne jedinice u odnosu na mreže sa propagacijom unapred, kod kojih je svaka jedinica povezana sa svakom jedinicom prethodnog sloja. 
+\par 
+Kod mreža sa propagacijom unapred, jedan težinski parametar sloja koristi se pri samo jednom izračunavnaju izlaza. Kod konvolutivnih mreža, kako je već rečeno, svi parametri filtera koriste se na svim lokacijama koje je neophodno proći prilikom njegove konvolutivne primene. Dakle, može se reći da u konvolutivnim mrežama postoje deljene težine, odnosno deljeni parametri.
+\par 
+Još jedno bitno svojstvo konvolucije je neosetljivost na translacije. Ukoliko se ulazni signal translira pa se primeni konvolucija nekim filterom, rezultat je isti kao da je primenjena translacija na konvoluciju tim filterom.  
+\par 
+Konvolucija je izuzetno pogodna operacija prilikom rada sa signalima. Iako je neuronska mreža sa propagacijom unapred u stanju da uči nad signalom, taj tip neuronskih mreža nije u stanju da iskoristi susednost podataka i konstruiše tip atributa kakav konvolutivna mreža konstruiše. Takođe, višedimenzioni ulazi morali bi da budu transformisani do jednodimenzionog. 
+\subsection{Slojevi konvolutivne neuronske mreže}
+Jedna konvolutivna jedinica primenjuje jedan filter na svoj ulaz. Konvolutivni slojevi sastoje se od više takvih jedinica tj. jedan konvolutivni sloj obično paralelno primenjuje više filtera na svoj ulaz. Na izlaz konvolutivnog sloja najčešće se primenjuje neka aktivaciona funkcija. Primera radi, slika zapisana u RGB formatu ima tri dimenzije: širina, visina i dubina, koja je određena brojem kanala. Filteri se većinom primenjuju na sve kanale slike.
+Najčešće se naizmenično primenjuju konvolutivni i agregacioni slojevi i obično se nakon konvolutivnih slojeva nalazi jedan ili više gusto povezanih slojeva. Kada neuronska mreža sadrži barem jedan konvolutivni sloj, tada se govori o konvolutivnoj neuronskoj mreži.
 
-
+\subsection{Prednosti i mane}
+Primena konvolutivnih mreza
+Za sta su bolje od feedforward mreza
+Mane
 
 % BACKPROP
 % CNN
