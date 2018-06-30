@@ -1,8 +1,9 @@
 \chapter{Markovljevi procesi odlučivanja}
 \label{ch:mdp}
 
-Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja i numeričke nagrade. Još jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat teorijski opis Markovljevih procesa odlučivanja.
-\par 
+Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja i numeričke nagrade. Jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat teorijski opis Markovljevih procesa odlučivanja.
+
+\section{Osnovni pojmovi}
 Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. Skup nagrada,  $\mathcal{R}$, je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se interakcijom agenta sa okruženjem. Putanja može biti i konačna i beskonačna.
 Neophodno je definisati i funkciju prelaska, $p$:
 \begin{equation}
@@ -13,14 +14,41 @@ koja predstavlja verovatnoću prelaska u stanje $s'$ i dobijanje nagrade $r$ pod
 	P(S_t, R_t ~|~ S_0, A_0, R_1, ..., S_{t-1}, A_{t-1}) = P(S_t, R_t ~|~ S_{t-1}, A_{t-1})
 \end{equation}
 
-U odnosu na putanju do trenutka $t$, može se govoriti o dugoročnoj nagradi, koja se još naziva i dobitkom:
+U odnosu na putanju od trenutka $t$, može se govoriti o dugoročnoj nagradi, koja se još naziva i dobitkom:
 \begin{equation}
+\label{eq:dug_suma}
 	G_t = \sum_{i=0}^{\infty} \gamma^iR_{t+i+1}
 \end{equation}
-Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje vrednosti $\gamma$ na $1$ ukazuje na to da se smatra da su sve nagrade putanje jednako bitne.
+Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje vrednosti $\gamma$ na $1$ ukazuje na to da se smatra da su sve nagrade putanje jednako bitne. Iz ove sume uočava se i odnos sa dugoročnom nagradom od trenutka $t+1$:
+\begin{equation}
+	\begin{aligned}
+		G_t &= \sum_{i=0}^{\infty} \gamma^iR_{t+i+1} \\
+        	&= R_{t+1} + \gamma\sum_{i=0}^{\infty} \gamma^iR_{(t+1)+i+1} \\
+        	&=R_{t+1} + \gamma G_{t+1}
+	\end{aligned}
+\end{equation}
 \par 
 Sada je moguće dati formalnu definiciju: Markovljev proces odlučivanja je uređena petorka $(\mathcal{S}, \mathcal{A}, \mathcal{R}, p, \gamma)$. Ova definicija je prilično jednostavna a ipak je dovoljno fleksibilna za formalne opise raznih modela. Ukoliko, na primer, treba modelirati okruženje takvo da u stanju $s$ akcija $a$ nije dozvoljena tada će $p(s', r ~|~ s, a)$ biti $0$ za sve $s'$ i $r$. Ako su skupovi $\mathcal{S}$, $\mathcal{A}$ i $\mathcal{R}$ konačni, tada se za Markovljev proces odlučivanja kaže da je konačan.
 \par 
+Markovljevi procesi odlučivanja koriste se za modeliranje interakcije agenta sa okruženjem, što se pokazalo izuzetno pogodno za probleme učenja potrepljivanjem. Cilj agenta biće maksimizacija dugoročne nagrade prilikom interakcije sa okruženjem.
+
+
+\subsection{Epizode}
+
+U jednakosti \eqref{eq:dug_suma} pretpostavlja se da niz interakcija sa okruženjem, tj. putanja, traje beskonačno, što se vidi iz gornje granice u sumi. Međutim, često je prirodnije pretpostaviti da su putanje konačne i da se završavaju u nekom posebnom stanju iz kog nije moguće dalje preduzimati akcije. Ovakva stanja nazivaju se završnim stanjima. Takvih stanja idejno može biti više ali, zbog načina na koji je definisana funkcija prelaska\footnote{Agent dobija numeričku nagradu za preduzimanje akcije u stanju a ne za dolazak u stanje}, za time nema potrebe i bez gubitka opštosti se može pretpostaviti da ovakvo stanje, ukoliko postoji, je jedinstveno. Jedan niz interakcija agenta sa okruženjem naziva se epizodom. Epizode su međusobno nezavisne u smislu da ishod jedne epizode ni na koji način ne utiče na neku od narednih epizoda, što se tiče samog okruženja. Ukoliko agent treba da igra, na primer, šah, partije šaha mogu se smatrati epizodama. 
+\par 
+Neki problemi ne mogu se razbiti na epizode. Ovi problemi predstavljaju dugoročne zadatke kao što su beskonačno balansiranje uspravnog štapa ili odbrana od neprijatelja u slučaju takozvanih tower defence video igara. Kod ovakvih problema, jako je važno postaviti umanjenje na vrednost manju od $1$. Naime, ukoliko važi $\gamma < 1$ i niz nagrada $R_t$ je ograničen, tada će suma \eqref{eq:dug_suma} konvergirati. Ukoliko ta suma divergira, odnosno ako je njena vrednost $\infty$, tada će maksimizacija postati trivijalna.
+\par 
+Iz stanovišta završnih stanja i dugoročne nagrade, ova dva slučaja mogu se objediniti bez izmene \eqref{eq:dug_suma}. Kod problema koji se ne mogu podeliti na epizode, suma ostaje ista uz zahtev da je umanjenje strogo manje od $1$. Kod problema koji se mogu podeliti na epizode, može se uvesti pretpostavka da će se iz završnog stanja sa verovatnoćom $1$ prelaziti u to isto stanje uz vrednost nagrade $0$. Ovo je neizvodljivo za implementaciju i u ovom radu, gde je bitno, biće pretpostavljeno da se problem može podeliti na epizode. Tada suma \eqref{eq:dug_suma} dobija sledeći oblik:
+\begin{equation}
+	G_t = \sum_{i=0}^{T} \gamma^iR_{t+i+1}
+\end{equation}
+gde je $t+T+1$ trenutak kraja epizode. 
+
+\subsection{Politika; vrednosti stanja i akcije}
+
+
+
 - vrednost stanja
 - q funkcija
 - politika
