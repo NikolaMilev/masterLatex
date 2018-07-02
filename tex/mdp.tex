@@ -4,7 +4,7 @@
 Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja i numeričke nagrade. Jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat teorijski opis Markovljevih procesa odlučivanja.
 
 \section{Osnovni pojmovi}
-Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. Skup nagrada,  $\mathcal{R}$, je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se interakcijom agenta sa okruženjem. Putanja može biti i konačna i beskonačna.
+Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. $\mathcal{A}(s)$ označava skup dozvoljenih akcija u stanju $s$. Ukoliko se sa $\mathbb{A}$ označi skup svih akcija, $\mathcal{A}$ se može posmatrati kao funkcija:  $\mathcal{A}: \mathcal{S} \rightarrow  \mathbb{P}(\mathbb{A})$. Skup $\mathcal{R}$ je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se interakcijom agenta sa okruženjem. Putanja može biti i konačna i beskonačna.
 Neophodno je definisati i funkciju prelaska, $p$:
 \begin{equation}
 	p(s', r ~|~ s, a) \eqdef P(S_{t+1} = s', R_{t+1} = r ~|~ S_t = s, A_t = a)
@@ -28,18 +28,18 @@ Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja p
 	\end{aligned}
 \end{equation}
 \par 
-Sada je moguće dati formalnu definiciju: Markovljev proces odlučivanja je uređena petorka $(\mathcal{S}, \mathcal{A}, \mathcal{R}, p, \gamma)$. Ova definicija je prilično jednostavna a ipak je dovoljno fleksibilna za formalne opise raznih modela. Ukoliko, na primer, treba modelirati okruženje takvo da u stanju $s$ akcija $a$ nije dozvoljena tada će $p(s', r ~|~ s, a)$ biti $0$ za sve $s'$ i $r$. Ako su skupovi $\mathcal{S}$, $\mathcal{A}$ i $\mathcal{R}$ konačni, tada se za Markovljev proces odlučivanja kaže da je konačan.
+Sada je moguće dati formalnu definiciju: Markovljev proces odlučivanja je uređena petorka $(\mathcal{S}, \mathcal{A}, \mathcal{R}, p, \gamma)$. Ova definicija je prilično jednostavna a ipak je dovoljno fleksibilna za formalne opise raznih modela. Ako su skupovi $\mathcal{S}$, $\mathcal{R}$, $\mathcal{A}(s)$, za svako $s$, konačni, tada se za Markovljev proces odlučivanja kaže da je konačan. Umesto zahteva da $\mathcal{A}(s)$ bude konačan za svako $s$, može se zahtevati da je skup $\mathbb{A}$ konačan.
 \par 
 Markovljevi procesi odlučivanja koriste se za modeliranje interakcije agenta sa okruženjem, što se pokazalo izuzetno pogodno za probleme učenja potrepljivanjem. Cilj agenta biće maksimizacija dugoročne nagrade prilikom interakcije sa okruženjem.
 
 
 \subsection{Epizode}
 
-U jednakosti \eqref{eq:dug_suma} pretpostavlja se da niz interakcija sa okruženjem, tj. putanja, traje beskonačno, što se vidi iz gornje granice u sumi. Međutim, često je prirodnije pretpostaviti da su putanje konačne i da se završavaju u nekom posebnom stanju iz kog nije moguće dalje preduzimati akcije. Ovakva stanja nazivaju se završnim stanjima. Takvih stanja idejno može biti više ali, zbog načina na koji je definisana funkcija prelaska\footnote{Agent dobija numeričku nagradu za preduzimanje akcije u stanju a ne za dolazak u stanje}, za time nema potrebe i bez gubitka opštosti se može pretpostaviti da ovakvo stanje, ukoliko postoji, je jedinstveno. Jedan niz interakcija agenta sa okruženjem naziva se epizodom. Epizode su međusobno nezavisne u smislu da ishod jedne epizode ni na koji način ne utiče na neku od narednih epizoda, što se tiče samog okruženja. Ukoliko agent treba da igra, na primer, šah, partije šaha mogu se smatrati epizodama. 
+U jednakosti \eqref{eq:dug_suma} pretpostavlja se da niz interakcija sa okruženjem, tj. putanja, traje beskonačno, što se vidi iz gornje granice u sumi. Međutim, često je prirodnije pretpostaviti da su putanje konačne i da se završavaju u nekom posebnom stanju iz kog nije moguće dalje preduzimati akcije. Ovakva stanja nazivaju se završnim stanjima. Takvih stanja idejno može biti više ali, zbog načina na koji je definisana funkcija prelaska\footnote{Agent dobija numeričku nagradu za preduzimanje akcije u stanju a ne za dolazak u stanje}, za time nema potrebe i bez gubitka opštosti se može pretpostaviti da ovakvo stanje, ukoliko postoji, je jedinstveno. Jedan niz interakcija agenta sa okruženjem naziva se epizodom. Epizode su međusobno nezavisne u smislu da ishod jedne epizode ni na koji način ne utiče na neku od narednih epizoda, što se tiče samog okruženja. Ukoliko agent treba da igra, na primer, šah, partije se mogu smatrati epizodama. 
 \par 
-Neki problemi ne mogu se razbiti na epizode. Ovi problemi predstavljaju dugoročne zadatke kao što su beskonačno balansiranje uspravnog štapa ili odbrana od neprijatelja u slučaju takozvanih tower defence video igara. Kod ovakvih problema, jako je važno postaviti umanjenje na vrednost manju od $1$. Naime, ukoliko važi $\gamma < 1$ i niz nagrada $R_t$ je ograničen, tada će suma \eqref{eq:dug_suma} konvergirati. Ukoliko ta suma divergira, odnosno ako je njena vrednost $\infty$, tada će maksimizacija postati trivijalna.
+Neki problemi ne mogu se razbiti na epizode. Ovi problemi predstavljaju dugoročne zadatke kao što su beskonačno balansiranje uspravnog štapa ili odbrana od neprijatelja u slučaju takozvanih tower defence video igara. Kod ovakvih problema, jako je važno postaviti umanjenje na vrednost manju od $1$. Naime, ukoliko važi $\gamma < 1$ i niz nagrada $R_t$ je ograničen, tada će suma \eqref{eq:dug_suma} konvergirati. Ukoliko ta suma divergira, odnosno ako je njena vrednost $\infty$, tada će maksimizacija postati trivijalna, odnosno nemoguća.
 \par 
-Iz stanovišta završnih stanja i dugoročne nagrade, ova dva slučaja mogu se objediniti bez izmene \eqref{eq:dug_suma}. Kod problema koji se ne mogu podeliti na epizode, suma ostaje ista uz zahtev da je umanjenje strogo manje od $1$. Kod problema koji se mogu podeliti na epizode, može se uvesti pretpostavka da će se iz završnog stanja sa verovatnoćom $1$ prelaziti u to isto stanje uz vrednost nagrade $0$. Ovo je neizvodljivo za implementaciju i u ovom radu, gde je bitno, biće pretpostavljeno da se problem može podeliti na epizode. Tada suma \eqref{eq:dug_suma} dobija sledeći oblik:
+Iz stanovišta završnih stanja i dugoročne nagrade, ova dva slučaja mogu se objediniti bez izmene \eqref{eq:dug_suma}. Kod problema koji se ne mogu podeliti na epizode, suma ostaje ista uz zahtev da je umanjenje strogo manje od $1$. Kod problema koji se mogu podeliti na epizode, može se uvesti pretpostavka da će se iz završnog stanja sa verovatnoćom $1$ prelaziti u to isto stanje uz vrednost nagrade $0$. Ovo je neizvodljivo za implementaciju pa se u praksi koristi konačna suma oblika:
 \begin{equation}
 	G_t = \sum_{i=0}^{T} \gamma^iR_{t+i+1}
 \end{equation}
@@ -47,6 +47,23 @@ gde je $t+T+1$ trenutak kraja epizode.
 
 \subsection{Politika; vrednosti stanja i akcije}
 
+Kako je neophodno opisati neko ponašanje agenta, uvodi se funkcija $\pi(s~|~a)$, koja predstavlja verovatnoću da agent u stanju $s$ preduzme akciju $a$. Ova funkcija naziva se politikom. Ako je poznata politika $\pi$, može se definisati funkcija vrednosti stanja:
+\begin{equation}
+	v_{\pi}(s) \eqdef \mathbb{E}_{\pi}[G_t~|~S_t=s]
+\end{equation}
+Na sličan način uvodi se i funkcija vrednosti akcije u stanju:
+\begin{equation}
+	q_{\pi}(s, a) \eqdef \mathbb{E}_{\pi}[G_t~|~S_t=s, A_t=a]
+\end{equation}
+Simbol $\mathbb{E}_{\pi}$ označava matematičko očekivanje ako se podrazumeva da se pri preduzimanju akcija prati politika $\pi$.
+\par 
+Mnogi algoritmi učenja potkrepljivanjem zasnivaju se na nalaženju optimalne politike, odnosno politike čijim se praćenjem dolazi do maksimalne dugoročne nagrade. Moguće je uvesti parcijalno uređenje politika definisano na sledeći način:
+\begin{equation}
+	\pi_1 \leq \pi_2 \eqivdef \big(\forall s \in \mathcal{S}\big) \big( v_{\pi_1}(s) \leq v_{\pi_2}(s)\big)
+\end{equation}
+i tada se kaže da politika $\pi_2$ nije lošija  od politike $\pi_1$. Ukoliko postoji neka politika $\pi_*$ koja nije lošija ni od jedne politike za dati Markovljev proces odlučivanja, tada je ona optimalna politika. Ukoliko neki agent prati optimalnu politiku, ona će ga dovesti do maksimalne dugoročne nagrade. Ovakva politika uvek postoji; detaljnije obrazloženje dato je u nastavku.
+
+\subsection{Belmanove jednakosti; optimalna politika}
 
 
 - vrednost stanja
