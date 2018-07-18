@@ -74,6 +74,13 @@
 %\newcommand\eqdef{\stackrel{\mathclap{\footnotesize\mbox{def}}}{=}}
 \newcommand{\eqdef}{\ensuremath{\stackrel{\text{def}}{=}}}
 \newcommand{\eqivdef}{\ensuremath{\stackrel{\text{def}}{\iff}}}
+
+\usepackage{amsthm}
+\newtheorem*{theorem*}{Teorema}
+
+\DeclareMathOperator*{\argmax}{\arg\!\max}
+
+
 \begin{document}
 
 \pagenumbering{roman}
@@ -115,11 +122,9 @@
 \include{tex/uvod}
 \include{tex/masinsko_ucenje}
 \include{tex/neuronske_mreze}
-\include{tex/mdp}
+\include{tex/rl}
 
 
-\chapter{Učenje potkrepljivanjem}
-\label{ch:rl}
 
 \chapter{DQN}
 \label{ch:dqn}
