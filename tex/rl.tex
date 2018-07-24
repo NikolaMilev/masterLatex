@@ -5,26 +5,29 @@ Učenje potkrepljivanjem je vid mašinskog učenja koji podseća na učenje koje
 
 \section{Osnovni pojmovi}
 [MOŽDA SKLONI SECTION] \\
-Učenje potkrepljivanjem sastoji se iz četiri komponente: politike ponašanja, nagrade, funkcije vrednosti i modela okruženja. Politika opisuje način na koji se agent ponaša. Nagrada predstavlja numerički signal koji agent dobija od okruženja. U toku učenja, cilj agenta je da maksimizuje ukupnu dobijenu nagradu od okruženja. Dakle, nagradom je implicitno objašnjeno šta je dobro a šta loše ponašanje. Prilikom rešavanja problema učenja potkrelpljivanjem, cilj je nalaženje optimalne politike, tj. politike čijim se praćenjem dobija najveća dugoročna nagrada. Funkcija vrednosti govori koliko je dobro naći se u nekom stanju okruženja. Za razliku od nagrade, funkcija vrednosti opisuje kvalitet nekog stanja na duže staze. Ova komponenta je neophodna jer je moguće da dolaskom u neko stanje agent dobije malu nagradu ali da samo stanje ima veliku vrednost, što znači da je dolaskom u stanje moguće dobiti veliku dugoročnu nagradu. Neki algoritmi učenja potkrepljivanjem koriste model okruženja kako bi planirali unapred. Moguće je koristit pristupe koji koriste model, pristupe koji ne koriste model već se uči iz iskustva, kao i pristupe koji koriste učenje iz iskustva radi učenja modela.
+Učenje potkrepljivanjem sastoji se iz četiri komponente: politike ponašanja (ili samo politike), nagrade, funkcije vrednosti i modela okruženja. Politika opisuje način na koji se agent ponaša. Nagrada predstavlja numerički signal koji agent dobija od okruženja. U toku učenja, cilj agenta je da maksimizuje ukupnu nagradu dobijenu od okruženja. Dakle, nagradom je implicitno objašnjeno šta je dobro a šta loše ponašanje. Prilikom rešavanja problema učenja potkrelpljivanjem, cilj je nalaženje optimalne politike, tj. politike čijim se praćenjem dobija najveća dugoročna nagrada. Funkcija vrednosti govori koliko je dobro naći se u nekom stanju okruženja. Za razliku od nagrade, funkcija vrednosti opisuje kvalitet nekog stanja na duže staze. Ova komponenta je neophodna jer je moguće da dolaskom u neko stanje agent dobije malu nagradu ali da dato stanje ima veliku vrednost, što znači da je dolaskom u to stanje moguće ostvariti veliku dugoročnu nagradu. Neki algoritmi učenja potkrepljivanjem koriste model okruženja kako bi planirali unapred. Moguće je koristit pristupe koji koriste model, pristupe koji ne koriste model već se uči iz iskustva, kao i pristupe koji koriste učenje iz iskustva radi učenja modela.
 \par 
-U učenju potkrepljivanjem javlja se potreba za uspostavljanjem balansa između istraživanja i iskorišćavanja već stečenog znanja (eng.~{\em exloration vs. exploitation}). Naime, na početku učenja, agent istražuje okruženje i time uči kako bi trebalo da se ponaša. Čak i kada se nauči neko ponašanje, neophodno je nastaviti sa istraživanjem, u nekoj meri. Kako već naučeno ponašanje možda nije najbolje, bez istraživanja je moguće završiti u nekom od lokalnih optimuma. Međutim, kako učenje teče i agent unapređuje svoje ponašanje, poželjno je pratiti politiku koja dovodi do velikih dugoročnih nagrada. Najčešće je stopa istraživanja velika na početku učenja i opada u toku ovog procesa. [OVO NEGDE DRUGDE?]
+U učenju potkrepljivanjem javlja se potreba za uspostavljanjem balansa između istraživanja i iskorišćavanja već stečenog znanja (eng.~{\em exloration vs. exploitation}). Naime, na početku učenja, agent istražuje okruženje i time uči kako bi trebalo da se ponaša. Čak i kada se nauči neko ponašanje, često je neophodno nastaviti sa istraživanjem u nekoj meri. Kako već naučeno ponašanje možda nije najbolje, bez istraživanja je moguće završiti u nekom od lokalnih optimuma. Međutim, kako učenje teče i agent unapređuje svoje ponašanje, poželjno je pratiti politiku koja dovodi do velikih dugoročnih nagrada. Najčešće je stopa istraživanja velika na početku učenja i opada u toku ovog procesa. [OVO NEGDE DRUGDE?]
 
 \section{Markovljevi procesi odlučivanja}
 \label{sec:mdp}
 
 Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Markovljevi procesi odlučivanja opisuju okruženje s kojim je moguće komunicirati. Ta komunikacija sastoji se iz toga da se od okruženja može dobiti informacija o stanju i da se okruženju može poslati informacija o akciji koja se preduzima, na šta okruženje odgovara informacijama o novom stanju i o numeričkoj nagradi. Izuzetno je važno da se od okruženja ne može dobiti informacija o tome da li je preduzeta akcija prava ili ne već samo informacija o numeričkoj nagradi, koju na duže staze treba maksimizovati. Kako se pri učenju potkrepljivanjem pretpostavlja postojanje agenta, kao i postojanje okruženja, nadalje se podrazumeva da postoji neki agent koji komunicira sa okruženjem. Treba imati u vidu da Markovljevi procesi odlučivanja opisuju idealno okruženje. U praksi okruženja često nisu idealna i tada se pribegava metodima koji ne koriste MDP. Iako je veliki deo teorije u učenju potkrepljivanjem ograničen na MDP, iste ideje imaju širu primenu.
-\par 
-U nastavku je dat teorijski opis Markovljevih procesa odlučivanja dok će proces učenja biti opisan nešto kasnije, u [DEO KOJI OPISUJE UČENJE AGENTA].
-
 %Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o %stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja %i numeričke nagrade. Jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta %akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat %teorijski opis Markovljevih procesa odlučivanja.
 
 \subsection{Osnovni pojmovi}
-Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. $\mathcal{A}(s)$ označava skup dozvoljenih akcija u stanju $s$. Ukoliko se sa $\mathbb{A}$ označi skup svih akcija, $\mathcal{A}$ se može posmatrati kao funkcija:  $\mathcal{A}: \mathcal{S} \rightarrow  \mathbb{P}(\mathbb{A})$. Skup $\mathcal{R}$ je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se [naizmeničnom?] interakcijom agenta sa okruženjem. Putanja može biti i konačna i beskonačna.
+Pod pretpostavkom da se interakcija između agenta i okruženja izvršava u diskretnim trenucima, stanje okruženja u trenutku $t$ označava se sa $S_t$ dok se skup svih stanja označava sa $\mathcal{S}$.  Agent u stanju $S_t$ preduzima akciju $A_t \in \mathcal{A}(S_t)$ i prelazi u novo stanje, $S_{t+1}$ dobijajući nagradu $R_{t+1}$. $\mathcal{A}(s)$ označava skup dozvoljenih akcija u stanju $s$. Ukoliko se sa $\mathbb{A}$ označi skup svih akcija, $\mathcal{A}$ se može posmatrati kao funkcija:  $\mathcal{A}: \mathcal{S} \rightarrow  \mathbb{P}(\mathbb{A})$. Skup $\mathcal{R}$ je skup mogućih realnih nagrada. Sekvenca $S_0, A_0, R_1, S_1, A_1, R_2, S_2, ...$ naziva se putanjom i dobija se interakcijom agenta sa okruženjem. Putanja može biti ili konačna i beskonačna.
 Neophodno je definisati i funkciju prelaska, $p$:
 \begin{equation}
 	p(s', r~|~s, a) \eqdef P(S_{t+1} = s', R_{t+1} = r ~|~ S_t = s, A_t = a)
 \end{equation}
-koja predstavlja verovatnoću prelaska u stanje $s'$ i dobijanje nagrade $r$ pod uslovom da je u stanju $s$ preduzeta akcija $a$. Markovljevi procesi odlučivanja imaju takozvano Markovljevo svojstvo tj. osobinu da trenutno stanje i nagrada zavise isključivo od prethodnog stanja i u njemu preduzete akcije a ne od cele putanje koja je dovela do datog stanja. Formalno, ovo svojstvo zapisuje se sledećom jednakošću:
+koja predstavlja verovatnoću prelaska u stanje $s'$ i dobijanje nagrade $r$ pod uslovom da je u stanju $s$ preduzeta akcija $a$. Još jedna bitna pretpostavka je da je $p$ raspodela verovatnoće, iz čega sledi da:
+\begin{equation}
+	\sum_{s', r}^{} p(s', r~|~s, a) = 1
+\end{equation}
+za sve $s$ i $a \in \mathcal{A}(s)$. Ova skraćena oznaka za dvostruku sumu biće korišćena nadalje i označava sumiranje po svim $r \in \mathcal{R}$ i svim $s' \in \mathcal{S}$.
+\par 
+Markovljevi procesi odlučivanja imaju takozvano Markovljevo svojstvo tj. osobinu da trenutno stanje i nagrada zavise isključivo od prethodnog stanja i u njemu preduzete akcije a ne od cele putanje koja je dovela do datog stanja. Formalno, ovo svojstvo zapisuje se sledećom jednakošću:
 \begin{equation}
 	P(S_t, R_t ~|~ S_0, A_0, R_1, ..., S_{t-1}, A_{t-1}) = P(S_t, R_t ~|~ S_{t-1}, A_{t-1})
 \end{equation}
@@ -34,7 +37,7 @@ U odnosu na putanju od trenutka $t$, može se govoriti o dugoročnoj nagradi, ko
 \label{eq:dug_suma}
 	G_t = \sum_{i=0}^{\infty} \gamma^iR_{t+i+1}
 \end{equation}
-Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$, buduće nagrade nisu bitne dok postavljanje vrednosti $\gamma$ na $1$ ukazuje na to da se smatra da su sve nagrade putanje jednako bitne. Iz ove sume uočava se i odnos sa dugoročnom nagradom od trenutka $t+1$:
+Metaparametar $\gamma$ naziva se umanjenjem i ukazuje na to koliko se značaja pridaje kasnije dobijenim nagradama u odnosu na neposrednu nagradu. Za $\gamma = 0$\footnote{$0^0$ definiše se kao $1$.}, buduće nagrade nisu bitne dok postavljanje vrednosti $\gamma$ na $1$ ukazuje na to da se smatra da su sve nagrade putanje jednako bitne. Iz ove sume uočava se i odnos sa dugoročnom nagradom od trenutka $t+1$:
 \begin{equation}
 	\begin{aligned}
 		G_t &= \sum_{i=0}^{\infty} \gamma^iR_{t+i+1} \\
@@ -50,11 +53,11 @@ Markovljevi procesi odlučivanja koriste se za modeliranje interakcije sa okruž
 
 \subsubsection{Epizode}
 
-U jednakosti \eqref{eq:dug_suma} pretpostavlja se da niz interakcija sa okruženjem, tj. putanja, traje beskonačno, što se vidi iz gornje granice u sumi. Međutim, često je prirodnije pretpostaviti da su putanje konačne i da se završavaju u nekom posebnom stanju iz kog nije moguće dalje preduzimati akcije. Ovakva stanja nazivaju se završnim stanjima. Takvih stanja može biti više ali, zbog načina na koji je definisana funkcija prelaska\footnote{Agent dobija numeričku nagradu za preduzimanje akcije u stanju a ne za dolazak u stanje}, za time nema potrebe i bez gubitka opštosti se može pretpostaviti da je ovakvo stanje, ukoliko postoji, jedinstveno. Jedan niz interakcija agenta sa okruženjem koji se završava završnim stanjem naziva se epizodom. Epizode su međusobno nezavisne u smislu da ishod jedne epizode ni na koji način ne utiče na neku od narednih epizoda, što se tiče samog okruženja. Ukoliko agent treba da igra, na primer, šah, partije se mogu smatrati epizodama. 
+U jednakosti \eqref{eq:dug_suma} pretpostavlja se da niz interakcija sa okruženjem, tj. putanja, traje beskonačno, što se vidi iz gornje granice u sumi. Međutim, često je prirodnije pretpostaviti da su putanje konačne i da se završavaju u nekom posebnom stanju iz kog nije moguće dalje preduzimati akcije. Ovakva stanja nazivaju se završnim stanjima. Takvih stanja može biti više ali, zbog načina na koji je definisana funkcija prelaska\footnote{Agent dobija numeričku nagradu za preduzimanje akcije u stanju a ne za dolazak u stanje.}, za time nema potrebe i bez gubitka opštosti se može pretpostaviti da je ovakvo stanje, ukoliko postoji, jedinstveno. Jedan niz interakcija agenta sa okruženjem koji se završava završnim stanjem naziva se epizodom. Epizode su međusobno nezavisne u smislu da ishod jedne epizode ni na koji način ne utiče na neku od narednih epizoda, što se tiče samog okruženja. Ukoliko agent treba da igra, na primer, šah, partije se mogu smatrati epizodama. 
 \par 
 Neki problemi ne mogu se razbiti na epizode. Ovi problemi predstavljaju dugoročne zadatke kao što su beskonačno balansiranje uspravnog štapa ili odbrana od nadolazećih talasa neprijatelja u slučaju nekih video igara. Kod ovakvih problema, jako je važno postaviti umanjenje na vrednost manju od $1$. Naime, ukoliko važi $\gamma < 1$ i niz nagrada $R_t$ je ograničen, tada će suma \eqref{eq:dug_suma} konvergirati. Ukoliko ta suma divergira, odnosno ako je njena vrednost $\infty$ ili neodređena, tada će maksimizacija postati trivijalna, odnosno nemoguća.
 \par 
-Iz stanovišta završnih stanja i dugoročne nagrade, ova dva slučaja mogu se objediniti bez izmene \eqref{eq:dug_suma}. Kod problema koji se ne mogu podeliti na epizode, suma ostaje ista uz zahtev da je umanjenje strogo manje od $1$. Kod problema koji se mogu podeliti na epizode, može se uvesti pretpostavka da će se iz završnog stanja sa verovatnoćom $1$ prelaziti u to isto stanje uz vrednost nagrade $0$. Ovo je neizvodljivo za implementaciju pa se u praksi koristi konačna suma oblika:
+Sa stanovišta završnih stanja i dugoročne nagrade, ova dva slučaja mogu se objediniti bez izmene \eqref{eq:dug_suma}. Kod problema koji se ne mogu podeliti na epizode, suma ostaje ista uz zahtev da je umanjenje strogo manje od $1$. Kod problema koji se mogu podeliti na epizode, može se uvesti pretpostavka da će se iz završnog stanja sa verovatnoćom $1$ prelaziti u to isto stanje uz vrednost nagrade $0$. Ovo je neizvodljivo za implementaciju pa se u praksi koristi konačna suma oblika:
 \begin{equation}
 	G_t = \sum_{i=0}^{T} \gamma^iR_{t+i+1}
 \end{equation}
@@ -62,7 +65,7 @@ gde je $t+T+1$ trenutak kraja epizode.
 
 \subsubsection{Politika; vrednosti stanja i akcije}
 
-Kako je neophodno opisati pravila ponašanja agenta, uvodi se funkcija $\pi$, koja predstavlja verovatnoću da agent u stanju $s$ preduzme akciju $a$. Ova funkcija naziva se politikom i, ukoliko neki agent preduzima akciju $a$ u stanju $s$ sa verovatnoćom $\pi(a~|~s)$, za sva stanja $s$ i sve akcije $a$, kaže se da agent prati politiku $\pi$. 
+Kako je neophodno opisati pravila ponašanja agenta, uvodi se funkcija $\pi$, koja predstavlja verovatnoću da agent u stanju $s$ preduzme akciju $a$. Ova funkcija naziva se politikom i, ukoliko neki agent preduzima akciju $a$ u stanju $s$ sa verovatnoćom $\pi(a~|~s)$, za sva stanja $s$ i sve akcije $a$, kaže se da agent prati politiku $\pi$. Vrednosti $\pi(a~|~s)$, kad $a \notin \mathcal{A}(s)$, se ne razmatraju.
 
 Ukoliko za neku politiku $\pi$ važi da za svako $s$ postoji stanje $a_s$ takvo da $\pi(a_s~|~s)=1$ i $\pi(a~|~s)=0$ za sve ostale akcije $a$, tada se kaže da je politika deterministička. Radi jednostavnosti, u tom slučaju može se napisati $\pi(s)=a_s$.
 \par 
@@ -116,14 +119,14 @@ Spajanjem dve jednakosti dobija se:
 	\begin{aligned}
 		v_{\pi}(s)  &= \mathbb{E}_{\pi}[R_{t+1}~|~S_t=s] + \gamma \mathbb{E}_{\pi}[G_{t+1}~|~S_t=s] \\
 		&= \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}rp(s', r~|~s, a) + \gamma \sum_{a}^{} \pi(a~|~s)\sum_{s',r}^{}p(s', r~|~s, a)v_{\pi}(s') \\
-		&= \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}p(s', r~|~s, a) \big( r+\gamma v_{\pi}(s') \big)
+		&= \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}p(s', r~|~s, a) \big[ r+\gamma v_{\pi}(s') \big]
 	\end{aligned}
 \end{equation}
 Analogno se izvodi rekurentna veza za funkciju vrednosti akcije u stanju, $q_{\pi}$:
 \begin{equation}
 	\label{eq:bel_q}
 	\begin{aligned}
-		q_{\pi}(s,a) = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}\big( r+\gamma\sum_{a'}^{}\pi(a'~|~s') q_{\pi}(s', a') \big)
+		q_{\pi}(s,a) = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}\big[ r+\gamma\sum_{a'}^{}\pi(a'~|~s') q_{\pi}(s', a') \big]
 	\end{aligned}
 \end{equation}
 Jednakosti \eqref{eq:bel_v} i \eqref{eq:bel_q} nazivaju se Belmanovim jednakostima i ključne su za mnoge algoritme učenja potkrepljivanjem. 
@@ -141,13 +144,13 @@ Moguće je uspostaviti vezu između $v_*$ i $q_*$:
 \begin{equation}
 	\begin{aligned}
 		v_*(s) &= \max_{a \in \mathcal{A}(s)} q_* (s,a)	 \\
-		q_*(s,a) &= \mathbb{E}_{\pi}[R_{t+1} + \gamma v_*(s_{t+1})~|~S_t=s, A_t=a]
+		q_*(s,a) &= \mathbb{E}_{\pi}\big[R_{t+1} + \gamma v_*(s_{t+1})~|~S_t=s, A_t=a\big]
 	\end{aligned}
 \end{equation}
 Relativno jednostavnim izvođenjem dolazi se do još jednog para jednakosti koje se nazivaju Belmanovim jednakostima optimalnosti.
 	\begin{align}
-		\label{eq:bel_v_opt} v_*(s) &= \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_*(s')]	 \\
-		\label{eq:bel_q_opt} q_*(s,a) &= \sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma \max_{a'}q_*(s',a')]
+		\label{eq:bel_v_opt} v_*(s) &= \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)\big[r+\gamma v_*(s')\big]	 \\
+		\label{eq:bel_q_opt} q_*(s,a) &= \sum_{s', r}^{} p(s', r~|~s,a)\big[\gamma \max_{a'}q_*(s',a')\big]
 	\end{align}
 \par 
 U slučaju konačnih Markovljevih procesa odlučivanja, rekurentne relacije \eqref{eq:bel_v_opt} čine sistem od $n$ jednačina sa $n$ nepoznatih.\footnote{Kao što je pomenuto na početku dela o Belmanovim jednakostima, one važe za svako stanje $s$.} Isto važi i za relacije \eqref{eq:bel_q_opt}. Ovi sistemi sadrže funkciju $max$ pa stoga nisu linearni. Ukoliko je funkcija prelaska za dati MDP poznata, ovi sistemi se mogu rešiti; ta rešenja dobijena su bez prethodnog znanja o optimalnoj politici. 
@@ -156,20 +159,84 @@ Ukoliko je $v_*$ poznata, moguće je odrediti optimalnu politiku. Iz jednakosti 
 
 \section{Rešavanje Markovljevih procesa odlučivanja}
 
-Uz pretpostavku da se radi o konačnom MDP, osnovni pristup njegovom rešavanju jeste koristeći principe dinamičkog programiranja. Kako je cilj učenja traženje optimalne politike, dve politike biće poređene u skladu sa definicijom \eqref{eq:nije_losija}, odnosno koristeći funkciju vrednosti politike. Dakle, neophodno je naći metod kojim se računa funkcija vrednosti stanja koja odgovara nekoj politici $\pi$.  Način na koji se ovo radi je korišćenjem Belmanovih jednakosti, \eqref{eq:bel_v}. Naime, počinje se od vektora $v_0$ koji sadrži proizvoljnu vrednost i dužine je koja odgovara broju stanja. Dalje, počev od vektora $v_0$, primenjuje se iterativno ažuriranje po sledećem pravilu:
+Uz pretpostavku da se radi o konačnom MDP, osnovni pristup njegovom rešavanju jeste koristeći principe dinamičkog programiranja. Kako je cilj učenja traženje optimalne politike, dve politike biće poređene u skladu sa definicijom \eqref{eq:nije_losija}, odnosno koristeći funkciju vrednosti politike. Stoga, prvo je neophodno naći metod kojim se računa funkcija vrednosti stanja koja odgovara nekoj politici $\pi$.  Način na koji se ovo radi je korišćenjem Belmanovih jednakosti, \eqref{eq:bel_v}. Počinje se od vektora $v_0$ koji sadrži proizvoljne vrednosti i dužine je koja odgovara broju stanja. Dalje se primenjuje iterativno ažuriranje po sledećem pravilu:
 \begin{equation}
-		v_{k+1}(s) = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}p(s', r~|~s, a) \big( r+\gamma v_k(s') \big)
+		v_{k+1}(s) = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}p(s', r~|~s, a) \big[ r+\gamma v_k(s') \big]
 \end{equation}
-Pod uslovom da $\gamma < 1$ ili da je svaka putanja iz svakog stanja konačna, niz vektora $v_k$ konvergira ka $v_{\pi}$. Sada je i u praksi moguće uporediti dve politike.
+za sve $s \in \mathcal{S}$. Pod uslovom da $\gamma < 1$, niz vektora $v_k$ konvergira ka $v_{\pi}$. Sada je i u praksi moguće uporediti dve politike.
 \par 
-Kada je data deterministička politika $\pi$, postavlja se pitanje da li je moguće unaprediti je, tj. da li u stanju $s$ odabrati akciju $\pi(s)$ ili neku drugu akciju? Tada je neophodno ispitati vrednost izraza $q_{\pi}(s,a)$ u odnosu na izraz $v_{\pi}(s)$. Ako postoji akcija $a$ takva da je $q_{\pi}(s, a) \geq v_{\pi}(s)$, tada je moguće konstruisati politiku $\pi'$ takvu da važi $\pi' \geq \pi$. Ovo važi na osnovu teoreme o unapređenju politike (eng.~{\em policy improvement theorem}):
+Kada je data deterministička politika $\pi$, postavlja se pitanje da li je moguće unaprediti je, tj. da li u stanju $s$ odabrati akciju $\pi(s)$ ili neku drugu akciju? Tada je za sve akcije $a$ dozvoljene u $s$ neophodno ispitati vrednost $q_{\pi}(s,a)$ u odnosu na vrednost $v_{\pi}(s)$. Ako neko $s$ postoji akcija $a$ takva da je $q_{\pi}(s, a) \geq v_{\pi}(s)$, tada je moguće konstruisati politiku $\pi'$ takvu da važi $\pi' \geq \pi$. Ovo važi na osnovu teoreme o unapređenju politike (eng.~{\em policy improvement theorem}):
 \begin{theorem*}
 	Neka su $\pi$ i $\pi'$ dve determinističke politike takve da za sve $s \in \mathcal{S}$ važi $q_{\pi}(s, \pi'(s)) \geq v_{\pi}(s)$. Tada politika $\pi'$ nije lošija od politike $\pi$, odnosno $\pi' \geq \pi$.
 \end{theorem*}
-Dokaz teoreme relativno je jednostavan i može se naći u [Kako da ubacim tacnu stranu gde se nalazi teorema? Da li da ubacim jos jednu stavku u bibliografiju?].
-Preostalo je da se za proizvoljnu politiku $\pi$ nađe politika $\pi'$ takva da $\pi' \geq \pi$. Ukoliko se u svakom stanju $s$ odabere akcija $a$ koja maksimizuje izraz $q_{\pi}(s, a)$, tada novodobijena politika nije lošija od stare zbog gore navedene teoreme. Dakle, od politike $\pi$ dobija se politika $\pi'$ na sledeći način:
+Dokaz teoreme relativno je jednostavan i može se naći u \cite{rli_tup}. Preostalo je da se za proizvoljnu politiku $\pi$ nađe politika $\pi'$ takva da za svako $s$ važi $q_{\pi}(s, \pi'(s)) \geq v_{\pi}(s)$. Ukoliko se u svakom stanju $s$ odabere akcija $a$ koja maksimizuje izraz $q_{\pi}(s, a)$, tada tako dobijena politika zadovoljava uslove teoreme. Dakle, od politike $\pi$ dobija se politika $\pi'$ tako što se za svako $s \in \mathcal{S}$ računa:
 \begin{equation}
 	\pi'(s) = \argmax_a q_{\pi}(s, a)
 \end{equation}
-Proces dobijanja $\pi'$ od $\pi$  naziva se unapređenjem politike (eng.~{\em policy improvement}) i omogućuje iterativni pristup traženju optimalne politike. 
+Proces dobijanja $\pi'$ od $\pi$  naziva se unapređenjem politike (eng.~{\em policy improvement}) i omogućuje iterativni pristup traženju optimalne politike. Politika $\pi'$ naziva se pohlepnom politikom jer se njenim praćenjem uvek bira najbolja akcija u neposrednom smislu. Ova politika zadovoljava uslove teoreme jer
+\begin{align}
+	\max_a q_{\pi}(s,a) \geq&~ q_{\pi}(s,\pi(s)) \\=& v_{\pi}(s)
+\end{align}
+Druga jednakost sledi iz definicije funkcija $q_{\pi}$ i $v_{\pi}$.
+\par 
+Polazeći od nasumično kreirane determinističke politike i prateći ovaj postupak, naizmenično sa evaluacijom novodobijene politike, dobija se niz politika $\pi_0, \pi_1, ...$ koji u slučaju konačnih MDP konvergira optimalnoj politici, $\pi_*$. Ime ovog procesa je iterativno unapređenje politike (eng.~{\em policy iteration}). Nasumična deterministička politika $\pi$ kreira se tako što se za svaku vrednost $\pi(s)$ proizvoljno bira element iz $\mathcal{A}(s)$.
+\par 
+Iterativno unapređenje politike, iako relativno brzo konvergira u odnosu na broj stanja, zahteva evaluaciju politike u svakoj iteraciji. Pored ovog algoritma, postoji i algoritam iterativnog unapređenja funkcije vrednosti. Naime, umesto traženja optimalne politike, iterativno se traži optimalna funkcija vrednosti stanja, $v_*$. Na osnovu Belmanove jednakosti optimalnosti za funkciju vrednosti, \eqref{eq:bel_v_opt}, kreira se iterativno pravilo ažuriranja:
+\begin{equation}
+	\label{eq:val_iter} v_{k+1}(s) = \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_k(s')]
+\end{equation}
+gde se, kao i kod evaluacije politike, polazi od vektora $v_0$ čije su vrednosti nasumično odabrane. Proces se zaustavlja kada razlika dve uzastopne funkcije postane dovoljno mala, u skladu sa metrikom $\norm{\cdot}_{\infty}$ definisanom na sledeći način:
+\begin{equation}
+	\norm{v}_{\infty} = \max_x|v(x)|
+\end{equation}
+\par 
+Iako su do sada opisani algoritmi prilično intuitivni, nije direktno jasno da moraju da konvergiraju. [OBRISATI]
+Pravilo ažuriranja \eqref{eq:val_iter} može se predstaviti kao operator $B:R^{|S|} \rightarrow R^{|S|}$ koji se naziva Belmanovim operatorom:
+\begin{equation}
+	Bv(s) = \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)\bigcap+\gamma v(s')\big]
+\end{equation}
+Ukoliko se pokaže da je operator $B$ kontrakcija, tada po teoremi o fiksnoj tački važi da postoji vektor $v_*$ takav da $Bv_*=v_*$. Opis i dokaz ove teoreme može se naći u \cite{num_met}. Uslov kontrakcije zapisuje se sledećim izrazom:
+\begin{equation}
+	\norm{Bv_1-Bv_2}_{\infty} \leq \alpha \norm{v_1-v_2}_{\infty}
+\end{equation}
+za neko $\alpha \in [0, 1)$. 
+Dokaz da je Belmanov operator kontrakcija: [PROVERI TACNOST SVIH OVIH JEDNAKOSTI]
+\begin{align}
+	\norm{Bv_1-Bv_2}_{\infty} &= \max_s |Bv_1(s)-Bv_2(s)| \\
+	&= \mabs*{\max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_1(s')] - \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_2(s')]} \\
+	&\leq \max_{a} \mabs*{\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_1(s')] - \sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_2(s')]} \\
+	&=\max_{a} \mabs*{ \sum_{s', r}^{} p(s', r~|~s,a) \big[(r+\gamma v_1(s'))-(r+\gamma v_2(s'))\big]} \\
+	&=\gamma\max_{a} \mabs*{ \sum_{s', r}^{} p(s', r~|~s,a)\big[v_1(s')-v_2(s')\big]} \\
+	&\leq \gamma \max_s \mabs*{v_1(s)-v_2(s)} \\
+	&= \gamma \norm{v1-v2}_{\infty}
+\end{align}
+Ukoliko je $\gamma \in [0, 1)$, Belmanov operator je kontrakcija. Treći red sledi iz činjenice da 
+\begin{equation}
+	\mabs*{\max_{x} f(x) - \max_{x} g(x)} \leq \max_{x}\mabs*{f(x)-g(x)}
+\end{equation}
+dok pretposlednji red sledi iz činjenice da je $p$ raspodela verovatnoće za fiksirane parametre $s$ i $a$ [Da li da ovo pomenem u definiciji funkcije p?]. Pošto je dokazano da postoji jedinstvena fiksna tačka Belmanovog operatora i, kako po njegovoj konstrukciji važi $Bv \geq v$, vidi se da je niz dobijen njegovom uzastopnom primenom rastući. Stoga je fiksna tačka zaista i optimalna funkcija vrednosti.
+\par 
+Ranije je pokazano kako se, ukoliko je poznata funkcija $v_*$, može konstruisati optimalna politika. Iz postojanja $v_*$ sledi postojanje $\pi_*$ ali ovakvih politika može biti više zbog mogućnosti da iz jednog stanja više akcija vode ka stanjima sa istom, maksimalnom, vrednošću. 
+\par 
+Iako sporiji postupak, traženje $q_*$ funkcije pogodnije je od traženja $v_*$ u slučajevima kada funkcija prelaska nije poznata. Pristupi traženju ovih funkcija dinamičkim programiranjem podjednako su zastupljeni. 
+
+\subsection{Ostali načini rešavanja MDP}
+
+Funkciju vrednosti stanja i funkciju vrednosti akcije u stanju metodima linearnog programiranja. Jedan od primera je traženje $v_*$. Na osnovu jednakosti \eqref{eq:bel_v_opt} može se postaviti skup uslova:
+\begin{equation}
+	v(s) \geq \sum_{s', r}^{} p(s', r~|~s,a)\big[r+\gamma v(s')\big] \text{,~za~sve~} s \in \mathcal{S} \text{~i~sve~} a \in \mathcal{A}(s)
+\end{equation}
+Ovih uslova ima $\sum_{s \in \mathcal{S}}^{} |\mathcal{A}(s)| \leq |\mathcal{S}||\mathbb{A}|$. Pri ovim uslovima, treba minimizovati izraz $\sum_{s \in \mathcal{S}}^{} v(s)$. Rešavanje ovog problema daje $v_*$. Ovaj pristup rešavanju MDP-a pri određenim uslovima daje teorijski bržu konvergenciju od pristupa dinamičkim programiranjem. Uprkos tome, pri porastu broja stanja, pristup linearnim programiranjem brže postaje neizvodljiv od pristupa dinamičkim programiranjem.
+\par 
+Još jedan način rešavanja MDP-a predstavljaju takozvani Monte Karlo metodi, koji se oslanjaju na prikupljanje informacija o okruženju iz iskustva. Na primer, za približno određivanje optimalne funkcije vrednosti stanja čuva se prosek vrednosti dobijenih nakon dolaska u to stanje. Proširivanje ovog iskustva [u ovom slučaju] znači bolje određivanje optimalne funkcije vrednosti.
+
+Međutim, nekada je broj stanja toliko veliki da ni jedan od ova dva pristupa nije izvodljiv.
+
+% ostali metodi resavanja problema RL
+% neka prica o opstem Q ucenju
+% neki zakljucak -- kada je sta bolje koristiti
+
+
+
+
 
