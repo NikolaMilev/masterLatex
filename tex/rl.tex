@@ -1,18 +1,20 @@
 \chapter{Učenje potkrepljivanjem}
 \label{ch:rl}
 
-Učenje potkrepljivanjem je vid mašinskog učenja koji podseća na učenje koje se može naći u prirodi: ljudi i životinje uče na osnovu interakcije sa svetom oko sebe. Razlikovanje povoljnog i nepovoljnog ponašanja nije unapred učinjeno već je neophodno da onaj koji uči donese taj zaključak. U učenju potkrepljivanjem kao grani mašinskog učenja, komunikacija sa okruženjem svodi se na preduzimanje akcija u nekoj situaciji i dobijanja odgovora u vidu numeričke nagrade i informacije o tome kako se situacija promenila. Entitet koji komunicira sa svetom naziva se (softverskim) agentom dok se svet naziva okruženjem. Kao i kod ostalih oblasti mašinskog učenja, učenje potkrepljivanjem podrazumeva skup problema koji imaju za cilj obučavanje agenta radi maksimizacije dugoročne numeričke nagrade. 
+Učenje potkrepljivanjem je vid mašinskog učenja koji podseća na učenje koje se može naći u prirodi: ljudi i životinje uče na osnovu interakcije sa svetom oko sebe. Razlikovanje povoljnog i nepovoljnog ponašanja nije unapred učinjeno već je neophodno da onaj koji uči donese taj zaključak. U učenju potkrepljivanjem kao grani mašinskog učenja, komunikacija sa okruženjem svodi se na preduzimanje akcija u nekoj situaciji i dobijanja odgovora u vidu numeričke nagrade i informacije o tome kako se situacija promenila. Entitet koji komunicira sa svetom naziva se (softverskim) agentom dok se svet naziva okruženjem. Kao i kod ostalih oblasti mašinskog učenja, učenje potkrepljivanjem podrazumeva skup problema i njihovih rešenja. Cilj je baš učenje na osnovu komunikacije sa okruženjem, bez potrebe za ljudskom intervencijom.
+
+%koji imaju za cilj obučavanje agenta radi maksimizacije dugoročne numeričke nagrade. [OVO MI SE NE SVIDJA]
 
 \section{Osnovni pojmovi}
-[MOŽDA SKLONI SECTION] \\
-Učenje potkrepljivanjem sastoji se iz četiri komponente: politike ponašanja (ili samo politike), nagrade, funkcije vrednosti i modela okruženja. Politika opisuje način na koji se agent ponaša. Nagrada predstavlja numerički signal koji agent dobija od okruženja. U toku učenja, cilj agenta je da maksimizuje ukupnu nagradu dobijenu od okruženja. Dakle, nagradom je implicitno objašnjeno šta je dobro a šta loše ponašanje. Prilikom rešavanja problema učenja potkrelpljivanjem, cilj je nalaženje optimalne politike, tj. politike čijim se praćenjem dobija najveća dugoročna nagrada. Funkcija vrednosti govori koliko je dobro naći se u nekom stanju okruženja. Za razliku od nagrade, funkcija vrednosti opisuje kvalitet nekog stanja na duže staze. Ova komponenta je neophodna jer je moguće da dolaskom u neko stanje agent dobije malu nagradu ali da dato stanje ima veliku vrednost, što znači da je dolaskom u to stanje moguće ostvariti veliku dugoročnu nagradu. Neki algoritmi učenja potkrepljivanjem koriste model okruženja kako bi planirali unapred. Moguće je koristit pristupe koji koriste model, pristupe koji ne koriste model već se uči iz iskustva, kao i pristupe koji koriste učenje iz iskustva radi učenja modela.
+
+Učenje potkrepljivanjem sastoji se iz četiri komponente: politike ponašanja (ili samo politike), nagrade, funkcije vrednosti i modela okruženja. Politika opisuje način na koji se agent ponaša. Nagrada predstavlja numerički signal koji agent dobija od okruženja. U toku učenja, cilj agenta je da maksimizuje ukupnu nagradu dobijenu od okruženja. Dakle, nagradom je implicitno objašnjeno šta je dobro a šta loše ponašanje. Prilikom rešavanja problema učenja potkrelpljivanjem, cilj je nalaženje optimalne politike, tj. politike čijim se praćenjem dobija najveća dugoročna nagrada. Funkcija vrednosti govori koliko je dobro naći se u nekom stanju okruženja. Za razliku od nagrade, funkcija vrednosti opisuje kvalitet nekog stanja na duže staze. Ova komponenta je neophodna jer je moguće da dolaskom u neko stanje agent dobije malu nagradu ali da dato stanje ima veliku vrednost, što znači da je dolaskom u to stanje moguće ostvariti veliku dugoročnu nagradu. Neki algoritmi učenja potkrepljivanjem koriste model okruženja kako bi planirali unapred. Moguće je koristiti pristupe koji koriste model, pristupe koji ne koriste model već se uči iz iskustva, kao i pristupe koji koriste učenje iz iskustva radi učenja modela.
 \par 
-U učenju potkrepljivanjem javlja se potreba za uspostavljanjem balansa između istraživanja i iskorišćavanja već stečenog znanja (eng.~{\em exloration vs. exploitation}). Naime, na početku učenja, agent istražuje okruženje i time uči kako bi trebalo da se ponaša. Čak i kada se nauči neko ponašanje, često je neophodno nastaviti sa istraživanjem u nekoj meri. Kako već naučeno ponašanje možda nije najbolje, bez istraživanja je moguće završiti u nekom od lokalnih optimuma. Međutim, kako učenje teče i agent unapređuje svoje ponašanje, poželjno je pratiti politiku koja dovodi do velikih dugoročnih nagrada. Najčešće je stopa istraživanja velika na početku učenja i opada u toku ovog procesa. [OVO NEGDE DRUGDE?]
+U učenju potkrepljivanjem javlja se potreba za uspostavljanjem balansa između istraživanja i iskorišćavanja već stečenog znanja (eng.~{\em exloration vs. exploitation}). Naime, na početku učenja, agent istražuje okruženje i time uči kako bi trebalo da se ponaša. Čak i kada se nauči neko ponašanje, često je neophodno nastaviti sa istraživanjem u nekoj meri. Kako već naučeno ponašanje možda nije najbolje, bez istraživanja je moguće završiti u nekom od lokalnih optimuma. Međutim, kako učenje teče i agent unapređuje svoje ponašanje, poželjno je pratiti politiku koja dovodi do velikih dugoročnih nagrada. Najčešće je stopa istraživanja velika na početku učenja i opada u toku ovog procesa.
 
 \section{Markovljevi procesi odlučivanja}
 \label{sec:mdp}
 
-Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Markovljevi procesi odlučivanja opisuju okruženje s kojim je moguće komunicirati. Ta komunikacija sastoji se iz toga da se od okruženja može dobiti informacija o stanju i da se okruženju može poslati informacija o akciji koja se preduzima, na šta okruženje odgovara informacijama o novom stanju i o numeričkoj nagradi. Izuzetno je važno da se od okruženja ne može dobiti informacija o tome da li je preduzeta akcija prava ili ne već samo informacija o numeričkoj nagradi, koju na duže staze treba maksimizovati. Kako se pri učenju potkrepljivanjem pretpostavlja postojanje agenta, kao i postojanje okruženja, nadalje se podrazumeva da postoji neki agent koji komunicira sa okruženjem. Treba imati u vidu da Markovljevi procesi odlučivanja opisuju idealno okruženje. U praksi okruženja često nisu idealna i tada se pribegava metodima koji ne koriste MDP. Iako je veliki deo teorije u učenju potkrepljivanjem ograničen na MDP, iste ideje imaju širu primenu.
+Markovljevi procesi odlučivanja (eng. {\em Markov decision process}, skr. {\em MDP}) daju teorijski okvir u kome je moguće relativno jednostavno postaviti i rešiti problem učenja potkrepljivanjem. Markovljevi procesi odlučivanja opisuju okruženje s kojim je moguće komunicirati. Ta komunikacija sastoji se iz toga da se od okruženja može dobiti informacija o stanju i da se okruženju može poslati informacija o akciji koja se preduzima, na šta okruženje odgovara informacijama o novom stanju i o numeričkoj nagradi. Izuzetno je važno da se od okruženja ne može dobiti informacija o tome da li je preduzeta akcija prava ili ne već samo informacija o numeričkoj nagradi, koju na duže staze treba maksimizovati. Kako se pri učenju potkrepljivanjem pretpostavlja postojanje agenta, kao i postojanje okruženja, nadalje se podrazumeva da postoji neki agent koji komunicira sa okruženjem. Treba imati u vidu da Markovljevi procesi odlučivanja opisuju idealno okruženje. U praksi okruženja često nisu idealna i tada se pribegava metodima koji ne koriste MDP direktno. Iako je veliki deo teorije u učenju potkrepljivanjem ograničen pretpostavkom korišćenja MDP, iste ideje imaju širu primenu.
 %Pretpostavlja se da postoji agent koji komunicira sa okruženjem. Agent u svakom trenutku ima informaciju o %stanju okruženja i u mogućnosti je da preduzme akciju na šta od okruženja dobija odgovor u vidu novog stanja %i numeričke nagrade. Jedna važna pretpostavka jeste da agent ne dobija informaciju o tome da li je preduzeta %akcija bila dobra ili ne. Okruženje se predstavlja pomoću Markovljevog procesa odlučivanja. U nastavku je dat %teorijski opis Markovljevih procesa odlučivanja.
 
 \subsection{Osnovni pojmovi}
@@ -67,7 +69,7 @@ gde je $t+T+1$ trenutak kraja epizode.
 
 Kako je neophodno opisati pravila ponašanja agenta, uvodi se funkcija $\pi$, koja predstavlja verovatnoću da agent u stanju $s$ preduzme akciju $a$. Ova funkcija naziva se politikom i, ukoliko neki agent preduzima akciju $a$ u stanju $s$ sa verovatnoćom $\pi(a~|~s)$, za sva stanja $s$ i sve akcije $a$, kaže se da agent prati politiku $\pi$. Vrednosti $\pi(a~|~s)$, kad $a \notin \mathcal{A}(s)$, se ne razmatraju.
 
-Ukoliko za neku politiku $\pi$ važi da za svako $s$ postoji stanje $a_s$ takvo da $\pi(a_s~|~s)=1$ i $\pi(a~|~s)=0$ za sve ostale akcije $a$, tada se kaže da je politika deterministička. Radi jednostavnosti, u tom slučaju može se napisati $\pi(s)=a_s$.
+Ukoliko za neku politiku $\pi$ važi da za svako $s$ postoji stanje $a_s$ takvo da $\pi(a_s~|~s)=1$ i $\pi(a~|~s)=0$ za sve ostale akcije $a$, tada se kaže da je politika deterministička. Radi jednostavnosti, u tom slučaju se može napisati $\pi(s)=a_s$.
 \par 
 Ako je poznata politika $\pi$, može se definisati funkcija vrednosti stanja pri praćenju politike $\pi$:
 \begin{equation}
@@ -77,7 +79,7 @@ Na sličan način uvodi se i funkcija vrednosti akcije u stanju pri praćenju po
 \begin{equation}
 	q_{\pi}(s, a) \eqdef \mathbb{E}_{\pi}[G_t~|~S_t=s, A_t=a]
 \end{equation}
-Simbol $\mathbb{E}_{\pi}$ označava matematičko očekivanje ako se podrazumeva da se pri preduzimanju akcija prati politika $\pi$. Radi jednostavnostu će u nastavku funkcija $v_{\pi}$, odnosno $q_{\pi}$, biti nazivana samo funkcija vrednosti stanja, odnosno funkcija vrednosti akcije u stanju, dok će politika biti zapisana u indeksu.
+Simbol $\mathbb{E}_{\pi}$ označava matematičko očekivanje ako se podrazumeva da se pri preduzimanju akcija prati politika $\pi$. Radi jednostavnostu će u nastavku funkcija $v_{\pi}$, odnosno $q_{\pi}$, biti nazivana samo funkcija vrednosti stanja, odnosno funkcija vrednosti akcije u stanju, dok će oznaka politike biti zapisana u indeksu.
 \par 
 Mnogi algoritmi učenja potkrepljivanjem zasnivaju se na nalaženju optimalne politike, odnosno politike čijim se praćenjem dolazi do maksimalne dugoročne nagrade. Moguće je uvesti parcijalno uređenje politika definisano na sledeći način:
 \begin{equation}
@@ -102,7 +104,7 @@ Sada je neophodno izračunati oba sabirka. Prvi sabirak označava očekivanu nep
 		\mathbb{E}_{\pi}[R_{t+1}~|~S_t=s] = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}rp(s', r~|~s, a)
 	\end{aligned}
 \end{equation}
-Iz stanja $s$ preduzima se akcija $a$ sa verovatnoćom $\pi(a~|~s)$, dok se za preduzetu akciju $a$ u stanju $s$ sa verovatnoćom $p(s', r~|~s, a)$ prelazi u stanje $s'$ uz dobijanje nagrade $r$. U drugoj sumi, indeksi su $s'$ i $r$, što označava dvostruku sumu, jednu po $s'$ i jednu po $r$.
+Iz stanja $s$ preduzima se akcija $a$ sa verovatnoćom $\pi(a~|~s)$, dok se za preduzetu akciju $a$ u stanju $s$ sa verovatnoćom $p(s', r~|~s, a)$ prelazi u stanje $s'$ uz dobijanje nagrade $r$. 
 \par 
 Drugi sabirak, bez množioca $\gamma$, proširuje se na sledeći način:
 \begin{equation}
@@ -150,7 +152,7 @@ Moguće je uspostaviti vezu između $v_*$ i $q_*$:
 Relativno jednostavnim izvođenjem dolazi se do još jednog para jednakosti koje se nazivaju Belmanovim jednakostima optimalnosti.
 	\begin{align}
 		\label{eq:bel_v_opt} v_*(s) &= \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)\big[r+\gamma v_*(s')\big]	 \\
-		\label{eq:bel_q_opt} q_*(s,a) &= \sum_{s', r}^{} p(s', r~|~s,a)\big[\gamma \max_{a'}q_*(s',a')\big]
+		\label{eq:bel_q_opt} q_*(s,a) &= \sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma \max_{a'}q_*(s',a')\big]
 	\end{align}
 \par 
 U slučaju konačnih Markovljevih procesa odlučivanja, rekurentne relacije \eqref{eq:bel_v_opt} čine sistem od $n$ jednačina sa $n$ nepoznatih.\footnote{Kao što je pomenuto na početku dela o Belmanovim jednakostima, one važe za svako stanje $s$.} Isto važi i za relacije \eqref{eq:bel_q_opt}. Ovi sistemi sadrže funkciju $max$ pa stoga nisu linearni. Ukoliko je funkcija prelaska za dati MDP poznata, ovi sistemi se mogu rešiti; ta rešenja dobijena su bez prethodnog znanja o optimalnoj politici. 
@@ -163,7 +165,12 @@ Uz pretpostavku da se radi o konačnom MDP, osnovni pristup njegovom rešavanju 
 \begin{equation}
 		v_{k+1}(s) = \sum_{a}^{} \pi(a~|~s)\sum_{s', r}^{}p(s', r~|~s, a) \big[ r+\gamma v_k(s') \big]
 \end{equation}
-za sve $s \in \mathcal{S}$. Pod uslovom da $\gamma < 1$, niz vektora $v_k$ konvergira ka $v_{\pi}$. Sada je i u praksi moguće uporediti dve politike.
+za sve $s \in \mathcal{S}$. Pod uslovom da $\gamma < 1$, niz vektora $v_k$ konvergira ka $v_{\pi}$. Proces se zaustavlja kada razlika dve uzastopne funkcije, $v_k$ i $v_{k+1}$, postane dovoljno mala, u skladu sa metrikom $\norm{\cdot}_{\infty}$ definisanom na sledeći način:
+\begin{equation}
+	\label{eq:norm_conv}
+	\norm{v}_{\infty} = \max_x|v(x)|
+\end{equation}
+Sada je i u praksi moguće uporediti dve politike.
 \par 
 Kada je data deterministička politika $\pi$, postavlja se pitanje da li je moguće unaprediti je, tj. da li u stanju $s$ odabrati akciju $\pi(s)$ ili neku drugu akciju? Tada je za sve akcije $a$ dozvoljene u $s$ neophodno ispitati vrednost $q_{\pi}(s,a)$ u odnosu na vrednost $v_{\pi}(s)$. Ako neko $s$ postoji akcija $a$ takva da je $q_{\pi}(s, a) \geq v_{\pi}(s)$, tada je moguće konstruisati politiku $\pi'$ takvu da važi $\pi' \geq \pi$. Ovo važi na osnovu teoreme o unapređenju politike (eng.~{\em policy improvement theorem}):
 \begin{theorem*}
@@ -177,30 +184,26 @@ Proces dobijanja $\pi'$ od $\pi$  naziva se unapređenjem politike (eng.~{\em po
 \begin{align}
 	\max_a q_{\pi}(s,a) \geq&~ q_{\pi}(s,\pi(s)) \\=& v_{\pi}(s)
 \end{align}
-Druga jednakost sledi iz definicije funkcija $q_{\pi}$ i $v_{\pi}$.
+Druga jednakost sledi iz definicije funkcija $q_{\pi}$ i $v_{\pi}$. \textcolor{red}{Mislim da ovo vazi samo sa deterministicke politike.}
 \par 
-Polazeći od nasumično kreirane determinističke politike i prateći ovaj postupak, naizmenično sa evaluacijom novodobijene politike, dobija se niz politika $\pi_0, \pi_1, ...$ koji u slučaju konačnih MDP konvergira optimalnoj politici, $\pi_*$. Ime ovog procesa je iterativno unapređenje politike (eng.~{\em policy iteration}). Nasumična deterministička politika $\pi$ kreira se tako što se za svaku vrednost $\pi(s)$ proizvoljno bira element iz $\mathcal{A}(s)$.
+Polazeći od nasumično kreirane determinističke politike i prateći ovaj postupak, naizmenično sa evaluacijom novodobijene politike, dobija se niz politika $\pi_0, \pi_1, ...$ koji u slučaju konačnih MDP konvergira optimalnoj politici, $\pi_*$. Ime ovog procesa je iterativno unapređenje politike (eng.~{\em policy iteration}). Nasumična deterministička politika $\pi$ kreira se tako što se za svaku vrednost $\pi(s)$ proizvoljno bira element iz $\mathcal{A}(s)$. Proces se zaustavlja kad $\pi'(s) = \pi(s)$, za sve $s \in \mathcal{S}$.
 \par 
-Iterativno unapređenje politike, iako relativno brzo konvergira u odnosu na broj stanja, zahteva evaluaciju politike u svakoj iteraciji. Pored ovog algoritma, postoji i algoritam iterativnog unapređenja funkcije vrednosti. Naime, umesto traženja optimalne politike, iterativno se traži optimalna funkcija vrednosti stanja, $v_*$. Na osnovu Belmanove jednakosti optimalnosti za funkciju vrednosti, \eqref{eq:bel_v_opt}, kreira se iterativno pravilo ažuriranja:
+Iterativno unapređenje politike, iako relativno brzo konvergira u odnosu na broj stanja, zahteva evaluaciju politike u svakoj iteraciji. Postoji i algoritam iterativnog unapređenja funkcije vrednosti direktno, bez potrebe za naizmeničnim napređenjem i evaluacijom politike. Naime, umesto traženja optimalne politike, iterativno se traži optimalna funkcija vrednosti stanja, $v_*$. Na osnovu Belmanove jednakosti optimalnosti za funkciju vrednosti, \eqref{eq:bel_v_opt}, kreira se iterativno pravilo ažuriranja:
 \begin{equation}
 	\label{eq:val_iter} v_{k+1}(s) = \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_k(s')]
 \end{equation}
-gde se, kao i kod evaluacije politike, polazi od vektora $v_0$ čije su vrednosti nasumično odabrane. Proces se zaustavlja kada razlika dve uzastopne funkcije postane dovoljno mala, u skladu sa metrikom $\norm{\cdot}_{\infty}$ definisanom na sledeći način:
-\begin{equation}
-	\norm{v}_{\infty} = \max_x|v(x)|
-\end{equation}
+gde se, kao i kod evaluacije politike, polazi od vektora $v_0$ čije su vrednosti nasumično odabrane. I ovaj proces se zaustavlja u skladu normom ~$\norm{\cdot}_{\infty}$.
 \par 
-Iako su do sada opisani algoritmi prilično intuitivni, nije direktno jasno da moraju da konvergiraju. [OBRISATI]
 Pravilo ažuriranja \eqref{eq:val_iter} može se predstaviti kao operator $B:R^{|S|} \rightarrow R^{|S|}$ koji se naziva Belmanovim operatorom:
 \begin{equation}
-	Bv(s) = \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)\bigcap+\gamma v(s')\big]
+	Bv(s) = \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma v(s')\big]
 \end{equation}
 Ukoliko se pokaže da je operator $B$ kontrakcija, tada po teoremi o fiksnoj tački važi da postoji vektor $v_*$ takav da $Bv_*=v_*$. Opis i dokaz ove teoreme može se naći u \cite{num_met}. Uslov kontrakcije zapisuje se sledećim izrazom:
 \begin{equation}
 	\norm{Bv_1-Bv_2}_{\infty} \leq \alpha \norm{v_1-v_2}_{\infty}
 \end{equation}
 za neko $\alpha \in [0, 1)$. 
-Dokaz da je Belmanov operator kontrakcija: [PROVERI TACNOST SVIH OVIH JEDNAKOSTI]
+Dokaz da je Belmanov operator kontrakcija:
 \begin{align}
 	\norm{Bv_1-Bv_2}_{\infty} &= \max_s |Bv_1(s)-Bv_2(s)| \\
 	&= \mabs*{\max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_1(s')] - \max_{a}\sum_{s', r}^{} p(s', r~|~s,a)[r+\gamma v_2(s')]} \\
@@ -214,9 +217,9 @@ Ukoliko je $\gamma \in [0, 1)$, Belmanov operator je kontrakcija. Treći red sle
 \begin{equation}
 	\mabs*{\max_{x} f(x) - \max_{x} g(x)} \leq \max_{x}\mabs*{f(x)-g(x)}
 \end{equation}
-dok pretposlednji red sledi iz činjenice da je $p$ raspodela verovatnoće za fiksirane parametre $s$ i $a$ [Da li da ovo pomenem u definiciji funkcije p?]. Pošto je dokazano da postoji jedinstvena fiksna tačka Belmanovog operatora i, kako po njegovoj konstrukciji važi $Bv \geq v$, vidi se da je niz dobijen njegovom uzastopnom primenom rastući. Stoga je fiksna tačka zaista i optimalna funkcija vrednosti.
+dok pretposlednji red sledi iz činjenice da je $p$ raspodela verovatnoće za fiksirane parametre $s$ i $a$. Pošto je dokazano da postoji jedinstvena fiksna tačka Belmanovog operatora i, kako po njegovoj konstrukciji važi $Bv \geq v$, vidi se da je niz dobijen njegovom uzastopnom primenom rastući. Stoga je fiksna tačka zaista i optimalna funkcija vrednosti.
 \par 
-Ranije je pokazano kako se, ukoliko je poznata funkcija $v_*$, može konstruisati optimalna politika. Iz postojanja $v_*$ sledi postojanje $\pi_*$ ali ovakvih politika može biti više zbog mogućnosti da iz jednog stanja više akcija vode ka stanjima sa istom, maksimalnom, vrednošću. 
+Ranije je objašnjeno kako se, ukoliko je poznata funkcija $v_*$, može konstruisati optimalna politika. Iz postojanja $v_*$ sledi postojanje $\pi_*$ ali ovakvih politika može biti više zbog mogućnosti da iz jednog stanja više akcija vode ka stanjima sa istom, maksimalnom, vrednošću. 
 \par 
 Iako sporiji postupak, traženje $q_*$ funkcije pogodnije je od traženja $v_*$ u slučajevima kada funkcija prelaska nije poznata. Pristupi traženju ovih funkcija dinamičkim programiranjem podjednako su zastupljeni. 
 
@@ -228,7 +231,7 @@ Funkciju vrednosti stanja i funkciju vrednosti akcije u stanju metodima linearno
 \end{equation}
 Ovih uslova ima $\sum_{s \in \mathcal{S}}^{} |\mathcal{A}(s)| \leq |\mathcal{S}||\mathbb{A}|$. Pri ovim uslovima, treba minimizovati izraz $\sum_{s \in \mathcal{S}}^{} v(s)$. Rešavanje ovog problema daje $v_*$. Ovaj pristup rešavanju MDP-a pri određenim uslovima daje teorijski bržu konvergenciju od pristupa dinamičkim programiranjem. Uprkos tome, pri porastu broja stanja, pristup linearnim programiranjem brže postaje neizvodljiv od pristupa dinamičkim programiranjem.
 \par 
-Do sada opisani pristupi rešavanju problema učenja potkrepljivanjem opisuju postupak u slučaju da su informacije o okruženju dostupne, odnosno da je funkcija prelaska, $p$, poznata. Međutim, u realnim situacijama ovo često nije slučaj. Učenje kada funkcija prelaska nije poznata naziva se učenjem u nepoznatom okruženju. U ovoj situaciji, na neki način neophodno je prikupljati podatke o okruženju. Pri učenju u nepoznatom okruženju, moguća su dva pristupa za učenje i skupljanje podataka o okruženju. Prvi podrazumeva praćenje neke politike i njeno konstantno unapređenje na osnovu nagrada koje su dobijene od okruženja. Ovo je pristup u skladu sa politikom (eng.~{\em on-policy}). Drugi pristup podrazumeva aproksimaciju optimalne politike dok se dela na osnovu neke druge politike. Naziv je pristup mimo politike (eng.~{\em off-policy}). Koji god pristup da se odabere, zbog toga što podataci o okruženju nisu dostupni, neophodno je održavati balans između iskorišćavanja već naučenog i israživanja. Pitanje koji se javlja prilikom traženja ovog odnosa naziva se dilema između istraživanja i iskorišćavanja (eng.~{\em exporation vs. exploitaion dilemma}) i prisutna je i u svakodnevnom životu. Čest pristup rešavanju ove dileme jeste $\varepsilon$-pohlepna politika, koja podrazumeva da se, za neko $\varepsilon \in (0,1]$, sve akcije sem najbolje u nekom stanju $s$ biraju sa verovatnoćom $\frac{\varepsilon}{|\mathcal{A}(s)|}$ dok se najbolja bira sa verovatnoćom $1- \varepsilon + \frac{\varepsilon}{|\mathcal{A}(s)|}$. Drugim rečima, sa verovatnoćom $1-\varepsilon$ bira se najbolja akcija u skladu sa nekom politikom a sa verovatnoćom $\varepsilon$ biće odabrana nasumična vrednost iz $\mathcal{A}(s)$. Metaparametar $\varepsilon$ često se menja u toku učenja.
+Do sada opisani pristupi rešavanju problema učenja potkrepljivanjem opisuju postupak u slučaju da su informacije o okruženju dostupne, odnosno da je funkcija prelaska, $p$, poznata. Međutim, u realnim situacijama ovo često nije slučaj. Učenje kada funkcija prelaska nije poznata naziva se učenjem u nepoznatom okruženju. U ovoj situaciji, na neki način neophodno je prikupljati podatke o okruženju. Pri učenju u nepoznatom okruženju, moguća su dva pristupa za učenje i skupljanje podataka o okruženju. Prvi podrazumeva praćenje neke politike i njeno konstantno unapređenje na osnovu signala dobijenog od okruženja. Ovo je pristup u skladu sa politikom (eng.~{\em on-policy}). Drugi pristup podrazumeva aproksimaciju optimalne politike dok se dela na osnovu neke druge politike. Naziv je pristup mimo politike (eng.~{\em off-policy}). Koji god pristup da se odabere, zbog toga što podataci o okruženju nisu dostupni, neophodno je održavati balans između iskorišćavanja već naučenog i israživanja. Pitanje koji se javlja prilikom traženja ovog odnosa naziva se dilema između istraživanja i iskorišćavanja (eng.~{\em exporation vs. exploitaion dilemma}) i prisutna je i u svakodnevnom životu. Čest pristup rešavanju ove dileme jeste $\varepsilon$-pohlepna politika, koja podrazumeva da se, za neko $\varepsilon \in (0,1]$, sve akcije sem najbolje u nekom stanju $s$ biraju sa verovatnoćom $\frac{\varepsilon}{|\mathcal{A}(s)|}$ dok se najbolja bira sa verovatnoćom $1- \varepsilon + \frac{\varepsilon}{|\mathcal{A}(s)|}$. Drugim rečima, sa verovatnoćom $1-\varepsilon$ bira se najbolja akcija u skladu sa nekom politikom a sa verovatnoćom $\varepsilon$ biće odabrana nasumična vrednost iz $\mathcal{A}(s)$. Metaparametar $\varepsilon$ često se menja u toku učenja.
 \par 
 Osnovni primeri metoda u skladu sa politikom i metoda mimo politike u nepoznatom okruženju su, redom, Sarsa i Q učenje. Metod Sarsa podrazumeva učenje politike implicitno, tako što se iterativno unapređuje funkcija vrednosti akcije u stanju koja joj odgovara. Za izvršavanje ovog algoritma neophodni su sledeći podaci u jednom vremenskom trenutku, $t$: stanje u kome se na početku agent nalazi, $s_t$, akcija koja je preduzeta u tom stanju, $a_t$, nagrada i stanje koji zauzvrat dobijeni, $r_{t+1}$ i $s_{t+1}$ i akcija koja se u novom stanju preduzima, $a_{t+1}$. Ovi podaci čine petorku, $(s_t, a_t, r_{t+1}, s_{t+1}, a_{t+1})$, odakle potiče ime metoda. Pravilo ažuriranja tekuće aproksimacije $q$ funkcije je:
 \begin{equation}
@@ -237,18 +240,19 @@ Osnovni primeri metoda u skladu sa politikom i metoda mimo politike u nepoznatom
 					=&~ (1-\alpha)q(s_t, a_t) + \alpha [ R_{t+1} + \gamma q(s_{t+1}, a_{t+1}) ]
 	\end{aligned}
 \end{equation}
-Simbol $\leftarrow$ označava da je nova vrednost za $q(s_t, a_t)$ dobijena od tekuće datim izrazom, dok je $\alpha$ stopa učenja, metaparametar čija je uloga da odredi koliku težinu imaju nove vrednosti u odnosu na stare, kao što se vidi iz druge jednakosti. Stopa učenja ne mora biti fiksna.
-Petorke $(s_t, a_t, r_{t+1}, s_{t+1}, a_{t+1})$ prikupljaju se u skladu sa politikom određenom trenutnom aproksimacijom $q$. Uz određene uslove vezane za $\varepsilon$ i stopu učenja, ovaj postupak dovešće do konvergencije ka optimalnoj funkciji vrednosti akcije u stanju. [Ne bih ulazio u ove uslove, sem ako ne mislis da je tako bolje. Poenta rada nije Sarsa, ovo pisem radi ilustracije razlike izmedju off policy i on policy metoda.].
+Simbol $\leftarrow$ označava da je nova vrednost za $q(s_t, a_t)$ dobijena od tekuće datim izrazom,\footnote{Nisu korišćeni izrazi oblika $q_k(s_t, a_t)$, koji označavaju aproksimaciju u $k$-toj iteraciji jer jedno ažuriranje utiče na vrednost samo za jedan par $s_t, a_t$.} dok je $\alpha$ stopa učenja, metaparametar čija je uloga da odredi koliku težinu imaju nove vrednosti u odnosu na stare, kao što se vidi iz druge jednakosti. Stopa učenja ne mora biti fiksna.
+Petorke $(s_t, a_t, r_{t+1}, s_{t+1}, a_{t+1})$ prikupljaju se u skladu sa politikom određenom trenutnom aproksimacijom $q$. Uz određene uslove vezane za $\varepsilon$ i stopu učenja, ovaj postupak dovešće do konvergencije ka optimalnoj funkciji vrednosti akcije u stanju. \textcolor{red}{Ne bih ulazio u ove uslove, sem ako ne mislis da je tako bolje. Poenta rada nije Sarsa, ovo pisem radi ilustracije razlike izmedju off policy i on policy metoda.}.
 \par 
-Predstavnik učenja mimo politike je takozvano Q-učenje (eng.~{\em Q-learning}). Ovaj algoritam podrazumeva poboljšavanje tekuće aproksimacije uz pretpostavku da će se u narednom stanju odabrana najbolja akcija, nezavisno od toga koja će akcija zaista biti preduzeta. Pravilo ažuriranja je:
+Predstavnik učenja mimo politike je takozvano Q učenje (eng.~{\em Q-learning}). Ovaj algoritam podrazumeva poboljšavanje tekuće aproksimacije uz pretpostavku da će se u narednom stanju odabrati najbolja akcija, nezavisno od toga koja će akcija zaista biti preduzeta. Pravilo ažuriranja je:
 \begin{equation}
-		q(s_t, a_t) \leftarrow ~q(s_t, a_t) + \alpha [ R_{t+1} + \gamma \max_a q(s_{t+1}, a) - q(s_t, a_t)] \\
+	\label{eq:q_ucenje}
+		q(s_t, a_t) \leftarrow ~q(s_t, a_t) + \alpha [ R_{t+1} + \gamma \max_a q(s_{t+1}, a) - q(s_t, a_t)]
 \end{equation}
-Ovaj algoritam garantuje konvergenciju tekuće aproksimacije, $q$, ka optimalnoj funkciji vrednosti akcije u stanju, $q_*$, ako se vrednosti za sve parove $s_t, a_t$ stalno ažuriraju. Na ovom algoritmu zasnovan je DQN, opisan kasnije.
+Algoritam Q učenje garantuje konvergenciju tekuće aproksimacije, $q$, ka optimalnoj funkciji vrednosti akcije u stanju, $q_*$, ako se vrednosti za sve parove $s, a$ stalno ažuriraju. Na ovom algoritmu zasnovan je DQN, opisan kasnije.
 \par 
-U oba algoritma se vrednosti za $q(s,a)$ inicijalizuju na nasumično odabrane vrednosti, sem za završna stanja, gde se, nezavisno od akcije, vrednost $q$ funkcije postavlja na $0$. Takođe, politika se ne konstruiše tako da se u svakom stanju $s$ bira akcija koja maksimizuje $q(s,a)$, odnosno na pohlepan način, već se uvek uključuje element istraživanja. Često se od trenutne aproksimacije $q$ konstruiše $\varepsilon$-pohlepna politika. [Da li da pominjem da su oba algoritma TD(0)? Ovo neće imati mnogo uticaja na ostatak rada, samo može da proširi sliku koju smo stekli ovde.]
+U oba algoritma se vrednosti za $q(s,a)$ inicijalizuju na nasumično odabrane vrednosti, sem za završna stanja, gde se, nezavisno od akcije, vrednost $q$ funkcije postavlja na $0$. Takođe, politika se ne konstruiše tako da se u svakom stanju $s$ bira akcija koja maksimizuje $q(s,a)$, odnosno na pohlepan način, već se uvek uključuje element istraživanja. Često se od trenutne aproksimacije $q$ konstruiše $\varepsilon$-pohlepna politika. \textcolor{red}{Da li da pominjem da su oba algoritma TD(0)? Ovo neće imati mnogo uticaja na ostatak rada, samo može da proširi sliku koju smo stekli ovde.}
 \par 
-Na prvi pogled, ova dva algoritma deluju jako slično. U slučaju da ne postoji element istraživanja, odnosno ako se od trenutne aproksimacije $q$ konstruise politika na pohlepan način, tada su i isti. Međutim, element istraživanja uvek postoji jer, u suprotnom, do učenja ne bi došlo. Glavna razlika između Sarsa algoritma i Q-učenja jeste u tome što u se prvom algoritmu ažuriranje vrši na osnovu akcije koja će se zaista preduzeti praćenjem politike, dok će se u drugom algoritmu ažuriranje uvek vršiti, kao da će se praćenjem politike uvek odabrati akcija koja maksimizuje $q(s,a)$ po $a$, što ne mora biti stvarnost. 
+Na prvi pogled, ova dva algoritma deluju jako slično. U slučaju da ne postoji element istraživanja, odnosno ako se od trenutne aproksimacije $q$ konstruise politika na pohlepan način, tada su i isti. Međutim, element istraživanja uvek postoji jer, u suprotnom, do učenja ne bi došlo. Glavna razlika između Sarsa algoritma i Q učenja jeste u tome što u se prvom algoritmu ažuriranje vrši na osnovu akcije koja će se zaista preduzeti praćenjem politike, dok će se u drugom algoritmu ažuriranje uvek vršiti optimistično, kao da će se praćenjem politike uvek odabrati akcija koja maksimizuje $q(s,a)$ po $a$, što ne mora biti stvarnost. 
 \par 
 Svi navedeni metodi prestaju da budu izvodljivi kada MDP dostigne određenu veličinu. Ovo se, na primer, može desiti ukoliko je prostor stanja neprekidan ali je urađena diskretizacija ili ako je sam prostor diskretan ali izuzetno veliki. U velikim prostorima može se desiti da su dva ili više stanja suštinski ista ali do sada opisani algoritmi nisu u stanju to da zaključe. Uz to, može se desiti da postoje stanja u koja je nemoguće doći. Prethodno opisani algoritmi oslanjaju se na to da će se stanja nanova posećivati ali i ovo postaje problem u velikim prostorima. U cilju rešavanja ovih problema, pribegava se korišćenjem nekih od modela nadgledanog učenja radi aproksimacije funkcije vrednosti stanja ili akcije u stanju. Nadgledano učenje zahteva skup unapred uparenih ulaznih i izlaznih vrednosti ali, kao što je već pomenuto, u učenju potkrepljivanjem ove informacije nisu dostupne. Stoga je neophodno izvršiti određene izmene algoritama učenja poktrepljivanjem. Jedan primer ove kombinacije pristupa je DQN, opisan u nastavku.
 
@@ -258,6 +262,39 @@ Svi navedeni metodi prestaju da budu izvodljivi kada MDP dostigne određenu veli
 % neka prica o opstem Q ucenju
 % neki zakljucak -- kada je sta bolje koristiti
 
-\section{DQN}
+\section{Duboko Q učenje}
 
+Napretkom razvoja neuronskih mreža i rastom njihove popularnosti, nameće se pitanje da li je moguće izvršiti funkcionalnu aproksimaciju funkcije vrednosti stanja ili akcije u stanju koristeći duboke neuronske mreže. Međutim, funkcionalna aproksimacija optimalne funkcije vrednosti akcije u stanju mimo politike nelinearnom funkcijom, kao što je duboka neuronska mreža, nema teorijske garancije, kao što je pokazano u \cite{q_nn_div}.  Termin duboko Q učenje (eng.~{\em deep q learning}) odnosi se baš na ovakvo uopštenje algoritma Q učenja. Prvi uspešan pristup rešavanju problema učenja potkrepljivanjem na ovaj način prikazan je 2013. godine u \cite{dqn_mnih}. U radu je predstavljen algoritam kojim, korišćenjem konvolutivne neuronske mreže i još nekih elemenata, agent uči da igra video igre sa Atari 2600 konzole. Za razliku od nekih ranijih radova, u kojima su bili konstruisani razni atributi na osnovu kojih se uči, ovde se agent trenira samo na osnovu slike koja je dostupna na ekranu i rezultata u igri, što znači da će se neophodni atributi konstruisati treniranjem neuronske mreže. 
+Autori su predstavljeni algoritam imenovali duboko Q učenje a neuronsku mrežu koja služi za aproksimaciju duboka Q mreža (eng.~{\em Deep Q network}, skr.~{\em DQN}).
+\par 
+Ovaj rad popraćen je raznim sličnim rezultatima od kojih je verovatno najpoznatiji \cite{dqn_dm}.  U nastavku je opisan algoritam u celosti, kao i unapređenja predstavljena u \cite{dqn_mnih}.
+
+\subsection{Aproksimacija funkcije vrednosti akcije u stanju}
+[MORA SE OVO SREDITI] \\
+Za učenje biće korišćene petorke $(s, a, r, s', t)$ gde su prva četiri člana deo putanje a peti je logička vrednost koja označava da li je $s'$ završno (terminirajuće) stanje. U slučaju da jeste, vrednost svake aproksimacije $q_w(s',a')$ je $0$.
+U prethodno razmatranim algoritmima učenja potkrepljivanjem, $q$ funkcija mogla se predstaviti tablicom. Redovi bi označavali stanja a kolone akcije (ili obrnuto) i u njihovom preseku nalazila bi se vrednost akcije u stanju. Dakle, funkcija vrednosti akcije u stanju je funkcija dva argumenta. Umesto tablice, radi treniranja agenta da igra video igru, biće korišćena duboka konvolutivna neuronska mreža. Oznaka ove funkcije biće $q_w(s,a)$, gde su $w$ parametri mreže ili, jednostavnije, $q$ mreža.
+\par 
+Ovaj pristup zasnivaće se na Belmanovoj jednakosti optimalnosti za $q$ funkciju:
+\begin{equation}
+	q_*(s,a) = \sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma \max_{a'}q_*(s',a')\big]
+\end{equation}
+Pretpostavlja se da je okruženje determinističko, tj. da ukoliko se u stanju $s$ preduzme akcija $a$, tada se sa verovatnoćom $1$ prelazi u neko drugo stanje $s'$  i dobija nagrada $r$ dok je verovatnoća da se pređe u neko drugo stanje ili da se dobije neka druga nagrada $0$. \textcolor{red}{OpenAI Gym okruženje dopušta i da ova pretpostavka bude tačna i da bude netačna. Zavisi od frameskip-a. Napisi o ovome negde}. Prvo pitanje koje treba postaviti jeste kako definisati funkciju greške. Cilj treniranja mreže jeste da funkcija $q_w$ zadovoljava Belmanove jednakosti optimalnosti. Dakle, za jednu četvorku $s, a, r, s'$ treba minimizovati srednjekvadratnu razliku izraza
+\begin{equation}
+	q_w(s,a) \text{~i~} \sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma \max_{a'}q_w(s',a')\big]
+\end{equation}
+Međutim, kako funkcija $p$ nije poznata, biće korišćena informacija o kolika je nagrada za preduzimanje akcije $a$ u stanju $s$ i koje je novo stanje $s'$. Stoga, drugi izraz postaje
+\begin{equation}
+	r + \gamma \max_{a'}q_w(s',a')
+\end{equation}
+gde se pri računanju $q_w(s',a')$ koristi informacija o tome da li je stanje $s'$ završno. Dakle, funkcija greške može se predstaviti kao očekivanje srednjekvadratne razlike vrednosti $q_w(s,a)$ i $r + \gamma \max_{a'}q_w(s',a')$. Funkcija greške zapisuje se na sledeći način:
+\begin{equation}
+	L(w) = \frac{1}{2}\mathbb{E}_{s,a,r,s'}\bigg[ \big(r + \gamma \max_{a'}q_w^-(s',a') - q_w(s,a)\big) ^2 \bigg]
+\end{equation}
+Koristeći $q_w^-$ označava se da se za vrednosti $q_w^-(s',a')$ koriste težine mreže fiksirane pre ažuriranja. Za optimizaciju se koristi stohastički gradijentni spust, opisan u \ref{sss:grad_spust}. Oznaka $\mathbb{E}_{s,a,r,s'}$ označava očekivanje u skladu sa distribucijom iz koje se dobijaju četvorke $(s,a,r,s')$ ali će u praksi ove četvorke biti prikupljane empirijski jer o samoj distribuciji iz koje potiču unapred ne postoje informacije. \textcolor{red}{Ovde treba biti oprezan: ukoliko su uzastopno prikupljene četvorke visoko korelisane, može doći do problema sa učenjem. Ovo negde drugde}
+\par 
+Još jedan izbor koji treba načiniti vezan je za strukturu izlaza i ulaza u mrežu. Ukoliko se mreža konstruiše tako da kao ulaz prima stanje i preduzetu akciju i kao izlaz daje vrednost dosadašnje aproksimacije, tada bi za odabir najbolje akcije u stanju bilo neophodno propustiti podatke kroz mrežu onoliko puta koliko ima akcija. Ovaj pristup mogao bi znatno da uspori obučavanje. S druge strane, moguće je koristiti arhitekturu takvu da mreža kao ulaz primi stanje a kao izlaz da vektor vrednosti za svaku od mogućih akcija. Ova arhitektura biće korišćena u implementaciji.
+\par 
+- Gradient clipping \\
+- Memorija\\
+- Dve mreze\\
 
