@@ -269,30 +269,44 @@ Autori su predstavljeni algoritam imenovali duboko Q učenje a neuronsku mrežu 
 \par 
 Ovaj rad popraćen je raznim sličnim rezultatima od kojih je verovatno najpoznatiji \cite{dqn_dm}.  U nastavku je opisan algoritam u celosti, kao i unapređenja predstavljena u \cite{dqn_mnih}.
 
-\subsection{Aproksimacija funkcije vrednosti akcije u stanju}
-[MORA SE OVO SREDITI] \\
-Za učenje biće korišćene petorke $(s, a, r, s', t)$ gde su prva četiri člana deo putanje a peti je logička vrednost koja označava da li je $s'$ završno (terminirajuće) stanje. U slučaju da jeste, vrednost svake aproksimacije $q_w(s',a')$ je $0$.
-U prethodno razmatranim algoritmima učenja potkrepljivanjem, $q$ funkcija mogla se predstaviti tablicom. Redovi bi označavali stanja a kolone akcije (ili obrnuto) i u njihovom preseku nalazila bi se vrednost akcije u stanju. Dakle, funkcija vrednosti akcije u stanju je funkcija dva argumenta. Umesto tablice, radi treniranja agenta da igra video igru, biće korišćena duboka konvolutivna neuronska mreža. Oznaka ove funkcije biće $q_w(s,a)$, gde su $w$ parametri mreže ili, jednostavnije, $q$ mreža.
+\subsection{Struktura agenta}
+
+Za učenje biće korišćene petorke $(s, a, r, s', t)$ gde su prva četiri člana deo putanje a peti je logička vrednost koja označava da li je $s'$ završno (terminirajuće) stanje. U slučaju da jeste, vrednost svake aproksimacije $q_w(s',a')$ je $0$. Ove petorke biće nazivane prelazima. Glavni elementi sistema za učenje su neuronska mreža koja aproksimira $q$ funkciju i memorija koja čuva već viđene prelaze radi učenja nad njima. U nastavku su opisani ovi elementi i prikaz samog algoritma.
+
+\subsubsection{Q mreža}
+
+U prethodno razmatranim algoritmima učenja potkrepljivanjem, $q$ funkcija mogla se predstaviti tablicom. Redovi bi označavali stanja a kolone akcije (ili obrnuto) i u njihovom preseku nalazila bi se vrednost akcije u stanju. Dakle, funkcija vrednosti akcije u stanju je funkcija dva argumenta. Umesto tablice, radi treniranja agenta da igra video igru, biće korišćena duboka konvolutivna neuronska mreža. Oznaka ove funkcije biće $q_w(s,a)$, gde su $w$ parametri mreže. Prateći terminologiju korišćenu u radovima, mreža će biti nazivana dubokom Q mrežom (eng.~{\em deep Q network}) ili samo Q mrežom.
 \par 
-Ovaj pristup zasnivaće se na Belmanovoj jednakosti optimalnosti za $q$ funkciju:
+Kao i osnovni algoritam Q učenja, ovaj pristup zasnivaće se na Belmanovoj jednakosti optimalnosti za $q$ funkciju:
 \begin{equation}
 	q_*(s,a) = \sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma \max_{a'}q_*(s',a')\big]
 \end{equation}
-Pretpostavlja se da je okruženje determinističko, tj. da ukoliko se u stanju $s$ preduzme akcija $a$, tada se sa verovatnoćom $1$ prelazi u neko drugo stanje $s'$  i dobija nagrada $r$ dok je verovatnoća da se pređe u neko drugo stanje ili da se dobije neka druga nagrada $0$. \textcolor{red}{OpenAI Gym okruženje dopušta i da ova pretpostavka bude tačna i da bude netačna. Zavisi od frameskip-a. Napisi o ovome negde}. Prvo pitanje koje treba postaviti jeste kako definisati funkciju greške. Cilj treniranja mreže jeste da funkcija $q_w$ zadovoljava Belmanove jednakosti optimalnosti. Dakle, za jednu četvorku $s, a, r, s'$ treba minimizovati srednjekvadratnu razliku izraza
+Pretpostavlja se da je okruženje determinističko, tj. da ukoliko se u stanju $s$ preduzme akcija $a$, tada se sa verovatnoćom $1$ prelazi u neko drugo stanje $s'$  i dobija nagrada $r$ dok je verovatnoća da se pređe u neko drugo stanje ili da se dobije neka druga nagrada $0$. \textcolor{red}{OpenAI Gym okruženje dopušta i da ova pretpostavka bude tačna i da bude netačna. Zavisi od frameskip-a. Napisi o ovome negde}. Prvo pitanje koje treba postaviti jeste kako definisati funkciju greške. Cilj treniranja je približno odrediti optimalnu funkciju vrednosti akcije u stanju, $q_*$. Kako $q_*$ zadovoljava Belmanove jednakosti, teži se tome da njena aproksimacija, $q_w$ približno zadovoljava ove jednakosti. Vodeći se ovom idejom, biće konstruisana funkcija greške, koju treba minimizovati. 
+\par 
+Za jednu četvorku $s, a, r, s'$ treba minimizovati srednjekvadratnu razliku izraza
 \begin{equation}
 	q_w(s,a) \text{~i~} \sum_{s', r}^{} p(s', r~|~s,a)\big[r + \gamma \max_{a'}q_w(s',a')\big]
 \end{equation}
-Međutim, kako funkcija $p$ nije poznata, biće korišćena informacija o kolika je nagrada za preduzimanje akcije $a$ u stanju $s$ i koje je novo stanje $s'$. Stoga, drugi izraz postaje
+Međutim, kako funkcija $p$ nije poznata, biće korišćena informacija o tome kolika je nagrada za preduzimanje akcije $a$ u stanju $s$ i koje je novo stanje $s'$. Stoga, drugi izraz postaje
 \begin{equation}
 	r + \gamma \max_{a'}q_w(s',a')
 \end{equation}
-gde se pri računanju $q_w(s',a')$ koristi informacija o tome da li je stanje $s'$ završno. Dakle, funkcija greške može se predstaviti kao očekivanje srednjekvadratne razlike vrednosti $q_w(s,a)$ i $r + \gamma \max_{a'}q_w(s',a')$. Funkcija greške zapisuje se na sledeći način:
+gde se pri računanju $q_w(s',a')$ koristi informacija o tome da li je stanje $s'$ završno. Dakle, funkcija greške može se predstaviti kao očekivanje srednjekvadratne razlike vrednosti $q_w(s,a)$ i $r + \gamma \max_{a'}q_w(s',a')$:
 \begin{equation}
 	L(w) = \frac{1}{2}\mathbb{E}_{s,a,r,s'}\bigg[ \big(r + \gamma \max_{a'}q_w^-(s',a') - q_w(s,a)\big) ^2 \bigg]
 \end{equation}
-Koristeći $q_w^-$ označava se da se za vrednosti $q_w^-(s',a')$ koriste težine mreže fiksirane pre ažuriranja. Za optimizaciju se koristi stohastički gradijentni spust, opisan u \ref{sss:grad_spust}. Oznaka $\mathbb{E}_{s,a,r,s'}$ označava očekivanje u skladu sa distribucijom iz koje se dobijaju četvorke $(s,a,r,s')$ ali će u praksi ove četvorke biti prikupljane empirijski jer o samoj distribuciji iz koje potiču unapred ne postoje informacije. \textcolor{red}{Ovde treba biti oprezan: ukoliko su uzastopno prikupljene četvorke visoko korelisane, može doći do problema sa učenjem. Ovo negde drugde}
+Oznaka $q_w^-$ ukazuje na to da se za traženje maksimalne vrednosti akcije u stanju $s$ koriste težine mreže fiksirane pre ažuriranja. Za optimizaciju se koristi stohastički gradijentni spust, opisan u \ref{sss:grad_spust}. Oznaka $\mathbb{E}_{s,a,r,s'}$ označava očekivanje u skladu sa distribucijom iz koje se dobijaju četvorke $(s,a,r,s')$ ali će u praksi ove četvorke biti prikupljane empirijski jer o samoj distribuciji iz koje potiču unapred ne postoje informacije. 
 \par 
 Još jedan izbor koji treba načiniti vezan je za strukturu izlaza i ulaza u mrežu. Ukoliko se mreža konstruiše tako da kao ulaz prima stanje i preduzetu akciju i kao izlaz daje vrednost dosadašnje aproksimacije, tada bi za odabir najbolje akcije u stanju bilo neophodno propustiti podatke kroz mrežu onoliko puta koliko ima akcija. Ovaj pristup mogao bi znatno da uspori obučavanje. S druge strane, moguće je koristiti arhitekturu takvu da mreža kao ulaz primi stanje a kao izlaz da vektor vrednosti za svaku od mogućih akcija. Ova arhitektura biće korišćena u implementaciji.
+\par 
+PASUS O DVE MREŽE
+	- cemu druga mreza? 
+	- kako stabilizuje ucenje? samo empirijski dokaz?
+\subsubsection{Memorija}
+Prilikom prikupljanja i korišćenja prelaza za obučavanje treba biti oprezan: ukoliko su uzastopno prikupljene četvorke visoko korelisane, može doći do neefikasnog učenja. Potreba za uklanjanjem visoke korelisanosti uzastopnih prelazaka motiviše korišćenje memorije (eng.~{\em experience replay}~ili~{\em replay memory}) u kojoj će se čuvati ti podaci. Nasumični uzorak iz ove memorije koristiće se za obučavanje Q mreže. Memorija ima još jednu ulogu prilikom obučavanja agenta. Naime, uzorkovanjem se prelazi potencijalno ponovo koriste za treniranje mreže, što znači da je stopa iskorišćenosti podataka veća. 
+\par 
+Kako samo treniranje može da bude vrlo dugo, nije izvodljivo čuvati sve prelaze viđene do nekog trenutka već samo poslednjih $N$. Veličina memorije je jedan od metaparametara modela.
+
 \par 
 - Gradient clipping \\
 - Memorija\\
