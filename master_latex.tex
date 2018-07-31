@@ -81,6 +81,18 @@
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \DeclarePairedDelimiter\mabs{\lvert}{\rvert}
 
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\renewcommand\algorithmicrequire{}
+
+\makeatletter
+\newenvironment{myalgorithm}[1][htb]{%
+    \renewcommand{\ALG@name}{Algoritam}% Update algorithm name
+   \begin{algorithm}[#1]%
+  }{\end{algorithm}}
+\makeatother
+
 \begin{document}
 
 \pagenumbering{roman}
@@ -123,14 +135,10 @@
 \include{tex/masinsko_ucenje}
 \include{tex/neuronske_mreze}
 \include{tex/rl}
+\include{tex/dqn}
+\include{tex/detalji_implementacije}
 
 
-
-\chapter{DQN}
-\label{ch:dqn}
-
-\chapter{Detalji implementacije}
-\label{ch:implementacija}
 
 \chapter{Eskperimentisanje sa elementima algoritma DQN}
 \label{ch:eksperimenti}
