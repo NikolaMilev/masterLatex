@@ -1,2 +1,92 @@
-\chapter{Detalji implementacije}
+\chapter{Detalji implementacije, treniranja i testiranja}
 \label{ch:implementacija}
+
+U ovoj glavi opisani su izvršeni eksperimenti, kao i struktura koda. Implementacija i testiranje zasnovani su na radovima \cite{dqn_mnih} i \cite{dqn_dm}.
+\section{Detalji implementacije}
+Prilikom implementacije, korišćen je programski jezik python, verzija $3.5.2$ kao i sledeće biblioteke:
+\begin{itemize}
+	\item \texttt{NumPy} -- Biblioteka otvorenog koda za numeričko izračunavanje. 
+	%	1.14.1
+	% http://www.numpy.org/ 
+	\item \texttt{Keras} -- Biblioteka otvorenog koda koja pruža visoko apstraktni API, što je čini jednostavnim za korišćenje.
+	%	2.2.0
+	% https://keras.io/
+	\item  \texttt{OpenAI~Gym} -- Biblioteka otvorenog koda koja pruža mogućnost korišćenja već gotovih okruženja radi istraživanja raznih pristupa učenju potkrepljivanjem.
+	%	0.10.5
+	% https://gym.openai.com/
+\end{itemize}
+Implicitno su korišćene i biblioteke od kojih navedene biblioteke zavise. U sklopu implementacije korišćeni su i neki moduli koji su deo standardne biblioteke jezika python.
+\par 
+Implementacija $DQN$ sastoji se iz dve klase, {\em DRLAgent} i {\em ExperienceReplay}, i nekoliko pomoćnih funkcija. Struktura koda opisana je u nastavku, na apstraktnom nivou. Ovo znači da su opisi nekih funkcija, koje nisu od važnosti za shvatanje koda, izostavljeni. Izvorni kod može se naći na sledećoj adresi: \url{https://github.com/NikolaMilev/DeepRL}. \textcolor{red}{Napravi novi repo i refaktorisi pa onda izmeni tekst ovde ako treba}.
+\par 
+Klasa \texttt{DRLAgent} opisuje funkcionisanje agenta koji se obučava prateći $DQN$ algoritam. Glavne komponente klase su memorija i $Q$ i ciljna mreža. Metodi bitni za učenje su:
+\begin{itemize}
+	\item \texttt{chooseAction(self, state)}\footnote{Pri pisanju instancnih metoda u jeziku python, prvi argument je uvek referenca na objekat nad kojim se taj metod poziva. Ta referenca označava se ključnom reči \texttt{self}} -- Vrši odabir akcije na osnovu stanja koje je prosleđeno referencom \texttt{state}. Odabir se vrši u skladu sa $\varepsilon$-pohlepnom politikom.
+	\item \texttt{trainOnBatch(self, batchSize)} -- Trenira $Q$ mrežu nasumičnim uzorkovanjem memorije, koristeći formule opisane u algoritmu \ref{alg:dqn}.
+	\item \texttt{test(self, network, numSteps)}\footnote{Parametar \texttt{network} stoji jer je isti kod korišćen za obučavanje raznih varijacija algoritma pri ispitivanju njegovih komponenti.} -- Vrši testiranje ciljne mreže u skladu sa pravilima opisanim u \textcolor{red}{[DEO GDE OPISUJES KAKO SE TESTIRA MREZA]}. Testiranje traje \texttt{numSteps} koraka.
+	\item \texttt{learn(self, numEpisodes)} -- \textcolor{red}{[OBRISI NUMEPISODES?]} Vrši obučavanje agenta. 
+\end{itemize}
+\par 
+Klasa \texttt{ExperienceReplay} opisuje omotač oko instance klase \texttt{deque}, koja opisuje objedinjenje pojmova steka i reda.\footnote{Dokumentacija ove klase može se naći na adresi \url{https://docs.python.org/3/library/collections.html\#collections.deque}.} Bitni metodi klase su:
+\begin{itemize}
+	\item \texttt{addTuple(self, state, action, reward, nextState, terminal)} -- Dodaje petorku \texttt{state, action, reward, nextState, terminal)} u memoriju. Prva četiri elementa odgovaraju četvorki $(s, a, r, s')$, odnosno jednom prelazu koji je agent video, dok peti element predstavlja istinitosnu vrednost koja označava da li je stanje $s'$ završno. Ovu informaciju neophodno je čuvati jer se u samim stanjima ona ne nalazi.
+	\item \texttt{getMiniBatch(self, sampleSize)} -- Dohvata uzorak veličine \texttt{sampleSize} iz memorije.
+\end{itemize}
+\par 
+Pored opisanih klasa, kod sadrži i funkcije koje pomažu boljoj strukturi koda:
+\begin{itemize}
+	\item \texttt{buildNetwork(height, width, depth, numActions)} -- Koristeći pozive iz biblioteke Keras, gradi neuronsku mrežu i vraća referencu na dati objekat.
+	\item \texttt{copyModelWeights(srcModel, dstModel)} -- Kopira težine mreže \texttt{srcModel} u mrežu \texttt{dstModel}.
+	\item \texttt{saveModelWeights(model, name)} -- Čuva neuronsku mrežu na putanju određenu argumentom \texttt{name}.
+	\item \texttt{preprocessSingleFrame(img)} -- Vrši pretprocesiranje jedne slike sa ekrana, opisano u \textcolor{red}{[DEO O PRETPROCESIRANJU FREJMOVA]}.
+	\item \texttt{transformReward(reward)} -- Transformiše nagradu.
+\end{itemize}
+\par 
+U više navrata je rečeno da $DQN$ algoritam uči nad slikama ekrana i nagradom dobijenom od okruženja. Međutim, jedna slika ne daje mnogo informacija. Na primeru igre Breakout, ukoliko je dostupna samo jedna slika ekrana, nemoguće je odrediti u kom se pravcu kreće loptica, ni kojom brzinom. Isto važi i za pločicu koja služi za odbijanje loptice. Međutim, iz nekoliko uzastopnih slika može se odrediti smer i brzina kretanja loptice i pločice. Na slici \ref{fig:ss} prikazane su četiri uzastopne slike sa ekrana.\footnote{Radi ilustracije, nisu prikazane uzastopne slike već je razlika između njih 7 slika. Prikazivanje uzastopnih slika sa ekrana dalo bi kao rezultat 4 skoro identične slike.} 
+
+\begin{figure}
+	\centering
+	\resizebox{.24\linewidth}{!}{\includegraphics{img/screenshots/1}}
+	\resizebox{.24\linewidth}{!}{\includegraphics{img/screenshots/2}}
+	\resizebox{.24\linewidth}{!}{\includegraphics{img/screenshots/3}}
+	\resizebox{.24\linewidth}{!}{\includegraphics{img/screenshots/4}}
+	\caption{Prikaz 4 uzastopna stanja ekrana u igri Breakout. Pločica miruje dok se loptica kreće ka donjem desnom uglu ekrana.}
+	\label{fig:ss}
+\end{figure}
+\par 
+Kako igre sa Atari 2600 konzole prikazuju $60$ slika u sekundi (eng.~{\em frame per second},~skr.~{\em fps}) i kako nije realno delati tom frekvencijom, vrši se preskakanje slika (eng.~{\em frame skipping}). Biblioteka \texttt{OpenAI Gym} pruža mogućnost korišćenja raznih vrednosti za broj preskočenih slika. U ovom radu, koristi se okruženje pod imenom \texttt{BreakoutDeterministic-v4}, što znači da će okruženje za jedan poziv kojim se vrši akcija izvršiti tu akciju na $4$ uzastopne slike koja se prikazuje. Deo imena \texttt{Deterministic} označava da će se uvek pozivom prikazivati svako četvrto stanje ekrana; neka okruženja dopuštaju da se preskakanje vrši nasumično, u nekom intervalu dozvoljenih vrednosti. Na primer, okruženje \texttt{Breakout-v0} za svaki poziv vrši preskakanje nasumično odabranog broja slika iz intervala $[1,4]$. \textcolor{red}{RUZNO, PREFORMULISI} Dakle, u ovoj implementaciji, po uzoru na rad \cite{dqn_dm}, agent će videti svako četvrto stanje ekrana. 
+
+\subsection{Pretprocesiranje}
+
+Okruženja koja služe kao omotači oko igara sa konzole Atari 2600 u \texttt{OpenAI Gym} biblioteci kao stanje ekrana vraćaju RGB slike zapisane u \texttt{NumPy} nizu. Na te slike primenjuje se pretprocesiranje u cilju smanjenja računskih zahteva modela. To pretprocesiranje podrazumeva tranformaciju slike tako da se svaki piksel, koji je trojka koja određuje količinu crvene ($R$), plave ($B$) i zelene ($G$) boje zameni njegovom osvetljenošću ($Y$), određenom na sledeći način:
+\begin{equation}
+\label{eq:lum}
+	Y = 0.299 R + 0.587 G + 0.114 B
+\end{equation}
+Kako su sve vrednosti $R$, $G$ i $B$ u intervalu $[0, 255]$ i kako se koeficijenti sabiraju na $1$, novodobijena vrednost je u intervalu $[0, 255]$. Vrednosti svakog piksela se u ulaznom sloju mreže dele sa $255$ i time dovode na interval $[0, 1]$. Još jedna transformacija koja se primenjuje na slike je njihovo smanjivanje. U radu \cite{dqn_dm} predloženo je da se slike skaliraju na dimenzije $84 \times 84$ ali, radi jednostavnosti implementacije i brzine izvršavanja, odlučeno je da će se u ovoj implementaciji visina i širina slike prepolove.
+
+\subsection{Prelazi i čuvanje u memoriji}
+
+U cilju čuvanja informacija o smeru kretanja objekata na ekranu, svako stanje biće sačinjeno od određenog broja uzastopnih stanja koja agent vidi. Svaki prelaz sačuvan u memoriju u stvari je petorka oblika $(s, a, r, s', t)$. 
+Ono na šta pri implementaciji treba obratiti pažnju su memorijski zahtevi. Nakon transformacije, dobijene slike su dimenzija $105 \times 80$\textcolor{red}{NAPISI NESTO ZASTO} i njihove koordinate implicitno su zapisane u pokretnom zarezu. Ukoliko je jednostruka tačnost u pitanju, jedno stanje zauzima $32.8125~kB$. Dakle, čuvanje milion stanja, kako je predloženo u radu \cite{dqn_dm}, zahteva između $32$ i $33~GB$ memorije. Ovo je moguće popraviti. Naime, kako su vrednosti dobijene nakon transformacije u intervalu $[0, 255]$ i kako će kasnije biti transformisane tako da staju u interval $[0, 1]$, to je bez gubitka značajne količine podataka moguće zaokružiti ih i čuvati ih u jednobajtnom podatku. Biblioteka \texttt{NumPy} definiše tip \texttt{uint8} koji ovo omogućuje. Takođe treba paziti na to da uzastopna stanja dele sve sem jedne slike. Biblioteka  \texttt{NumPy} dozvoljava da SE DELE REFERENCE. NEMOJ DA SE ZEZNES
+
+\section{Detalji treniranja}
+Zbog hardverskih ograničenja, eksperimentisano je samo sa igrom Breakout sa Atari 2600 konzole. 
+\section{Detalji testiranja}
+Tesitranje razlicitih varijacija $DQN$ algoritma izvršeno je na računaru sa četiri {\em AMD Opteron\texttrademark ~Processor 6168} procesora i {\em 96~GB} radne memorije. Iako su rad sa konvolutivnim mrežama dosta pogodnije grafičke karte \textcolor{red}{neki izvor da pokrije ovo tvrđenje}, ovaj računar pružio je najpogodniji dostupan hardver. Memorijski zahtevi za eksperimente bili su dosta manji od dosutpne memorije. Prilikom treniranja jednog agenta, bilo je zauzeto oko {\em 10~GB} radne memorije.
+
+% PYTHON: 3.5.2
+% KERAS: 2.2.0
+% OPENAI GYM: 0.10.5
+% TENSORFLOW: 1.5.0
+% NUMPY: 1.14.1
+%
+\textcolor{red}{[OpenAI Gym okruženje dopušta i da ova pretpostavka bude tačna i da bude netačna. Zavisi od frameskip-a. Napisi o ovome negde]}.
+
+\section{Dodatni elementi}
+\label{ss:dod_el}
+Za optimizaciju se koristi algoritam RMSProp (\ref{sss:rmsprop}). Nakon računanja, vrši se pojedinačno odsecanje koordinata gradijenta na interval $[-1, 1]$. Ova tehnika korišćena je u pomenutim radova zbog potencijalnog velikog rasta samog gradijenta koji može da izazove eksplozije u vrednostima parametara mreže.
+\par 
+Kako su ove tehnike ispitivane na mnoštvu igara sa Atari 2600 konzole, nagrade koje su dobijene od okruženja mogu znatno da variraju. Stoga, sve nagrade takođe su odsecane tako da pripadaju intervalu $[-1, 1]$. Nažalost, ovo onemogućava razlikovanje većih i manjih nagrada, što može dovesti do manje efikasnog učenja.
+\par 
+Kao što je rečeno ranije, $DQN$ agent uči na osnovu nagrada i slika sa ekrana igre. 
