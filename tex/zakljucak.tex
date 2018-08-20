@@ -1,9 +1,25 @@
 \chapter{Zaključak}
 \label{ch:zakljucak}
 
--- Prikazi sta smo dobili \\
--- Prikazi kako se to moze unaprediti \\
--- pomeni neke algoritme koji su se pokazali kao bolji za igranje igara? \\
--- smislices ti jos nesto \\ ~\\
+Cilj mašinskog učenja je generalizacija, učenje na osnovu dostupnih podataka i primena tog znanja u novim situacijama. Idealan sistem treba da bude u stanju da uči sa minimalnom količinom ljudske intervencije. Ipak, neretko je neophodno izvršiti razna pretprocesiranja podataka nad kojima se uči. Algoritam $DQN$ pokazuje da je moguće kreirati sistem koji uči na osnovu neobrađenih podataka. Koristeći metode učenja potkrepljivanjem zajedno sa neuronskom mrežom i memorijom, čija je svrha da imitira pamćenje, postignuti su zadovoljavajući rezultati pri igranju video igre Breakout sa konzole Atari 2600. Sprovedeni eksperimenti jasno, možda i ekstremno, prikazuju važnost korišćenja ciljne mreže i memorije za proces učenja.
+\par 
+Igranje video igara zahteva donošenje odluka u hodu (eng.~{\em real time}). Uspesi u stvaranju sistema koji nezavisno igraju video igre nameću težnju da se slični sistemi koriste za kontrolu raznih drugih procesa. 
+\par 
+Ipak, dobijene rezultate moguće je unaprediti. Idealna taktika igranja igre Breakout podrazumeva pravljenje prolaza kroz cigle i navođenje loptice kroz njega, što daje kao rezultat da loptica udara u cigle sa gornje strane, dajući bolji rezultat uz manje angažovanje agenta. Video zapisi date u GitHub repoztorijumu prikazuju da su agenti došli prilično blizu ovog ponašanja, u slučaju podešavanja čiji su rezultati prikazani grafovima \ref{fig:dmim} i \ref{fig:dvmim}. Očekivano je da bi korišćenje različitih metaparametara, uključujući i duže vreme treniranja, dalo različite rezultate. Unapređenje bi bilo znatno olakšano pristupom odgovarajućem hardveru kao što su grafičke karte sa CUDA jezgrima. Na ovaj način, promene vrednosti metaparametara bile bi lakše ispitane, što bi dovelo do mogućnosti finih podešavanja i, očekuje se, boljih rezultata.
+\par 
+Sem $DQN$, postoji još algoritama dubokog učenja potkrepljivanjem, od kojih su neki dali bolje rezultate na Atari 2600 emulatoru. Neki od tih algoritama su $DDQN$ \cite{ddqn} (eng.~{\em dueling DQN}), varijacija $DQN$ algoritma i, možda najuspešniji u ovom zadatku, algoritam $A3C$ \cite{a3c} (eng.~{\em Asynchronous Advantage Actor-Critic}). Koristeći algoritam $A3C$, kreiran je agent koji je u stanju da igra video igru Doom, koja je dosta kompleksnija od igara sa Atari 2600 konzole.
+\par 
+Dakle, pored podešavanja metaparametara, u budućnosti treba istražiti (možda čak i kreirati) nove metode dubokog učenja potkrepljivanjem i ispitati njihovu uspešnost.
 
--- Napisi apstrakt (abstrakt?)
+
+
+%-- Prikazi sta smo dobili \\
+%-- Prikazi kako se to moze unaprediti \\
+%-- pomeni neke algoritme koji su se pokazali kao bolji za igranje igara? \\
+%-- smislices ti jos nesto \\ ~\\
+
+%-- Napisi apstrakt (abstrakt?)
+
+%-- Napravi novi repo DONE
+%-- Uploaduj neke snimke na yt. DONE 
+%-- Procitaj jos jednom rad

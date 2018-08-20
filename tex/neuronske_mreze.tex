@@ -162,7 +162,7 @@ Postoje razni metodi optimizacije koji se koriste pri mašinskom učenju. Neki m
 \subsubsection{RMSProp}
 \label{sss:rmsprop}
 
-Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera.\footnote{\url{http://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf}} Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj različitih implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
+Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera \cite{rmsprop}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj različitih implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
 \begin{equation}
 	\begin{gathered}
 		g_0 = 0 \\
