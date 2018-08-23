@@ -23,9 +23,9 @@ Prilikom implementacije, korišćen je programski jezik python\cite{python}, ver
 % NUMPY: 1.14.1
 Implicitno su korišćene i biblioteke od kojih navedene biblioteke zavise. U sklopu implementacije korišćeni su i neki moduli koji su deo standardne biblioteke jezika python.
 \par 
-Implementacija $DQN$ sastoji se iz dve klase, {\em DRLAgent} i {\em ExperienceReplay}, i nekoliko pomoćnih funkcija. Struktura koda opisana je u nastavku, na apstraktnom nivou. Ovo znači da su opisi nekih funkcija, koje nisu od važnosti za shvatanje koda, izostavljeni. Izvorni kod može se naći na sledećoj adresi: \url{https://github.com/NikolaMilev/DQN}. \textcolor{red}{Refaktorisi}.
+Implementacija $DQN$ sastoji se iz dve klase, {\em DQNAgent} i {\em ExperienceReplay}, i nekoliko pomoćnih funkcija. Struktura koda opisana je u nastavku, na apstraktnom nivou. Ovo znači da su opisi nekih funkcija, koje nisu od važnosti za shvatanje koda, izostavljeni. Izvorni kod može se naći na sledećoj adresi: \url{https://github.com/NikolaMilev/DQN}.
 \par 
-Klasa \texttt{DRLAgent} opisuje funkcionisanje agenta koji se obučava prateći $DQN$ algoritam. Glavne komponente klase su memorija i $Q$ i ciljna mreža. Metodi bitni za učenje su:
+Klasa \texttt{DQNgent} opisuje funkcionisanje agenta koji se obučava prateći $DQN$ algoritam. Glavne komponente klase su memorija i $Q$ i ciljna mreža. Metodi bitni za učenje su:
 \begin{itemize}
 	\item \texttt{chooseAction(self, state)}\footnote{Pri pisanju instancnih metoda u jeziku python, prvi argument je uvek referenca na objekat nad kojim se taj metod poziva. Ta referenca označava se ključnom reči \texttt{self}} -- Vrši odabir akcije na osnovu stanja koje je prosleđeno referencom \texttt{state}. Odabir se vrši u skladu sa $\varepsilon$-pohlepnom politikom.
 	\item \texttt{trainOnBatch(self, batchSize)} -- Trenira $Q$ mrežu nasumičnim uzorkovanjem memorije, koristeći formule opisane u algoritmu \ref{alg:dqn}.
@@ -33,7 +33,7 @@ Klasa \texttt{DRLAgent} opisuje funkcionisanje agenta koji se obučava prateći 
 	\item \texttt{learn(self)} -- Vrši obučavanje agenta. 
 \end{itemize}
 \par 
-Klasa \texttt{ExperienceReplay} opisuje omotač oko instance klase \texttt{deque}, koja opisuje objedinjenje pojmova steka i reda.\footnote{Dokumentacija ove klase može se naći na adresi \url{https://docs.python.org/3/library/collections.html\#collections.deque}.} Bitni metodi klase su:
+Klasa \texttt{ExperienceReplay} opisuje omotač oko klase \texttt{deque}, koja opisuje objedinjenje pojmova steka i reda.\footnote{Dokumentacija ove klase može se naći na adresi \url{https://docs.python.org/3/library/collections.html\#collections.deque}.} Bitni metodi klase su:
 \begin{itemize}
 	\item \texttt{addTuple(self, state, action, reward, nextState, terminal)} -- Dodaje petorku \texttt{(state, action, reward, nextState, terminal)} u memoriju. Prva četiri elementa odgovaraju četvorki $(s, a, r, s')$, odnosno jednom prelazu koji je agent video, dok peti element predstavlja istinitosnu vrednost koja označava da li je stanje $s'$ završno. Ovu informaciju neophodno je čuvati jer se ona ne nalazi u samim stanjima.
 	\item \texttt{getMiniBatch(self, sampleSize)} -- Dohvata uzorak veličine \texttt{sampleSize} iz memorije.
@@ -60,7 +60,7 @@ U više navrata je rečeno da $DQN$ algoritam uči nad slikama ekrana i nagradom
 	\label{fig:ss}
 \end{figure}
 \par 
-Kako igre sa Atari 2600 konzole prikazuju $60$ slika u sekundi (eng.~{\em frame per second},~skr.~{\em fps}) i kako nije realno delati tom frekvencijom, vrši se preskakanje slika (eng.~{\em frame skipping}). Biblioteka \texttt{OpenAI Gym} pruža mogućnost korišćenja raznih vrednosti za broj preskočenih slika. U ovom radu, koristi se okruženje pod imenom \texttt{BreakoutDeterministic-v4}, što znači da će okruženje za jedan poziv kojim se vrši akcija izvršiti tu akciju na $4$ uzastopne slike koja se prikazuje. Deo imena \texttt{Deterministic} označava da će se uvek pozivom prikazivati svako četvrto stanje ekrana; neka okruženja dopuštaju da se preskakanje vrši nasumično, u nekom intervalu dozvoljenih vrednosti. Na primer, okruženje \texttt{Breakout-v0} za svaki poziv vrši preskakanje nasumično odabranog broja slika iz intervala $[1,4]$. U ovoj implementaciji, po uzoru na rad \cite{dqn_dm}, agent će videti svako četvrto stanje ekrana. 
+Kako igre sa Atari 2600 konzole prikazuju $60$ slika u sekundi (eng.~{\em frame per second},~skr.~{\em fps}) i kako nije realno delati tom frekvencijom, vrši se preskakanje slika (eng.~{\em frame skipping}). Biblioteka \texttt{OpenAI Gym} pruža mogućnost korišćenja raznih vrednosti za broj preskočenih slika. U ovom radu, koristi se okruženje pod imenom \texttt{BreakoutDeterministic-v4}, što znači da će okruženje za jedan poziv kojim se vrši akcija izvršiti tu akciju na $4$ uzastopne slike koja se prikazuje. \textcolor{red}{[Da li da pomenem da sam ovo morao da nadjem u izvornom kodu jer nije dokumentovano u zvanicnoj dokumentaciji OpenAI Gym-a?]} Deo imena \texttt{Deterministic} označava da će se uvek pozivom prikazivati svako četvrto stanje ekrana; neka okruženja dopuštaju da se preskakanje vrši nasumično, u nekom intervalu dozvoljenih vrednosti. Na primer, okruženje \texttt{Breakout-v0} za svaki poziv vrši preskakanje nasumično odabranog broja slika iz intervala $[1,4]$. U ovoj implementaciji, po uzoru na rad \cite{dqn_dm}, agent će videti svako četvrto stanje ekrana. 
 \par 
 Na svake $4$ viđene slike, vršiće se jedan korak stohastičkog gradijentnog spusta, nasumičnim uzorkovanjem $32$ stavke iz memorije.
 
@@ -246,6 +246,6 @@ Iako neuronske mreže teorijski nisu dobar izbor za aproksimaciju $q_*$ funkcije
 U \cite{dqn_dm} može se videti da uklanjanjem ciljne mreže rezultat opada ali ne u meri u kojoj se to desilo u eksperimentima koji su izvršeni u sklopu ovog rada. Međutim, optimizacija je empirijski proces koji zahteva mnogo isprobavanja različitih kombinacija metaparametara. Čak i sa proverenom arhitekturom neuronske mreže i algoritmom optimizacije, ovo može biti dug i težak proces. U ovom slučaju, načinjen je izbor drugih, šire rasprostranjenih biblioteka, kao i izmena nekih metaparametara; ovo je dovoljno da dovede do razlike u postignutom rezultatu.
 \par 
 Iako daje bolje rezultate, korišćenje arhitekture sa više slojeva koji imaju više filtera dovelo je do znatno većeg vremena obučavanja agenta. 
-\textcolor{red}{[Nesto o vecoj mrezi?]}
+\textcolor{red}{[Jos nesto o vecoj mrezi?]}
 \par 
 Treba obratiti pažnju i na grafove koji označavaju prosečne maksimalne vrednosti akcija u stanju. Iako su autori rada \cite{dqn_mnih} zaključili da relativna glatkost grafa koji prikazuje napredak trenutne aproksimacije $q_*$ funkcije prikazuje stabilnost učenja, sa slike \ref{fig:dmnm} se vidi da ovo ne mora biti slučaj. Ipak, vidi se da grafovi koji prikazuju napretke implementacija koje sadrže ciljnu mrežu zaista sadrže manje šuma.

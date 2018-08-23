@@ -93,7 +93,8 @@ Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje ve
 Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng.~{\em maximum likelihood estimate}), odnosno traži se maksimum sledećeg izraza: 
 \begin{equation}
 	P_w(y_1, ..., y_N | x_1, ..., x_N)
-\end{equation}.
+\end{equation}
+\textcolor{red}{[A DA JA OVO IZBACIM?]}
 
 \subsection{Optimizacija}
 \label{subsec:optimizacija}
@@ -124,7 +125,7 @@ Metod gradijentnog spusta jedan je od najstarijih metoda  optimizacije. Iterativ
 gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng.~{\em learning rate}). 
 Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 \begin{equation}
-	\frac{1}{2}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
+	\frac{1}{N}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
 \end{equation}
 
 Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe Robins Monroovi uslovi \cite{nikolic_rm}:
@@ -202,7 +203,7 @@ Na kraju, iterativni korak dat je ispod. Dodavanje skalara $\varepsilon$ na vekt
 	w_{k+1} = w_k - \alpha \frac{\hat{m}_{k+1}}{\sqrt{\hat{v}_{k+1}} + \varepsilon}
 \end{equation}
 
-Parametar $\alpha$ naziva se veličina koraka ili stopa učenja. Vrednosti parametara $\beta_1$ i $\beta_2$ ograničene su na skup $\left[0, 1\right) $ i preporučene vrednosti su $0.9$ i $0.999$, redom, dok se za $\varepsilon$ preporučuje vrednost $10^{-8}$. Kao i u algoritmu RMSProp, svrha parametra $\varepsilon$ je izbegavanje deljenja sa nulom. Takođe nalik algoritmu RMSProp opisanom iznad, moguće je uvesti stopu opadanja parametra $\alpha$.
+Parametar $\alpha$ naziva se veličina koraka ili stopa učenja. Vrednosti parametara $\beta_1$ i $\beta_2$ ograničene su na skup $\left[0, 1\right) $ i preporučene vrednosti su $0.9$ i $0.999$, redom, dok se za $\varepsilon$ preporučuje vrednost $10^{-8}$. Kao i u algoritmu RMSProp, svrha parametra $\varepsilon$ je izbegavanje deljenja nulom. Takođe nalik algoritmu RMSProp opisanom iznad, moguće je uvesti stopu opadanja parametra $\alpha$.
 \par
 Intuicija kojom se vodi algoritam Adam jeste da dužina svakog koraka zavisi od osobina funkcije u regionu u kom se trenutno vrši optimizacija. Ovaj algoritam u mnogim primenama pokazao se kao superioran u odnosu na ostale algoritme za optimizaciju.
 
