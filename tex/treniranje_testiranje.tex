@@ -1,6 +1,8 @@
 \chapter{Detalji treniranja i eksperimentalne evaluacije}
 \label{ch:treniranje_testiranje}
 
+U ovoj glavi opisano je testiranje agenta, kao i izvršeni eksperimenti, koji su zasnovani na radovima \cite{dqn_mnih} i \cite{dqn_dm}.
+
 \section{Pretprocesiranje}
 \label{sec:pretprocesiranje}
 Okruženja koja služe kao omotači oko igara sa konzole Atari 2600 u \texttt{OpenAI Gym} biblioteci kao stanje ekrana vraćaju RGB slike dimenzija $210 \times 160$ zapisane u \texttt{NumPy} nizu. Na te slike primenjuje se pretprocesiranje u cilju smanjenja računskih zahteva modela. To pretprocesiranje podrazumeva tranformaciju slike tako da se svaki piksel, koji je trojka koja određuje količinu crvene ($R$), plave ($B$) i zelene ($G$) boje zameni njegovom osvetljenošću ($Y$), određenom na sledeći način:
@@ -9,6 +11,8 @@ Okruženja koja služe kao omotači oko igara sa konzole Atari 2600 u \texttt{Op
 	Y = 0.299 R + 0.587 G + 0.114 B
 \end{equation}
 Kako su sve vrednosti $R$, $G$ i $B$ u intervalu $[0, 255]$ i kako se koeficijenti sabiraju na $1$, novodobijena vrednost je u intervalu $[0, 255]$. Vrednosti svakog piksela se u ulaznom sloju mreže dele sa $255$ i time dovode na interval $[0, 1]$. Još jedna transformacija koja se primenjuje na slike je njihovo smanjivanje. U radu \cite{dqn_dm} predloženo je da se slike skaliraju na dimenzije $84 \times 84$ ali, radi jednostavnosti implementacije i brzine izvršavanja, odlučeno je da će se u ovoj implementaciji visina i širina slike prepolove u odnosu na početnu, dobijajući niz dimenzija $105 \times 80$.
+\par 
+Kako je $DQN$ algoritam prvobitno ispitivan na mnoštvu igara sa Atari 2600 konzole, nagrade koje su dobijene od okruženja mogu znatno da variraju. Stoga, sve nagrade su odsecane tako da pripadaju intervalu $[-1, 1]$. Nažalost, ovo onemogućava razlikovanje većih i manjih nagrada, što može dovesti do manje efikasnog učenja. Ovaj postupak je zadržan radi ispitivanja njegovog efekta na proces učenja.
 
 \section{Detalji treniranja}
 \label{sec:treniranje}
@@ -18,19 +22,18 @@ Metaparametar $\varepsilon$ predstavlja stopu istraživanja. To je broj koji pre
 \par 
 Radovi  \cite{dqn_mnih} i \cite{dqn_dm} predlažu dve slične arhitekture koje se razlikuju u veličini mreže. Obe arhitekture su predstavljene ispod. Zbog ograničenih resursa, u ovom radu treniranje je vršeno koristeći manju mrežu. Samo jedan eksperiment izvršen je koristeći mrežu predloženu u radu \cite{dqn_dm}.
 \par 
-Arhitektura mreže u radu \cite{dqn_mnih} je sledeća. Ulazni sloj je dimenzija $84 \times 84 \times 4$. Nakon ulaznog, sledi konvolutivni sloj koji primenjuje $16$ filtera dimenzija $8 \times 8$ sa pomerajem $4$. Izlazi ovog sloja prosleđuju se u drugi konvolutivni sloj koji primenjuje $32$ filtera dimenzija $4 \times 4$ sa pomerajem $2$. Nakon konvolutivnih slojeva sledi jedan gusto povezani sloj od $256$ neurona. Izlazni sloj je takođe gusto povezan i broj neurona koji sadrži odgovara broju mogućih akcija u igri za koju se obučava. Svim slojevima sem ulaznog i izlaznog pridružena je ReLU aktivaciona funkcija.
+Arhitektura mreže u radu \cite{dqn_mnih} je sledeća. Ulazni sloj je dimenzija $84 \times 84 \times 4$. Nakon ulaznog, sledi konvolutivni sloj koji primenjuje $16$ filtera dimenzija $8 \times 8$ sa pomerajem $4$. Izlazi ovog sloja prosleđuju se u drugi konvolutivni sloj koji primenjuje $32$ filtera dimenzija $4 \times 4$ sa pomerajem $2$. Nakon konvolutivnih slojeva sledi jedan gusto povezani sloj od $256$ neurona. Izlazni sloj je takođe gusto povezan i broj neurona koji sadrži odgovara broju mogućih akcija u igri za koju se obučava. Svim slojevima sem ulaznog i izlaznog pridružena je ReLU aktivaciona funkcija. Ova arhitektura biće nazivana arhitekturom I.
 \par 
-U radu \cite{dqn_dm}, arhitektura podrazumeva tri konvolutivna sloja. Ulaz u mrežu takođe je dimenzija $84 \times 84 \times 4$. Prvi konvolutivni sloj sastoji se od $32$ filtera dimenzija $8 \times 8$ sa pomerajem $4$. Drugi konvolutivni sloj primenjuje $64$ filtera dimenzija $4 \times 4$ sa pomerajem $2$. Poslednji konvolutivni sloj primenjuje isto $64$ filtera, dimenzija $3 \times 3$ i sa pomerajem $1$. Nakon konvolutivnih slojeva sledi gusto povezani sloj od $512$ neurona. Izlazni sloj, kao i u prethodnoj arhitekturi, sadrži broj neurona koji odgovara broju mogućih akcija u igri za koju se mreža obučava. Svim slojevima sem ulaznog i izlaznog pridružena je ReLU aktivaciona funkcija.
+U radu \cite{dqn_dm}, arhitektura podrazumeva tri konvolutivna sloja. Ulaz u mrežu takođe je dimenzija $84 \times 84 \times 4$. Prvi konvolutivni sloj sastoji se od $32$ filtera dimenzija $8 \times 8$ sa pomerajem $4$. Drugi konvolutivni sloj primenjuje $64$ filtera dimenzija $4 \times 4$ sa pomerajem $2$. Poslednji konvolutivni sloj primenjuje isto $64$ filtera, dimenzija $3 \times 3$ i sa pomerajem $1$. Nakon konvolutivnih slojeva sledi gusto povezani sloj od $512$ neurona. Izlazni sloj, kao i u prethodnoj arhitekturi, sadrži broj neurona koji odgovara broju mogućih akcija u igri za koju se mreža obučava. Svim slojevima sem ulaznog i izlaznog pridružena je ReLU aktivaciona funkcija. Ova arhitektura biće nazivana arhitekturom II.
 \par 
 Za sve eksperimente, u konvolutivnim slojevima nije primenjivano proširivanje. Agregacija takođe nije primenjivana. Ova odluka dolazi iz potrebe da se sačuva informacija o poziciji elemenata na ekranu.
 \par 
 Za optimizaciju se koristi algoritam RMSProp (\ref{sss:rmsprop}). Nakon računanja, vrši se pojedinačno odsecanje koordinata gradijenta na interval $[-1, 1]$. Ova tehnika korišćena je u \cite{dqn_dm} zbog potencijalnog velikog rasta samog gradijenta koji može da izazove eksplozije u vrednostima parametara mreže.
 \par 
-Kako su ove tehnike ispitivane na mnoštvu igara sa Atari 2600 konzole, nagrade koje su dobijene od okruženja mogu znatno da variraju. Stoga, sve nagrade takođe su odsecane tako da pripadaju intervalu $[-1, 1]$. Nažalost, ovo onemogućava razlikovanje većih i manjih nagrada, što može dovesti do manje efikasnog učenja. Ovaj postupak je zadržan radi ispitivanja njegovog efekta na proces učenja.
+Igre sa Atari 2600 konzole često su koncipirane tako da igrač ima određeni broj života koji se na neki način gube i igra se završava kada se svi životi izgube. Ovo dovodi do pitanja kada je kraj epizode. Moguće je odlučiti se da je kraj epizode gubitak jednog života u igri ili gubitak svih života. Radi motivacije agentu da manje gubi živote, u toku procesa treniranja će gubitak jednog života označavati kraj epizode.
 \par 
-Igre sa Atari 2600 konzole često su koncipirane tako da igrač ima određeni broj života koji se na neki način gube i igra se završava kada se svi životi izgube. Ovo dovodi do pitanja kada je kraj epizode. Moguće je odlučiti se da je kraj epizode gubitak jednog života u igri ili gubitak svih života. Radi motivacije agentu da manje gubi živote, u ovom radu će gubitak jednog života označavati kraj epizode.
-\par 
-Treniranje svih implementacija trajalo je $10000000$ koraka, što je na kasnije opisanom računaru trajalo oko $5$ dana. Treniranje implementacije koja koristi arhitekturu sa više slojeva i više filtera u slojevima trajalo je znatno duže i, zbog tehničkog problema, trajalo je nešto kraće. Uprkos tome, rezultati su, očekivano, bolji od ostalih implementacija.
+Treniranje svih implementacija trajalo je $10000000$ koraka, što je na kasnije opisanom računaru trajalo oko $5$ dana. Treniranje implementacije koja koristi arhitekturu II zahtevalo je znatno više vremena za obučavanje i, zbog tehničkog problema, izvršilo se malo manje koraka treniranja.
+Treniranje implementacije koja koristi arhitekturu II trajalo je znatno duže i, zbog tehničkog problema, trajalo je nešto kraće. Uprkos tome, rezultati su, očekivano, bolji od ostalih implementacija.
 \begin{table}
 {\renewcommand{\arraystretch}{1.2}
  \begin{tabularx}{\textwidth}{|l|c|X|} 
@@ -88,20 +91,41 @@ Treniranje svih implementacija trajalo je $10000000$ koraka, što je na kasnije 
 \section{Detalji testiranja}
 \label{sec:testiranje}
 Tesitranje razlicitih varijacija $DQN$ algoritma izvršeno je na računaru sa četiri {\em AMD Opteron\texttrademark ~Processor 6168} procesora i {\em 96~GB} radne memorije. Iako su za rad sa konvolutivnim mrežama, zbog velikih mogućnosti paralelizacije, često dosta pogodnije grafičke karte, ovaj računar pružio je najpogodniji dostupan hardver. 
+\par 
+Proces testiranja izvršen je po uzoru na \cite{dqn_mnih}. Treniranje i testiranje izvršeni su naizmenično kako bi se pratio napredak u ponašanju agenta. Na svakih $200000$ koraka (ovaj period nazvan je epohom), treniranje se pauzira (odnosno, za vreme testiranja, agent ne uči), i vrši se testiranje, uz korišćenje okruženja nezavisnog od okruženja nad kojim se uči. Pri testiranju vrše se evaluacija ponašanja agenta i evaluacija trenutne aproksimacije funkcije $q_*$. 
+\par 
+U toku eksperimentisanja sa elementima $DQN$ algoritma korišćeni su isti postupci evaluacije agenta. Kako je cilj kreirati agenta sa najboljim rezultatom u toku epizode, na disk je čuvana mreža sa najboljim postignutim rezultatom u toku evaluacije. Rezultati testiranja različitih eksperimenata mogu se naći u slikama \ref{fig:dmim} do \ref{fig:dvmim}. Levi grafici predstavljaju rezultate evaluacije trenutne aproksimacije funkcije $q_*$ (dalje samo "evaluacija funkcije $q_*$") dok desni grafici predstavljaju rezultate evaluacije ponašanja, merene prosečnim rezultatom po epizodi evaluacije. 
+\par 
+Evaluacija ponašanja podrazumeva da agent komunicira sa novim okruženjem uz praćenje $\varepsilon$-pohlepne politike, gde je $\varepsilon=0.05$,\footnote{Razlog korišćenja $\varepsilon > 0$ pri testiranju je to što mnoge igre sa Atari 2600 konzole zahtevaju od korisnika da eksplicitno, nekom akcijom, pokrene igru nakon gubitka života. Ukoliko agent još uvek nije naučio da to treba da se uradi, testiranje bi bilo zaglavljeno u beskonačnoj petlji.} i pamćenje prosečnog postignutog rezultata po epizodi. Epizoda evaluacije ponašanja traje dok agent ne izgubi sve živote. Sama evaluacija ponašanja traje bar $10000$ koraka; ovo znači da se ona neće završiti čim se odigra taj broj koraka već završetkom epizode čiji je kraj na bar $10000$-tom koraku. Na ovaj način poslednja epizoda evaluacije ponašanja neće biti završena pre vremena, što znači da se prosek odnosi na cele epizode. Na disk je sačuvana neuronska mreža koja je dala najbolje rezultate prilikom evaluacija ponašanja. 
+\par  
+Nakon završenog treniranja, učinjena je još jedna evaluacija ponašanja, na osnovu sačuvane mreže. Agent komunicira sa novim okruženjem uz pračenje $\varepsilon$-pohlepne politike, gde je $\varepsilon=0$.\footnote{Ovakva politika naziva se pohlepnom politikom jer uvek bira najbolju akciju u nekom stanju, u skladu sa trenutnom aproksimacijom funkcije $q_*$.} Ovo znači da sve odluke donosi agent. U većini slučajeva, rezultat nije lošiji od najboljeg rezultata dobijenog prilikom evaluacije ponašanja. Ipak, zbog pomenutog problema sa akcijom za početak igre, ovo testiranje sprovedeno je uz eksplicitno preduzimanje te akcije nakon gubitka života.
+\par  
+Pri evaluaciji funkcije $q_*$ treba biti pažljiv jer različita stanja mogu imati različite vrednosti. Zbog toga se na početku treniranja bira fiksni skup stanja koji se koristi u kasnijoj evaluaciji. Elementi ovog skupa biraju se nasumično. Evaluacija funkcije $q_*$ vrši se tako se za svako od stanja pomenutog skupa izračuna maksimalna vrednost akcije i izračuna se prosek ovih maksimuma. 
+\par 
+Za istu implementaciju, grafik koji predstavlja evaluaciju funkcije $q_*$ sadrži manje šuma nego grafik koji prikazuje evaluaciju ponašanja; ovo je posledica činjenice da male promene težina mreže mogu da izazovu veliku promenu u ponašanju agenta. U \cite{dqn_mnih} je primećeno da grafici koji predstavljaju evaluaciju funkcije $q_*$ prikazuju stabilan napredak, odnosno učenje. Dve implementacije od kojih se očekivalo da daju najbolje rezultate (čiji su grafici prikazani na slikama \ref{fig:dmim} i \ref{fig:dvmim}) zaista imaju relativno glatke grafike koji predstavljaju evaluaciju funkcije $q_*$.
+\par 
+%Kao što je učinjeno i u \cite{dqn_mnih}, postignuti rezultat meri se interakcijom agenta sa okruženjem nezavisnim od okruženja nad kojim se uči. U toku testiranja, agent prati $\varepsilon$-pohlepnu politiku sa $\varepsilon=0.05$\footnote{Razlog korišćenja $\varepsilon > 0$ pri testiranju je to što mnoge igre sa Atari 2600 konzole zahtevaju od korisnika da eksplicitno, nekom akcijom, pokrene igru nakon gubitka života. Ukoliko agent još uvek nije naučio da to treba da se uradi, testiranje bi bilo zaglavljeno u beskonačnoj petlji.} i ova interakcija traje $10000$ koraka. Tačnije, tesitranje traje {\em bar} $10000$ koraka. Na ovaj način, svaka započeta epizoda je završena i rezultat nije poremećen epizodom koja je započeta i ubrzo završena. Ovo tesiranje se vrši na svakih $200000$ koraka treniranja. Taj period naziva se epohom. Zabeleženi rezultat je prosečna nagrada u epizodama koje su protekle u toku testiranja. Agent za vreme testiranja ne uči.
 %\par 
-%Očekivana metrika za ispitivanje rada algoritma na primeru učenja video igre je rezultat u igri. Iako to %jeste krajnji cilj, mala promena parametara mreže može izazvati veliku promenu u njenom ponašanju, što se %tiče rezultata. Ovo se zaključuje na osnovu toga što grafik koji predstavlja nagrade sadrži prilično veliki %šum. Međutim, grafik koji predstavlja $q$ vrednosti je relativno gladak i pokazuje stabilan napredak.
-\par 
-Kao što je učinjeno i u \cite{dqn_mnih}, postignuti rezultat meri se interakcijom agenta sa okruženjem nezavisnim od okruženja nad kojim se uči. U toku testiranja, agent prati $\varepsilon$-pohlepnu politiku sa $\varepsilon=0.05$\footnote{Razlog korišćenja $\varepsilon > 0$ pri testiranju je to što mnoge igre sa Atari 2600 konzole zahtevaju od korisnika da eksplicitno, nekom akcijom, pokrene igru nakon gubitka života. Ukoliko agent još uvek nije naučio da to treba da se uradi, testiranje bi bilo zaglavljeno u beskonačnoj petlji.} i ova interakcija traje $10000$ koraka. Tačnije, tesitranje traje {\em bar} $10000$ koraka. Na ovaj način, svaka započeta epizoda je završena i rezultat nije poremećen epizodom koja je započeta i ubrzo završena. Ovo tesiranje se vrši na svakih $200000$ koraka treniranja. Taj period naziva se epohom. Zabeleženi rezultat je prosečna nagrada u epizodama koje su protekle u toku testiranja. Agent za vreme testiranja ne uči.
-\par 
-Međutim, grafik koji prikazuje rezultate prikazane evaluacije sadrži dosta šuma. Još jedan način ispitivanja napretka u toku učenja jeste evaluacija samih vrednosti trenutne aproksimacije funkcije $q_*$. No, različita stanja mogu dati različite rezultate pa je neophodno odabrati fiksirani skup stanja nad kojima se vrši evaluacija. Pre početka učenja, nasumično se bira skup stanja. Za ova stanja računaju se maksimalne vrednosti akcije u tom stanju i računa se prosek po stanjima. Sa slike \ref{fig:dmim} vidi se da grafik ovih vrednosti sadrži manje šuma. Ova ideja takođe je primenjena u \cite{dqn_mnih}. Ipak, zbog kasnije prikazanih dobijenih rezultata, ovu ideju treba prihvatati sa dozom skepticizma.
-\par 
-U toku eksperimentisanja sa elementima $DQN$ algoritma korišćeni su isti postupci evaluacije agenta. Kako je cilj kreirati agenta sa najboljim rezultatom u toku epizode, na disk je čuvana mreža sa najboljim postignutim rezultatom u toku evaluacije.
+%Međutim, grafik koji prikazuje rezultate prikazane evaluacije sadrži dosta šuma. Još jedan način ispitivanja napretka u toku učenja jeste evaluacija samih vrednosti trenutne aproksimacije funkcije $q_*$. No, različita stanja mogu dati različite rezultate pa je neophodno odabrati fiksirani skup stanja nad kojima se vrši evaluacija. Pre početka učenja, nasumično se bira skup stanja. Za ova stanja računaju se maksimalne vrednosti akcije u tom stanju i računa se prosek po stanjima. Sa slike \ref{fig:dmim} vidi se da grafik ovih vrednosti sadrži manje šuma. Ova ideja takođe je primenjena u \cite{dqn_mnih}. Ipak, zbog kasnije prikazanih dobijenih rezultata, ovu ideju treba prihvatati sa dozom skepticizma.
+%\par 
+
+%Za različite eksperimente, rezultati se mogu videti u tabelama \ref{tbl:max_rez}, za neuronske mreže sa manje slojeva koji su manji, i \ref{tbl:max_rez_big}, za neuronsku mrežu koja je veća i sa više slojeva. \textcolor{red}{[Preformulisati?]}
 
 \section{Eksperimenti}
 \label{sec:eksperimenti}
-Kao što je diskutovano, dva najvažnija elementa algoritma $DQN$, koja sprečavaju divergenciju aproksimirane funkcije $q_*$, jesu memorija i ciljna mreža. Slike \ref{fig:dmim} do \ref{fig:jmnm} prikazuju rezultate testiranja, koje je vršeno u toku treniranja, u zavisnosti od postojanja datog elementa. U prvom redu tabele \ref{tbl:max_rez} dati su najbolji postignuti rezultati u toku treniranja. U drugom redu, dati su rezultati postignuti korišćenjem težina mreže koje su dale najbolje rezultate u toku treniranja (ne treba zaboraviti da je to testiranje vršeno sa $\varepsilon = 0.05$) ali sa $\varepsilon = 0$. Razlog za ovakvim ispitivanjem je ispitivanje ponašanja kada se agentu u potpunosti prepusti kontrola. Ipak, zbog prethodno pomenutog problema sa akcijom za početak igre, bilo je neophodno pri gubitku života eksplicitno preduzeti ovu akciju, čak i u slučaju agenta sa ciljnom mrežom i memorijom. Autor veruje da bi dužim treniranjem agent naučio i da počinje igru.
+Kao što je diskutovano, dva najvažnija elementa algoritma $DQN$, koja sprečavaju divergenciju aproksimirane funkcije $q_*$, jesu memorija i ciljna mreža. Slike \ref{fig:dmim} do \ref{fig:jmnm} prikazuju rezultate testiranja, koje je vršeno u toku treniranja, u zavisnosti od postojanja datog elementa. Te slike odnose se na mreže sa arhitekturom I, dok se slika \ref{fig:dvmim} odnosi na mrežu sa arhitekturom II. Važnost ciljne mreže i memorije jasno se vidi sa ovih slika: agent koji je obučavan koristeći oba elementa (slike \ref{fig:dmim}) jasno postiže bolji rezultat nego agenti koji ne koriste bar jedan od tih elemenata. 
 \par 
-Na slici \ref{fig:dvmim} prikazani su rezultati dobijeni koristeci konvolutivnu mrežu sa arhitekturom opisanom u \cite{dqn_dm}. Zbog razlike i u broju slojeva i u veličini tih slojeva, ova arhitektura zahtevala je znatno više vremena za obučavanje. Zbog tehničkih poteškoća, ovako konstruisan agent treniran je malo manje od $40$ epoha tj. $8$ miliona koraka i testirana je samo varijacija koja sadrži i ciljnu mrežu i memoriju. Uprkos tome, dobijeni rezultati znatno su bolji. Rezultati, dobijeni na isti način kao što je objašnjeno iznad, mogu se videti u tabeli \ref{tbl:max_rez_big}.
+U \cite{dqn_dm} može se videti da uklanjanjem ciljne mreže rezultat opada ali ne u meri u kojoj se to desilo u eksperimentima koji su izvršeni u sklopu ovog rada. Međutim, optimizacija je empirijski proces koji zahteva mnogo isprobavanja različitih kombinacija metaparametara. Čak i sa proverenom arhitekturom neuronske mreže i algoritmom optimizacije, ovo može biti dug i težak proces. U ovom slučaju, korišćene su druge, šire rasprostranjene biblioteke, i izmenjeni su neki metaparametri; ovo je verovatno dovoljno da dovede do razlike u postignutom rezultatu.
+\par 
+Poredeći slike \ref{fig:dmim} i \ref{fig:dvmim} takođe se jasno vidi da mreža sa više slojeva koji su veći čak i sa manje koraka treniranja dostiže bolje rezultate. Ipak, vreme treniranja ovakve mreže bilo je skoro dvostruko u odnosu na arhitekturu I. Zbog ograničenih resursa, arhitektura II ispitana je samo uz prisustvo ciljne mreže i memorije, a treniranje je trajalo malo manje od $40$ epoha tj. $8$ miliona koraka.
+\par 
+Radi lakšeg pregleda, najbolji postignuti rezultati u toku testiranja prikazani su u prvom redu tabele \ref{tbl:max_rez}. U drugom redu iste tabele nalaze rezultati za prethodno opisano testiranje sa $\varepsilon=0$. Tabela \ref{tbl:max_rez_big} prikazuje rezultate dobijene na isti način ali za dublju mrežu sa većim slojevima, odnosno za mrežu sa arhitekturom II.
+\par 
+Iako neuronske mreže teorijski nisu dobar izbor za aproksimaciju funkcije $q_*$, jasno je da je uvođenje memorije i ciljne mreže znatno pomoglo učenju. Ciljna mreža povećava stabilnost učenja dok memorija osigurava smanjenu korelaciju između uzastopnih obučavanja i potencijalno povećava iskorišćenost podataka koje sistem vidi. Iako je algoritam $DQN$ danas prevaziđen po pitanju performansi, njegovo uvođenje predstavlja veliki pomak u učenju potkrepljivanjem.
+%\par 
+%U prvom redu tabele \ref{tbl:max_rez} dati su najbolji postignuti rezultati u toku treniranja. U drugom redu, dati su rezultati postignuti korišćenjem težina mreže koje su dale najbolje rezultate u toku treniranja (ne treba zaboraviti da je to testiranje vršeno sa $\varepsilon = 0.05$) ali sa $\varepsilon = 0$. Razlog za ovakvim ispitivanjem je ispitivanje ponašanja kada se agentu u potpunosti prepusti kontrola. Ipak, zbog prethodno pomenutog problema sa akcijom za početak igre, bilo je neophodno pri gubitku života eksplicitno preduzeti ovu akciju, čak i u slučaju agenta sa ciljnom mrežom i memorijom. Autor veruje da bi dužim treniranjem agent naučio i da počinje igru.
+%\par 
+%Na slici \ref{fig:dvmim} prikazani su rezultati dobijeni koristeci konvolutivnu mrežu sa arhitekturom opisanom u \cite{dqn_dm}. Zbog razlike i u broju slojeva i u veličini tih slojeva, ova arhitektura zahtevala je znatno više vremena za obučavanje. Zbog tehničkih poteškoća, ovako konstruisan agent treniran je malo manje od $40$ epoha tj. $8$ miliona koraka i testirana je samo varijacija koja sadrži i ciljnu mrežu i memoriju. Uprkos tome, dobijeni rezultati znatno su bolji. Rezultati, dobijeni na isti način kao što je objašnjeno iznad, mogu se videti u tabeli \ref{tbl:max_rez_big}.
 
 % sablon za grafike
 % nadji kako da stavis da gornja granica bude max treniranja od (oko 350 ili manje) sta god da se desi
@@ -151,7 +175,7 @@ Na slici \ref{fig:dvmim} prikazani su rezultati dobijeni koristeci konvolutivnu 
 
  \hline
 \end{tabular} }
-\caption{Rezultati testiranja agenta na igri Breakout}
+\caption{Rezultati testiranja agenta na igri Breakout uz korišćenje arhitekture I}
 \label{tbl:max_rez}
 \end{table}
 
@@ -167,17 +191,17 @@ Na slici \ref{fig:dvmim} prikazani su rezultati dobijeni koristeci konvolutivnu 
 
  \hline
 \end{tabular} }
-\caption{Rezultati testiranja agenta na igri Breakout (arhitektura mreže opisana u \cite{dqn_dm})}
+\caption{Rezultati testiranja agenta na igri Breakout korišćenje arhitekture II}
 \label{tbl:max_rez_big}
 \end{table}
 
-\subsection{Zaključak}
+%\subsection{Zaključak}
 
-Iako neuronske mreže teorijski nisu dobar izbor za aproksimaciju funkcije $q_*$, jasno je da je uvođenje memorije i ciljne mreže znatno pomoglo učenju. Ciljna mreža povećava stabilnost učenja dok memorija osigurava smanjenu korelaciju između uzastopnih obučavanja i potencijalno povećava iskorišćenost podataka koje sistem vidi. Iako je algoritam $DQN$ danas prevaziđen po pitanju performansi, njegovo uvođenje predstavlja veliki pomak u učenju potkrepljivanjem.
-\par 
-U \cite{dqn_dm} može se videti da uklanjanjem ciljne mreže rezultat opada ali ne u meri u kojoj se to desilo u eksperimentima koji su izvršeni u sklopu ovog rada. Međutim, optimizacija je empirijski proces koji zahteva mnogo isprobavanja različitih kombinacija metaparametara. Čak i sa proverenom arhitekturom neuronske mreže i algoritmom optimizacije, ovo može biti dug i težak proces. U ovom slučaju, korišćene su druge, šire rasprostranjene biblioteke, i izmenjeni su neki metaparametri; ovo je verovatno dovoljno da dovede do razlike u postignutom rezultatu.
-\par 
-Iako daje bolje rezultate, korišćenje arhitekture sa više slojeva koji imaju više filtera dovelo je do znatno većeg vremena obučavanja agenta. 
-\textcolor{red}{[Jos nesto o vecoj mrezi?]}
-\par 
-Treba obratiti pažnju i na grafove koji označavaju prosečne maksimalne vrednosti akcija u stanju. Iako su autori rada \cite{dqn_mnih} zaključili da relativna glatkost grafa koji prikazuje napredak trenutne aproksimacije funkcije $q_*$ prikazuje stabilnost učenja, sa slike \ref{fig:dmnm} se vidi da ovo ne mora biti slučaj. Ipak, vidi se da grafovi koji prikazuju napretke implementacija koje sadrže ciljnu mrežu zaista sadrže manje šuma.
+
+%\par 
+%U \cite{dqn_dm} može se videti da uklanjanjem ciljne mreže rezultat opada ali ne u meri u kojoj se to desilo u eksperimentima koji su izvršeni u sklopu ovog rada. Međutim, optimizacija je empirijski proces koji zahteva mnogo isprobavanja različitih kombinacija metaparametara. Čak i sa proverenom arhitekturom neuronske mreže i algoritmom optimizacije, ovo može biti dug i težak proces. U ovom slučaju, korišćene su druge, šire rasprostranjene biblioteke, i izmenjeni su neki metaparametri; ovo je verovatno dovoljno da dovede do razlike u postignutom rezultatu.
+%\par 
+%Iako daje bolje rezultate, korišćenje arhitekture sa više slojeva koji imaju više filtera dovelo je do znatno većeg vremena obučavanja agenta. 
+%\textcolor{red}{[Jos nesto o vecoj mrezi?]}
+%\par 
+%Treba obratiti pažnju i na grafove koji označavaju prosečne maksimalne vrednosti akcija u stanju. Iako su autori rada \cite{dqn_mnih} zaključili da relativna glatkost grafa koji prikazuje napredak trenutne aproksimacije funkcije $q_*$ prikazuje stabilnost učenja, sa slike \ref{fig:dmnm} se vidi da ovo ne mora biti slučaj. Ipak, vidi se da grafovi koji prikazuju napretke implementacija koje sadrže ciljnu mrežu zaista sadrže manje šuma.
