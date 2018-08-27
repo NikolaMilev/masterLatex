@@ -2,7 +2,6 @@
 \label{ch:nn}
 
 Neuronske mreže (eng.~{\em neural networks}) predstavljaju danas izuzetno popularan vid mašinskog učenja. Ovi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoza u medicini, igranje igara itd. Pun naziv je veštačka neuronska mreža (eng.~{\em artificial neural network}, skr.~{\em ANN}) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Ipak, neuronske mreže ne predstavljaju vernu kopiju mozga. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse.\footnote{Sinapsa je biološka struktura koja omogućuje komunikaciju između neurona.} Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
-
 \par
 Postoji nekoliko različitih vrsta neuronskih mreža. Tipičan primer jesu neuronske mreže sa propagacijom unapred. Ime proističe iz činjenice da se podaci obrađuju krećući se od ulaza mreže do izlaza, bez postojanja ikakve povratne sprege. Neuronske mreže sa propagacijom unapred sastoje se iz slojeva neurona. Ukoliko se u ovaj model uvede neki tip povratne sprege, tada se govori o rekurentnim neuronskim mrežama. Pri radu sa slikama i raznim drugim vrstama signala, najčešće se koriste konvolutivne neuronske mreže, o kojima će biti reči kasnije. Ono što je zajedničko je da su neuronske mreže sposobne za izdvajanje određenih karakteristika u podacima koji se obrađuju. To znači da se vrši kreiranje novih atributa na osnovu već postojećih atributa ili direktno iz ulaznih podataka. Taj proces naziva se ekstrakcijom atributa i smatra se da je to jedan od najbitnijih razloga za delotvornost neuronskih mreža.
 \par
@@ -92,7 +91,7 @@ Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje ve
 \end{equation}
 Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng.~{\em maximum likelihood estimate}), odnosno traži se maksimum sledećeg izraza po parametru $w$: 
 \begin{equation}
-	P_w(y_1, ..., y_N | x_1, ..., x_N)
+	P_w(y_1, ..., y_N~|~x_1, ..., x_N)
 \end{equation}
 
 \subsection{Optimizacija}

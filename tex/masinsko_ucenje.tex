@@ -20,24 +20,23 @@ Kada se govori o određenoj vrsti mašinskog učenja, podrazumevaju se vrste pro
 \subsection{Nadgledano mašinsko učenje}
 
 Pri nadgledanom mašinskom učenju, date su vrednosti ulaza i izlaza koje im odgovaraju za određeni broj slučajeva. Sistem treba na osnovu već datih veza za pojedinačne parove da ustanovi kakva veza postoji između tih parova i izvrši generalizaciju, odnosno, ukoliko ulazne podatke označimo sa $x$ a izlazne sa $y$, sistem treba da odredi funkciju $f$ takvu da važi
-\begin{center}
-	$y \approx f(x)$
-\end{center}
+\begin{equation}
+	y \approx f(x)
+\end{equation}
 Pri uspešno rešenom problemu nadgledanog učenja, funkcija $f$ davaće tačna ili približno tačna rešenja i za podatke koji do sada nisu viđeni.
 Ulazne vrednosti nazivaju se atributima (eng. features) a izlazne ciljnim promenljivima (eng. target variables). Ovim opisom nije određema dimenzionalnost ni za ulazne ni za izlazne promenljive, iako je dimenzija izlazne promenljive uglavnom 1. Funkcija $f$ naziva se modelom. \par
 Skup svih mogućih funkcija odgovarajuće dimenzionalnosti bio bi previše veliki za pretragu i zbog toga se uvode pretpostavke o samom modelu. Pretpostavlja da je definisan skup svih dopustivih modela i da je potrebno naći najpogodniji element tog skupa. Najčešće je taj skup određen parametrima, tj. uzima se da funkcija zavisi od nekog parametra $w$ koji je u opštem slušaju višedimenzioni i tada se funkcija označava sa $f_w(x)$.
 
 \par
 Neophodno je uvesti funkciju greške modela (eng. loss function), odnosno funkciju koja opisuje koliko dati model dobro određuje izlaz za dati ulaz. Ova funkcija se najčešće označava sa $L$ i $L(y, f_w(x))$ predstavlja razliku između željene i dobijene vrednosti za pojedinačni par promenljivih. No, nijedan par vrednosti promenljivih nije dovoljan za opis kvaliteta modela već treba naći funkciju koja globalno ocenjuje odstupanje modela od stvarnih vrednosti. U praksi, podrazumeva se postojanje uzorka:
-\begin{center}
-	$D=\{(x_i, y_i)|i=1,...,N\}$
-\end{center}
+\begin{equation}
+		D=\{(x_i, y_i)~|~i=1,...,N\}
+\end{equation}
 i uvodi sledeća funkcija:
-\begin{center}
-	$E(w, D) = \frac{1}{N}\sum_{i=1}^{N}L(y_i, f_w(x_i))$
-\end{center}
-koja se naziva prosečnom greškom. Uobičajeno, algoritmi nadgledanog mašinskog učenja zasnivaju se na minimizaciji prosečne greške. \par
-
+\begin{equation}
+	E(w, D) = \frac{1}{N}\sum_{i=1}^{N}L(y_i, f_w(x_i))
+\end{equation}
+koja se naziva prosečnom greškom. Uobičajeno, algoritmi nadgledanog mašinskog učenja zasnivaju se na minimizaciji prosečne greške. \par 
 Postoje dva osnovna tipa zadataka nadgledanog mašinskog učenja:
 \begin{itemize}
 	\item Klasifikacija 
@@ -56,9 +55,9 @@ Jednostavan primer klasifikacije može se videti na slici \ref{fig:bin_klas}, gd
 
 \par
 Regresija je zadatak predviđanja neprekidne ciljne promenljive. Na primer, cene nekretnina mogu se predvideti na osnovu površine, lokacije, populacije koja živi u komšiluku, itd. Često korišćena vrsta regresije jeste linearna regresija. U slučaju linearne regresije, podrazumeva se da je funkcija $f_w(x)$ linearna u odnosu na parametar $w$. Iako se ovo na prvi pogled čini kao prilično jako ograničenje, to nije nužno slučaj; kako za atribute ne postoji zahtev za linearnosti, oni pre pravljenja linearne kombinacije mogu biti proizvoljno transformisani. Primer linearne regresije jeste aproksimacija polinomom:
-\begin{center}
-	$f_w(x) = w_0 + \sum_{i=1}^{N}w_ix^i$
-\end{center}
+\begin{equation}
+	f_w(x) = w_0 + \sum_{i=1}^{N}w_ix^i
+\end{equation}
 
 \subsection{Nenadgledano mašinsko učenje}
 
