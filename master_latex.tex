@@ -3,6 +3,8 @@
 \documentclass[12pt]{report}
 \usepackage{fontspec}
 \usepackage[english,serbian]{babel}
+\usepackage[fixlanguage]{babelbib}
+
 \usepackage{microtype}
 \usepackage{lmodern}
 \usepackage{indentfirst} % pise u uputstvu da ne treba
@@ -71,7 +73,8 @@
 % nadji nacin samo da prikazes broj samo pored formula na koje postoji referenca! uradio valjda
 
 \addto{\captionsserbian}{\renewcommand{\bibname}{Literatura}}
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
+\bibliographystyle{babplain-fl}
 
 %\newcommand\eqdef{\stackrel{\mathclap{\footnotesize\mbox{def}}}{=}}
 \newcommand{\eqdef}{\ensuremath{\stackrel{\text{def}}{=}}}
@@ -104,7 +107,6 @@
 \usepackage[skip=5pt]{caption}
 
 \begin{document}
-
 \pagenumbering{roman}
 % sredi margine za naslovnu!
 \begin{titlepage}
