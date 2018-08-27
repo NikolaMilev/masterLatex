@@ -90,11 +90,10 @@ Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje ve
 \begin{equation}
 	softmax(x) = \bigg( \cfrac{e^{x_1}}{\sum_{i=1}^{N} e^{x_i}}, ~...~, \cfrac{e^{x_N}}{\sum_{i=1}^{N} e^{x_i}} \bigg)
 \end{equation}
-Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng.~{\em maximum likelihood estimate}), odnosno traži se maksimum sledećeg izraza: 
+Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspodelu verovatnoća. Za vrednost aproksimacije uzima se kategorija kojoj odgovara najviša vrednost izlaznog vektora. Za optimizaciju pri radu sa probabilističkim problemima, kao što je problem klasifikacije, primenjuje se metod maksimalne verodostojnosti (eng.~{\em maximum likelihood estimate}), odnosno traži se maksimum sledećeg izraza po parametru $w$: 
 \begin{equation}
 	P_w(y_1, ..., y_N | x_1, ..., x_N)
 \end{equation}
-\textcolor{red}{[A DA JA OVO IZBACIM?]}
 
 \subsection{Optimizacija}
 \label{subsec:optimizacija}
