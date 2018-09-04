@@ -1,7 +1,7 @@
 \chapter{Neuronske mreže}
 \label{ch:nn}
 
-Neuronske mreže (eng.~{\em neural networks}) predstavljaju danas izuzetno popularan vid mašinskog učenja. Ovi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoza u medicini, igranje igara itd. Pun naziv je veštačka neuronska mreža (eng.~{\em artificial neural network}, skr.~{\em ANN}) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Ipak, neuronske mreže ne predstavljaju vernu kopiju mozga. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse.\footnote{Sinapsa je biološka struktura koja omogućuje komunikaciju između neurona.} Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
+Neuronske mreže (eng.~{\em neural networks}) predstavljaju danas izuzetno popularan vid mašinskog učenja. Ovi modeli izuzetno su fleksibilni i imaju široku primenu.  Koriste se za prepoznavanje govora, prevođenje, prepoznavanje oblika na slikama, upravljanje vozilima, uspostavljanje dijagnoza u medicini, igranje igara, itd. Pun naziv je veštačka neuronska mreža (eng.~{\em artificial neural network}, skr.~{\em ANN}) jer se ovakvi modeli idejno zasnivaju na načinu na koji mozak funkcioniše. Ipak, neuronske mreže ne predstavljaju vernu kopiju mozga. Osnovne gradivne jedinice, neuroni, zasnovani su na neuronima u mozgu, dok veze između njih predstavljaju sinapse.\footnote{Sinapsa je biološka struktura koja omogućuje komunikaciju između neurona.} Te veze opisuju odnose između neurona i obično im se dodeljuje numerička težina.
 \par
 Postoji nekoliko različitih vrsta neuronskih mreža. Tipičan primer jesu neuronske mreže sa propagacijom unapred. Ime proističe iz činjenice da se podaci obrađuju krećući se od ulaza mreže do izlaza, bez postojanja ikakve povratne sprege. Neuronske mreže sa propagacijom unapred sastoje se iz slojeva neurona. Ukoliko se u ovaj model uvede neki tip povratne sprege, tada se govori o rekurentnim neuronskim mrežama. Pri radu sa slikama i raznim drugim vrstama signala, najčešće se koriste konvolutivne neuronske mreže, o kojima će biti reči kasnije. Ono što je zajedničko je da su neuronske mreže sposobne za izdvajanje određenih karakteristika u podacima koji se obrađuju. To znači da se vrši kreiranje novih atributa na osnovu već postojećih atributa ili direktno iz ulaznih podataka. Taj proces naziva se ekstrakcijom atributa i smatra se da je to jedan od najbitnijih razloga za delotvornost neuronskih mreža.
 \par
@@ -11,7 +11,7 @@ Za uspeh neuronskih mreža zaslužna je njihova fleksibilnost, ali se rezultati 
 
 Neuronske mreže sa propagacijom unapred jedna su od najkorišćenijih vrsta neuronskih mreža. Gradivni elementi ovakvog modela, neuroni (koji se još nazivaju i jedinicama), organizuju se u slojeve koji se nadovezuju i time čine neuronsku mrežu. Organizacija neurona i slojeva, uključujući i veze između neurona, predstavlja arhitekturu mreže. Prvi sloj mreže naziva se ulaznim slojem dok se poslednji sloj naziva izlaznim slojem. Neuroni prvog sloja kao argumente primaju ulaze mreže dok neuroni svakog od preostalih slojeva kao svoje ulaze prihvataju izlaze prethodnog sloja. Svi slojevi koji svoje izlaze prosleđuju narednom sloju nazivaju se skrivenim slojevima. Mreže sa više od jednog skrivenog sloja nazivaju se dubokim neuronskim mrežama.  Broj slojeva mreže određuje njenu dubinu. Termin duboko učenje nastao je baš iz ove terminologije.
 \par
-Svaki neuron opisuje se pomoću vektora $w = (w_0, ..., w_n)$ koji se naziva vektorom težina. Ulazni vektor $x = (x_1, ..., x_n)$ linearno se transformiše na sledeći način:
+Svaki neuron opisuje se pomoću vektora $\bm{w} = (w_0, ..., w_n)$ koji se naziva vektorom težina. Ulazni vektor $\bm{x} = (x_1, ..., x_n)$ linearno se transformiše na sledeći način:
 \begin{equation}
 \label{eq:neuron}
 		w_0 + \sum_{i=1}^{n} x_nw_n 
@@ -53,7 +53,7 @@ Preteča neuronskih mreža, perceptron, je model koji se sastoji samo iz jednog 
 	g(x)=
 	\begin{cases}
 		1, 	& \text{~ako~} x \geq 0 \\
-		0, 	& \text{~inače}
+		0, 	& \text{~inače.}
 	\end{cases}
 \end{equation} 
 \par
@@ -85,7 +85,7 @@ Iako sve ove funkcije imaju prednosti i mane u odnosu na preostale, ne postoji j
 
 \subsubsection{Izlazni sloj}
 
-Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje vezu izmedju ulaza i izlaza, i klasifikaciji, svrstavanje ulaznih vektora u jednu od konačnog broja kategorija. Pri regresiji, u poslednjem sloju ne primenjuje se aktivaciona funkcija. Proces optimizacije svodi se na minimizaciju funkcije greške. Kod rešavanja problema klasifikacije (u $N$ kategorija), koristi se funkcija mekog maksimuma (eng.~{\em softmax}):
+Neuronske mreže koriste se pri regresiji, određivanju funkcije koja opisuje vezu između ulaza i izlaza, i klasifikaciji, svrstavanje ulaznih vektora u jednu od konačnog broja kategorija. Pri regresiji, u poslednjem sloju ne primenjuje se aktivaciona funkcija. Proces optimizacije svodi se na minimizaciju funkcije greške. Kod rešavanja problema klasifikacije (u $N$ kategorija), koristi se funkcija mekog maksimuma (eng.~{\em softmax}):
 \begin{equation}
 	softmax(x) = \bigg( \cfrac{e^{x_1}}{\sum_{i=1}^{N} e^{x_i}}, ~...~, \cfrac{e^{x_N}}{\sum_{i=1}^{N} e^{x_i}} \bigg)
 \end{equation}
@@ -97,8 +97,8 @@ Suma ovako dobijenog vektora je $1$ i stoga može predstavljati diskretnu raspod
 \subsection{Optimizacija}
 \label{subsec:optimizacija}
 
-Ukoliko je neuronska mreža predstavljena kao funkcija $f_w$, gde su $w$ parametri mreže, neophodno je izvršiti minimizaciju\footnote{Naravno, optimizacioni metodi primenjuju se i na maksimizaciju, ali je u slučaju mašinskog učenja najčešće neophodno minizovati funkciju greške.} funkcije koja predstavlja kriterijum kvaliteta aproksimacije. Problem optimizacije u slučaju neuronskih mreža težak je zbog nekonveksnosti. Ona čini neke metode teško primenljivim ili izuzetno sporim. Moguće je i završiti u lokalnom optimumu funkcije. Uobičajeno se koriste metodi zasnovani na gradijentu funkcije. Postoje metodi drugog reda, zasnovani na hesijanu,\footnote{Hesijan je matrica parcijalnih izvoda drugog reda.} ali je njegovo računanje u slučaju većeg broja parametara preskupo. \par
-Učenje funkcioniše na sledeći način za fiksirane ulaze $x$ posmatra se njima uparen izlaz $y$ i $f_w(x)$ a zatim i $L(y, f_w(x))$, odnosno funkcija greške između stvarne i očekivane vrednosti. Koristeći algoritam propagacije unazad (\ref{subsub:backprop}) uz neki od algoritama za optimizaciju, vrši se minimzacija funkcije $L$ u odnosu na parametre mreže, $w$. 
+Ukoliko je neuronska mreža predstavljena kao funkcija $f_w$, gde su $w$ parametri mreže, neophodno je izvršiti minimizaciju funkcije koja predstavlja kriterijum kvaliteta aproksimacije. Problem optimizacije u slučaju neuronskih mreža težak je zbog nekonveksnosti. Ona čini neke metode teško primenljivim ili izuzetno sporim. Moguće je i završiti u lokalnom optimumu funkcije. Uobičajeno se koriste metodi zasnovani na gradijentu funkcije. Postoje metodi drugog reda, zasnovani na hesijanu,\footnote{Hesijan je matrica parcijalnih izvoda drugog reda.} ali je njegovo računanje u slučaju većeg broja parametara preskupo. \par
+Učenje funkcioniše na sledeći način: za fiksirane ulaze $x$ posmatra se njima uparen izlaz $y$ i $f_w(x)$, a zatim i $L(y, f_w(x))$, odnosno funkcija greške između stvarne i očekivane vrednosti. Koristeći algoritam propagacije unazad (\ref{subsub:backprop}) uz neki od algoritama za optimizaciju, vrši se minimzacija funkcije $L$ u odnosu na parametre mreže, $w$. 
 %Jedna od najčešće korišćenih funkcija greške pri regresiji je srednjekvadratna greška:
 %\begin{equation}
 %	L(y, \hat{y}) =\frac{1}{2}\norm{y-\hat{y}}_2^2 = \frac{1}{2}\sum_{i=1}^{2} (y_i - \hat{y}_i)^2
@@ -120,7 +120,7 @@ Metod gradijentnog spusta jedan je od najstarijih metoda  optimizacije. Iterativ
 	\label{eq:gradijentni_spust}
 	w_{k+1} = w_k - \alpha_k \nabla L(w_k),~ k=0, 1, 2, ... ,
 \end{equation}
-gde je $w_0$ ta nasumično odabrana početna tačka a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng.~{\em learning rate}). 
+gde je $w_0$ ta nasumično odabrana početna tačka, a $\alpha_k$ je pozitivan realan broj koji se naziva veličinom koraka ili stopom učenja (eng.~{\em learning rate}). 
 Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 \begin{equation}
 	\frac{1}{N}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
@@ -189,7 +189,7 @@ Adam (eng.~{\em adaptive moment estimation}) jedan je od najčešćih algoritama
 	\end{gathered}
 \end{equation}
 
-Ocena prvog momenta, $m_0$, predstavlja otežani prosek pravca kretanja dok ocena drugog momenta, $v_0$, predstavlja otežani prosek kvadrata norme gradijenata. Međutim, ove dve ocene su pristrasne ka početnoj vrednosti, u ovom slučaju $0$.\footnote{Ovde se misli na $0$ vektor istih dimenzija kao $x_k$ u slučaju prvog momenta i skalar $0$ u slučaju drugog momenta} Da bi se to ispravilo, vrši se sledeća korekcija:
+Ocena prvog momenta, $m_0$, predstavlja otežani prosek pravca kretanja, dok ocena drugog momenta, $v_0$, predstavlja otežani prosek kvadrata norme gradijenata. Međutim, ove dve ocene su pristrasne ka početnoj vrednosti, u ovom slučaju $0$.\footnote{Ovde se misli na $0$ vektor istih dimenzija kao $x_k$ u slučaju prvog momenta i skalar $0$ u slučaju drugog momenta} Da bi se to ispravilo, vrši se sledeća korekcija:
 \begin{equation}
 	\begin{gathered}
 		\hat{m}_{k+1} = \frac{m_{k+1} }{1 - \beta_1^{k+1}} \\
@@ -264,7 +264,7 @@ Rezultat primene konvolucije za sve validne $x$ i $y$ manjih je dimenzija od po�
 \par 
 Još jedan bitan pojam pri radu sa konvolutivnim mrežama jeste agregacija (eng.~{\em pooling}). Primena agregacije na signal podrazumeva da se za svaku oblast određenih dimenzija izračunati neki izraz, poput proseka ili maksimuma. Svrha agregacije jeste stvaranje otpornosti na male translacije signala. Agregacijom se takođe postiže umanjenje dimenzija izlaza u odnosu na ulaz, što smanjuje memorijske zahteve za kasnije slojeve. I pri agregaciji se nekada koristi pomeraj različit od $1$. Ipak, u slučaju da je neophodno sačuvati informaciju o tome gde je neki atribut pronađen, agregacija nije pogodna.
 \subsection{Svojstva konvolucije}
-Konvolucija ima nekoliko svojstava koji konvolutivne neuronske mreže čine pogodnijim za učenje nad signalom. Prvo takvo svojstvo su proređene interakcije (eng.~{em sparse interactions}). Jedna jedinica sloja predstavlja jedan filter i primena tog filtera podrazumeva njegovu konvolutivnu primenu na sve moguće pozicije ulaza. Ova primena može se posmatrati kao prevlačenje filtera preko ulaza. To znači da su parametri jedne jedinice u stvari vrednosti filtera. Kako je filter obično dimenzija dosta manjih od dimenzija ulaza, ovo znači da je smanjen broj parametara jedne jedinice u odnosu na mreže sa propagacijom unapred, kod kojih je svaka jedinica povezana sa svakom jedinicom prethodnog sloja. 
+Konvolucija ima nekoliko svojstava koji konvolutivne neuronske mreže čine pogodnijim za učenje nad signalom. Prvo takvo svojstvo su proređene interakcije (eng.~{\em sparse interactions}). Jedna jedinica sloja predstavlja jedan filter i primena tog filtera podrazumeva njegovu konvolutivnu primenu na sve moguće pozicije ulaza. Ova primena može se posmatrati kao prevlačenje filtera preko ulaza. To znači da su parametri jedne jedinice u stvari vrednosti filtera. Kako je filter obično dimenzija dosta manjih od dimenzija ulaza, ovo znači da je smanjen broj parametara jedne jedinice u odnosu na mreže sa propagacijom unapred, kod kojih je svaka jedinica povezana sa svakom jedinicom prethodnog sloja. 
 \par 
 Kod mreža sa propagacijom unapred, jedan težinski parametar sloja koristi se pri samo jednom izračunavnaju izlaza. Kod konvolutivnih mreža, kako je već rečeno, svi parametri filtera koriste se na svim lokacijama koje je neophodno proći prilikom njegove konvolutivne primene. Dakle, može se reći da u konvolutivnim mrežama postoje deljene težine, odnosno deljeni parametri.
 \par 
