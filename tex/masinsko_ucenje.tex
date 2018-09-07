@@ -28,7 +28,7 @@ Ulazne vrednosti nazivaju se atributima (eng. features) a izlazne ciljnim promen
 Skup svih mogućih funkcija odgovarajuće dimenzionalnosti bio bi previše veliki za pretragu i zbog toga se uvode pretpostavke o samom modelu. Pretpostavlja da je definisan skup svih dopustivih modela i da je potrebno naći najpogodniji element tog skupa. Najčešće je taj skup određen parametrima, tj. uzima se da funkcija zavisi od nekog parametra $\bm{w}$ koji je u opštem slušaju višedimenzioni i tada se funkcija označava sa $f_w(x)$.
 
 \par
-Neophodno je uvesti funkciju greške modela (eng. loss function), odnosno funkciju koja opisuje koliko dati model dobro određuje izlaz za dati ulaz. Ova funkcija se najčešće označava sa $L$ i $L(y, f_w(x))$ predstavlja razliku između željene i dobijene vrednosti za pojedinačni par promenljivih. No, nijedan par vrednosti promenljivih nije dovoljan za opis kvaliteta modela već treba naći funkciju koja globalno ocenjuje odstupanje modela od stvarnih vrednosti. U praksi, podrazumeva se postojanje uzorka:
+Neophodno je uvesti funkciju greške modela (eng. loss function), odnosno funkciju koja opisuje koliko dati model dobro određuje izlaz za dati ulaz. Ova funkcija se najčešće označava sa $L$ i $L(y, f_w(x))$ predstavlja razliku između željene i dobijene vrednosti za pojedinačni par promenljivih. No, nijedan par vrednosti promenljivih nije dovoljan za opis kvaliteta modela već treba naći funkciju koja globalno ocenjuje odstupanje modela od stvarnih vrednosti. \textcolor{red}{U praksi, podrazumeva se postojanje uzorka, koji predstavlja dostupne podatke}:
 \begin{equation}
 		D=\{(\bm{x}_i, y_i)~|~i=1,...,N\}
 \end{equation}

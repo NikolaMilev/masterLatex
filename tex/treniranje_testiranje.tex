@@ -198,7 +198,9 @@ Iako neuronske mreže teorijski nisu dobar izbor za aproksimaciju funkcije $q_*$
 \caption{Rezultati testiranja agenta na igri Breakout korišćenje arhitekture II}
 \label{tbl:max_rez_big}
 \end{table}
-
+\par 
+\textcolor{red}{Iz video zapisa koji se mogu naći u GitHub repozitorijumu,\footnote{\url{https://github.com/NikolaMilev/DQN/tree/master/results/videos}} jasno je da je agent savladao igru Breakout, ali ne u potpunosti. Agent prati lopticu, razbijajući cigle i, na kraju, probija prolaz kroz njih kako bi loptica pristupila gornjem redu cigli, koje nose više poena od onih sa donje strane. Ovo ponašanje liči na idealnu taktiku, koja podrazumeva pravljenje prolaza kako bi loptica imala pristup gornjem redu cigli. Očekivano je da agent koji koristi $Q$ učenje u nekom trenutku nauči ovu taktiku, jer je to najbrži način za dobijanje visoke nagrade od okruženja. Takođe je očekivano da agent teži ka tome da ne gubi živote, jer oni dovode kraju epizode, što označava nemogućnost daljeg dobijanja nagrade u toj epizodi. U implementacijama koje su napisane u sklopu rada, agent kreira prolaz sa strane ekrana pred sam gubitak svih života, dok bi, u slučaju idealne taktike, tunel trebalo napraviti što pre. Pored boljeg rezultata, agent koji koristi arhitekturu II pokazuje znatno manje trzanja pločice u toku igre u odnosu na agenta koji koristi arhitekturu I.}
+ 
 %\subsection{Zaključak}
 
 

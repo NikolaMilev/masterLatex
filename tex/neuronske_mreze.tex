@@ -126,11 +126,12 @@ Za funkciju greške u ovom slučaju uzima se srednjekvadratno odstupanje:
 	\frac{1}{N}\sum_{i=1}^{N} (y_i - f_w(x_i))^2
 \end{equation}
 
-Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe Robins Monroovi uslovi \cite{nikolic_rm}:
+Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na konvergenciju. Jedan primer odabira veličine koraka jeste niz za koji važe Robins Monroovi uslovi:
 \begin{equation}
 	 \sum_{k=0}^{\infty} \alpha_k = \infty \hspace{2cm} \sum_{k=0}^{\infty} \alpha_k^2 < \infty 
 	\end{equation}
-Jednostavniji pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako $k$ važi $\alpha_k = \alpha$.
+\textcolor{red}{Robins i Monro su u svom radu \cite{robins_monro} pokazali da pri ovakvom odabiru veličine koraka iterativni proces \ref{eq:gradijentni_spust} konvergira. Na primer, $\alpha_k = \frac{1}{k}$ zadovoljava Robins Monroove uslove.
+Još jedan, jednostavniji, pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako $k$ važi $\alpha_k = \alpha$.}
 \par
 Postavlja se i pitanje koliko koraka načiniti pre zaustavljanja. U praksi se koristi nekoliko kriterijuma kao što su zaustavljanje kada su dve uzastopne vrednosti $w_k$ i $w_{k+1}$ dovoljno bliske, kada su vrednosti funkcije za dve uzastopne vrednosti dovoljno bliske, ali se može zaustaviti i nakon unapred određenog broja koraka. Postoji još kriterijuma i moguće ih je kombinovati.
 \par
@@ -161,7 +162,11 @@ Postoje razni metodi optimizacije koji se koriste pri mašinskom učenju. Neki m
 \subsubsection{RMSProp}
 \label{sss:rmsprop}
 
-Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera \cite{rmsprop}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje dva vektora. Kako algoritam nije objavljen u radu, može se naći veliki broj različitih implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
+Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera \cite{rmsprop}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. \textcolor{red}{Simbol $\odot$ obeležava pokoordinatno množenje (eng.~{\em element-wise multiplication}) dva vektora, odnosno Adamarov (fr.~{Hadamard}) proizvod: 
+\begin{equation}
+	(x_0,...,x_n) \odot (y_0,...,y_n) = (x_0y_0,...,x_ny_n)
+\end{equation}}
+Kako algoritam nije objavljen u radu, može se naći veliki broj različitih implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
 \begin{equation}
 	\begin{gathered}
 		g_0 = 0 \\
@@ -238,7 +243,7 @@ Sada su dati svi alati za optimizaciju neuronske mreže sa propagacijom unapred.
 
 \subsection{Prednosti i mane}
 
-Neuronske mreže pokazale su se kao jako korisne za rešavanje praktičnih problema zbog svoje izuzetne fleksibilnosti. Međutim, za proces obučavanja neuronske mreže neophodno je imati veliku količinu podataka. Proces učenja može biti izuzetno spor, posebno ukoliko se uvede isprobavanje raznih vrednosti metaparametara. Velika fleksibilnost može izazvati i preprilagođavanje podacima i time učiniti performanse mreže nad novim podacima lošim. Postoje i problemi pri optimizaciji kao što su takozvani problemi nestajućih i eksplodirajućih gradijenata. Iako su u stanju da konstruišu nove atribute na osnovu starih, struktura obučene mreže nije čitljiva za ljude. U nekim situacijama, ovo može izazvati probleme. Na primer, ukoliko klijent podnese zahtev za kredit i neuronska mreža odluči da nije podoban, nije moguće objasniti razlog odbijanja. Neuronske mreže takođe su dosta računski i razvojno zahtevne. Nekada će neki već poznat algoritam dati zadovoljavajuće rešenje dok razvoj neuronske mreže može biti skup i po pitanju vremena razvijanja sistema i po pitanju kasnijeg rada sistema. 
+Neuronske mreže pokazale su se kao jako korisne za rešavanje praktičnih problema zbog svoje izuzetne fleksibilnosti. Međutim, za proces obučavanja neuronske mreže neophodno je imati veliku količinu podataka. Proces učenja može biti izuzetno spor, posebno ukoliko se uvede isprobavanje raznih vrednosti metaparametara. Velika fleksibilnost može izazvati i preprilagođavanje podacima i time učiniti performanse mreže nad novim podacima lošim. Postoje i problemi pri optimizaciji kao što su takozvani problemi nestajućih i eksplodirajućih gradijenata. Iako su u stanju da konstruišu nove atribute na osnovu starih, struktura obučene mreže nije čitljiva za ljude. U nekim situacijama, ovo može izazvati probleme. Neka se, na primer, neuronska mreža koristi u svrhu ocenjivanja podobnosti klijenta za dobijanje kredita od banke. Ukoliko mreža odluči da klijent nije podoban za kredit, klijentu nije moguće objasniti razlog odbijanja. Neuronske mreže takođe su dosta računski i razvojno zahtevne. Nekada će neki već poznat algoritam dati zadovoljavajuće rešenje dok razvoj neuronske mreže može biti skup i po pitanju vremena razvijanja sistema i po pitanju kasnijeg rada sistema. 
 \par 
 Pri radu sa neuronskim mrežama pojavljuje se još jedan problem, takozvano katastrofalno zaboravljanje, pojava koja podrazumeva da neuronska mreža nekada zaboravlja već naučeno. Kada se uči nad novim podacima, parametri mreže se menjaju kako bi odgovarali traženom izlazu i u ovom proces može se dogoditi da se se parametri dovoljno izmene da ne daju prihvatljive izlaze čak i za već viđene ulaze.
 \par 
@@ -256,13 +261,28 @@ Ovim izrazom definisana je jednodimenziona diskretna konvolucija. Neretko se sre
 \begin{equation}
 	(I \ast K)(x, y) = \sum_{m}^{}\sum_{n}^{} I(m, n)K(x-m, y-n) = \sum_{m}^{}\sum_{n}^{} I(x-m, y-n)K(m, n)
 \end{equation}
-U prethodnim jednakostima nisu zapisana ograničenja za argumente jer bi to zakomplikovalo zapis, ali naravno, treba paziti na to da su $I$ i $K$ definisani za sve argumente. Takođe, iz datih jednakosti vidi se da je operacija komutativna. Konvolucija se može definisati i u više dimenzija.
+U prethodnim jednakostima nisu zapisana ograničenja za argumente jer bi to zakomplikovalo zapis, ali naravno, treba paziti na to da su $I$ i $K$ definisani za sve argumente. Takođe, iz datih jednakosti vidi se da je operacija komutativna. Konvolucija se može definisati i u više dimenzija. Primer diskretne konvolucije može se videti na slici \ref{fig:konvolucija_pom_1}.
 \par 
-U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal. U tom slučaju, $I(x)$ označava vrednost signala na poziciji $x$ i analogno za dvodimenzioni signal. Nad tim signalom i nekim filterima primenjuje se konvolucija. Svrha te primene je određivanje prisustva nekih šablona tj. karakteristika u signalu. Primer tih šablona su uspravne ili vodoravne linije na slici. Na ovaj način konstruišu se novi atributi na osnovu ulaza. Konvolutivnom primenom filtera na prethodno konstruisane atribute moguće je konstruisati i složenije atribute. Vrednosti ovih filtera biće naučene u toku obučavanja mreže. Filteri su obično dosta manjih dimenzija od slike i, ukoliko je ulazni signal obeležen sa $I$ a filter $K$, tada su drugi zapisi u jednakostima datim iznad intuitivniji za shvatanje.
+U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal. U tom slučaju, $I(x)$ označava vrednost signala na poziciji $x$ i analogno važi za dvodimenzioni signal. \textcolor{red}{$K$ je filter (eng.~{\em filter, kernel}), koji je obično manjih dimenzija od ulaznog signala. Vrednosti filtera su, između ostalog, parametri konvolutivne neuronske mreže. Nad signalom i nekim filterima primenjuje se konvolucija.} Svrha te primene je određivanje prisustva nekih šablona tj. karakteristika u signalu. Primer tih šablona su uspravne ili vodoravne linije na slici. Na ovaj način konstruišu se novi atributi na osnovu ulaza. Konvolutivnom primenom filtera na prethodno konstruisane atribute moguće je konstruisati i složenije atribute. Vrednosti ovih filtera biće naučene u toku obučavanja mreže. Filteri su obično dosta manjih dimenzija od slike i, ukoliko je ulazni signal obeležen sa $I$ a filter $K$, tada su drugi zapisi u jednakostima datim iznad intuitivniji za shvatanje.
+\begin{figure}
+	\centering
+	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_1_11.tikz}}
+	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_1_12.tikz}}
+	\caption{Konvolucija sa pomerajem 1 (bez proširivanja)}
+	\label{fig:konvolucija_pom_1}
+\end{figure}
 \par 
-Rezultat primene konvolucije za sve validne $x$ i $y$ manjih je dimenzija od početnog signala, $I$. Ukoliko je signal $I$ dimenzija $k \times l$ a filter $K$ dimenzija $p \times q$, tada je $I \ast K$ dimenzija najviše dimenzija $k-p+1 \times l-q+1$. Moguće je i preskakati neke $x$ i $y$ prilikom računanja konvolucije, što dodatno smanjuje dimenziju rezultata. Na primer, moguće je računati konvoluciju za svako drugo $x$ i svako drugo $y$. Razlika između uzastopnih pozicija naziva se pomerajem (eng.~{\em stride}). Takodje je moguće proširiti $I$ nekim vrednostima kako vrednosti na rubu ne bi izgubile na značaju. Često se proširivanje (eng.~{\em padding}) vrši nulama ili vrednostima koje se nalaze na rubu.
+\textcolor{red}{Rezultat primene konvolucije za sve validne pozicije $(x, y)$ manjih je dimenzija od početnog signala, $I$. Ukoliko je signal $I$ dimenzija $k \times l$ a filter $K$ dimenzija $p \times q$, tada je $I \ast K$ dimenzija najviše $k-p+1 \times l-q+1$. Moguće je i vršiti horizontalno i vertikalno preskakanje pozicija prilikom računanja konvolucije, što dodatno smanjuje dimenziju rezultata. Razlika između uzastopnih pozicija za koje se računa konvolucija sa filterom naziva se pomerajem (eng.~{\em stride}).
+Na primer, pomeraj $2$ znači da će se kovolucija sa filterom računati samo na pozicijama sa parnim koordinatama (ukoliko se one računaju počev od $0$). U nekim slučajevima, moguće je da horizontalni i vertikalni pomeraj budu različiti. Takodje je moguće proširiti $I$ nekim vrednostima kako vrednosti na rubu ne bi izgubile na značaju. Često se proširivanje (eng.~{\em padding}) vrši nulama ili vrednostima koje se nalaze na rubu. Primer konvolucije sa pomerajem $2$ i bez proširivanja može se videti na slici \ref{fig:konvolucija_pom_2}.}
+\begin{figure}
+	\centering
+	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_2_11.tikz}}
+	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_2_12.tikz}}
+	\caption{Konvolucija sa pomerajem 2 (bez proširivanja)}
+	\label{fig:konvolucija_pom_2}
+\end{figure}
 \par 
-Još jedan bitan pojam pri radu sa konvolutivnim mrežama jeste agregacija (eng.~{\em pooling}). Primena agregacije na signal podrazumeva da se za svaku oblast određenih dimenzija izračunati neki izraz, poput proseka ili maksimuma. Svrha agregacije jeste stvaranje otpornosti na male translacije signala. Agregacijom se takođe postiže umanjenje dimenzija izlaza u odnosu na ulaz, što smanjuje memorijske zahteve za kasnije slojeve. I pri agregaciji se nekada koristi pomeraj različit od $1$. Ipak, u slučaju da je neophodno sačuvati informaciju o tome gde je neki atribut pronađen, agregacija nije pogodna.
+Još jedan bitan pojam pri radu sa konvolutivnim mrežama jeste agregacija (eng.~{\em pooling}). Primena agregacije na signal podrazumeva da se za svaku oblast određenih dimenzija izračunati neki izraz, poput proseka ili maksimuma. Svrha agregacije jeste stvaranje otpornosti na male translacije signala. Agregacijom se takođe postiže umanjenje dimenzija izlaza u odnosu na ulaz, što smanjuje memorijske zahteve za kasnije slojeve. Ipak, u slučaju da je neophodno sačuvati informaciju o tome gde je neki atribut pronađen, agregacija nije pogodna. I pri agregaciji se nekada koristi pomeraj različit od $1$. 
 \subsection{Svojstva konvolucije}
 Konvolucija ima nekoliko svojstava koji konvolutivne neuronske mreže čine pogodnijim za učenje nad signalom. Prvo takvo svojstvo su proređene interakcije (eng.~{\em sparse interactions}). Jedna jedinica sloja predstavlja jedan filter i primena tog filtera podrazumeva njegovu konvolutivnu primenu na sve moguće pozicije ulaza. Ova primena može se posmatrati kao prevlačenje filtera preko ulaza. To znači da su parametri jedne jedinice u stvari vrednosti filtera. Kako je filter obično dimenzija dosta manjih od dimenzija ulaza, ovo znači da je smanjen broj parametara jedne jedinice u odnosu na mreže sa propagacijom unapred, kod kojih je svaka jedinica povezana sa svakom jedinicom prethodnog sloja. 
 \par 
