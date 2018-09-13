@@ -1,7 +1,16 @@
 \chapter{Detalji implementacije}
 \label{ch:implementacija}
 
-U ovoj glavi opisana je struktura koda. Implementacija je zasnovana na radovima \cite{dqn_mnih} i \cite{dqn_dm}.
+{\color{red} Kombinovanjem sada opisanih tehnika moguće je kreiranje agenta koji je u stanju da nauči da igra video igre. Osnovni metod jeste algoritam $Q$ učenja. 
+\par 
+Kako bi stvoreni algoritam bio primenljiv na više video igara, kao ulazni podaci biće korišćene slike sa ekrana, kao i rezultat u igri. Zbog velikog prostora stanja koji čine slike sa ekrana, pristup korišćenjem Markovljevih procesa odlučivanja nije izvodljiv. Pored toga, ogroman broj stanja koja bi bilo neophodno modelirati jednostavno nisu dostižna.  Dakle, osnovni algoritam $Q$ učenja mora biti izmenjen. Za aproksimaciju funkcije $q_*$, biće korišćena duboka konvolutivna neuronska mreža. Međutim, kako ne postoji teorijska garancija konvergencije pri korišćenju neuronske mreže za aproksimaciju funkcije $q_*$, neophodno je uvesti dva elementa: memoriju i takozvanu ciljnu mrežu. 
+\par 
+Memorija predstavlja skup prelaza $(s, a, r, s')$ koji su viđeni od strane agenta u toku treniranja. Neuronska mreža biće obučavana nad skupovima prelaza koji su nasumično uzorkovani iz memorije, uzrokujući stabilnije učenje i potencijalno veću iskorišćenost do sada viđenih podataka. Kako je čuvanje svih viđenih stanja izuzetno memorijski zahtevno, čuvaće se samo određeni broj poslednjih viđenih stanja. Svrha ciljne mreže je povećanje stabilnosti učenja. Ona se koristi pri svakom odabiru akcija prilikom učenja i periodično se težine ciljne mreže zamenjuju težinama druge mreže, koja se naziva $Q$ mrežom. Pri obučavanju, težine $Q$ mreže se konstanto menjaju. Ukoliko se skup tih često menjanih težina koristi za dalju aproksimaciju vrednosti akcije u stanju, ceo proces učenja može postati prilično nestabilan. 
+\par 
+Za obučavanje agenta koristi se $Q$ učenje mimo politike. Balans između istraživanja i iskorišćavanja već naučenog održava se koristeći $\varepsilon$-pohlepnu politiku ponašanja. Kako bi se na početku stavio akcenat na istraživanje a kasnije na iskorišćavanje već naučenog radi unapređenja stečenog znanja, parametar $\varepsilon$ smanjuje se u toku učenja.
+\par 
+Detaljan opis implementacije ovakvog algoritma dat je u ostatku ovog poglavlja dok su eksperimenti i njihovi rezultati diskutovani u poglavlju \ref{ch:treniranje_testiranje}.}
+%U ovoj glavi opisana je struktura koda. Implementacija je zasnovana na radovima \cite{dqn_mnih} i \cite{dqn_dm}.
 \section{Detalji implementacije}
 \label{sec:implementacija}
 Prilikom implementacije, korišćen je programski jezik Python \cite{python}, verzija $3.5.2$ kao i sledeće biblioteke:
