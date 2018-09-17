@@ -1,7 +1,7 @@
-\chapter{Detalji implementacije}
+\chapter{Implementacija sistema koji uči da igra video igre}
 \label{ch:implementacija}
 
-{\color{red} Kombinovanjem sada opisanih tehnika moguće je kreiranje agenta koji je u stanju da nauči da igra video igre. Osnovni metod jeste algoritam $Q$ učenja. 
+Kombinovanjem sada opisanih tehnika moguće je kreiranje agenta koji je u stanju da nauči da igra video igre. Osnovni metod jeste algoritam $Q$ učenja. 
 \par 
 Kako bi stvoreni algoritam bio primenljiv na više video igara, kao ulazni podaci biće korišćene slike sa ekrana, kao i rezultat u igri. Zbog velikog prostora stanja koji čine slike sa ekrana, pristup korišćenjem Markovljevih procesa odlučivanja nije izvodljiv. Pored toga, ogroman broj stanja koja bi bilo neophodno modelirati jednostavno nisu dostižna.  Dakle, osnovni algoritam $Q$ učenja mora biti izmenjen. Za aproksimaciju funkcije $q_*$, biće korišćena duboka konvolutivna neuronska mreža. Međutim, kako ne postoji teorijska garancija konvergencije pri korišćenju neuronske mreže za aproksimaciju funkcije $q_*$, neophodno je uvesti dva elementa: memoriju i takozvanu ciljnu mrežu. 
 \par 
@@ -9,7 +9,7 @@ Memorija predstavlja skup prelaza $(s, a, r, s')$ koji su viđeni od strane agen
 \par 
 Za obučavanje agenta koristi se $Q$ učenje mimo politike. Balans između istraživanja i iskorišćavanja već naučenog održava se koristeći $\varepsilon$-pohlepnu politiku ponašanja. Kako bi se na početku stavio akcenat na istraživanje a kasnije na iskorišćavanje već naučenog radi unapređenja stečenog znanja, parametar $\varepsilon$ smanjuje se u toku učenja.
 \par 
-Detaljan opis implementacije ovakvog algoritma dat je u ostatku ovog poglavlja dok su eksperimenti i njihovi rezultati diskutovani u poglavlju \ref{ch:treniranje_testiranje}.}
+Detaljan opis implementacije ovakvog algoritma dat je u ostatku ovog poglavlja dok su eksperimenti i njihovi rezultati diskutovani u poglavlju \ref{ch:treniranje_testiranje}.
 %U ovoj glavi opisana je struktura koda. Implementacija je zasnovana na radovima \cite{dqn_mnih} i \cite{dqn_dm}.
 \section{Detalji implementacije}
 \label{sec:implementacija}

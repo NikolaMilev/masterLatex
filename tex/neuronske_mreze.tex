@@ -130,8 +130,8 @@ Bitno je pažljivo odabrati veličinu koraka jer ova vrednost može uticati na k
 \begin{equation}
 	 \sum_{k=0}^{\infty} \alpha_k = \infty \hspace{2cm} \sum_{k=0}^{\infty} \alpha_k^2 < \infty 
 	\end{equation}
-\textcolor{red}{Robins i Monro su u svom radu \cite{robins_monro} pokazali da pri ovakvom odabiru veličine koraka iterativni proces \ref{eq:gradijentni_spust} konvergira. Na primer, $\alpha_k = \frac{1}{k}$ zadovoljava Robins Monroove uslove.
-Još jedan, jednostavniji, pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako $k$ važi $\alpha_k = \alpha$.}
+Robins i Monro su u svom radu \cite{robins_monro} pokazali da pri ovakvom odabiru veličine koraka iterativni proces \ref{eq:gradijentni_spust} konvergira. Na primer, $\alpha_k = \frac{1}{k}$ zadovoljava Robins Monroove uslove.
+Još jedan, jednostavniji, pristup bio bi da se odabere mali pozitivan parametar $\alpha$ i da za svako $k$ važi $\alpha_k = \alpha$.
 \par
 Postavlja se i pitanje koliko koraka načiniti pre zaustavljanja. U praksi se koristi nekoliko kriterijuma kao što su zaustavljanje kada su dve uzastopne vrednosti $w_k$ i $w_{k+1}$ dovoljno bliske, kada su vrednosti funkcije za dve uzastopne vrednosti dovoljno bliske, ali se može zaustaviti i nakon unapred određenog broja koraka. Postoji još kriterijuma i moguće ih je kombinovati.
 \par
@@ -162,10 +162,10 @@ Postoje razni metodi optimizacije koji se koriste pri mašinskom učenju. Neki m
 \subsubsection{RMSProp}
 \label{sss:rmsprop}
 
-Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera \cite{rmsprop}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. \textcolor{red}{Simbol $\odot$ obeležava pokoordinatno množenje (eng.~{\em element-wise multiplication}) dva vektora, odnosno Adamarov (fr.~{Hadamard}) proizvod: 
+Algoritam RMSProp (eng.~{\em root mean square propagation}) predložio je Džefri Hinton (eng.~{\em Geoffrey Hinton}) na jednom od svojih predavanja na sajtu Kursera \cite{rmsprop}. Ovo je algoritam optimizacije korišćen prilikom razvijanja DQN algoritma. Glavna ideja je čuvanje dosadašnjeg otežanog proseka kvadrata gradijenta funkcije koji će biti obeležen sa $g_k$. Simbol $\odot$ obeležava pokoordinatno množenje (eng.~{\em element-wise multiplication}) dva vektora, odnosno Adamarov (fr.~{Hadamard}) proizvod: 
 \begin{equation}
 	(x_0,...,x_n) \odot (y_0,...,y_n) = (x_0y_0,...,x_ny_n)
-\end{equation}}
+\end{equation}
 Kako algoritam nije objavljen u radu, može se naći veliki broj različitih implementacija. U nastavku je predstavljen algoritam u skladu sa implementacijom iz biblioteke Keras, koja je korišćena za implementaciju DQN algoritma u ovom radu.
 \begin{equation}
 	\begin{gathered}
@@ -263,7 +263,7 @@ Ovim izrazom definisana je jednodimenziona diskretna konvolucija. Neretko se sre
 \end{equation}
 U prethodnim jednakostima nisu zapisana ograničenja za argumente jer bi to zakomplikovalo zapis, ali naravno, treba paziti na to da su $I$ i $K$ definisani za sve argumente. Takođe, iz datih jednakosti vidi se da je operacija komutativna. Konvolucija se može definisati i u više dimenzija. Primer diskretne konvolucije može se videti na slici \ref{fig:konvolucija_pom_1}.
 \par 
-U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal. U tom slučaju, $I(x)$ označava vrednost signala na poziciji $x$ i analogno važi za dvodimenzioni signal. \textcolor{red}{$K$ je filter (eng.~{\em filter, kernel}), koji je obično manjih dimenzija od ulaznog signala. Vrednosti filtera su, između ostalog, parametri konvolutivne neuronske mreže. Nad signalom i nekim filterima primenjuje se konvolucija.} Svrha te primene je određivanje prisustva nekih šablona tj. karakteristika u signalu. Primer tih šablona su uspravne ili vodoravne linije na slici. Na ovaj način konstruišu se novi atributi na osnovu ulaza. Konvolutivnom primenom filtera na prethodno konstruisane atribute moguće je konstruisati i složenije atribute. Vrednosti ovih filtera biće naučene u toku obučavanja mreže. Filteri su obično dosta manjih dimenzija od slike i, ukoliko je ulazni signal obeležen sa $I$ a filter $K$, tada su drugi zapisi u jednakostima datim iznad intuitivniji za shvatanje.
+U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal. U tom slučaju, $I(x)$ označava vrednost signala na poziciji $x$ i analogno važi za dvodimenzioni signal. $K$ je filter (eng.~{\em filter, kernel}), koji je obično manjih dimenzija od ulaznog signala. Vrednosti filtera su, između ostalog, parametri konvolutivne neuronske mreže. Nad signalom i nekim filterima primenjuje se konvolucija. Svrha te primene je određivanje prisustva nekih šablona tj. karakteristika u signalu. Primer tih šablona su uspravne ili vodoravne linije na slici. Na ovaj način konstruišu se novi atributi na osnovu ulaza. Konvolutivnom primenom filtera na prethodno konstruisane atribute moguće je konstruisati i složenije atribute. Vrednosti ovih filtera biće naučene u toku obučavanja mreže. Filteri su obično dosta manjih dimenzija od slike i, ukoliko je ulazni signal obeležen sa $I$ a filter $K$, tada su drugi zapisi u jednakostima datim iznad intuitivniji za shvatanje.
 \begin{figure}
 	\centering
 	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_1_11.tikz}}
@@ -272,8 +272,8 @@ U konvolutivnim mrežama, ulaz predstavlja sirovi ili minimalno obrađeni signal
 	\label{fig:konvolucija_pom_1}
 \end{figure}
 \par 
-\textcolor{red}{Rezultat primene konvolucije za sve validne pozicije $(x, y)$ manjih je dimenzija od početnog signala, $I$. Ukoliko je signal $I$ dimenzija $k \times l$ a filter $K$ dimenzija $p \times q$, tada je $I \ast K$ dimenzija najviše $k-p+1 \times l-q+1$. Moguće je i vršiti horizontalno i vertikalno preskakanje pozicija prilikom računanja konvolucije, što dodatno smanjuje dimenziju rezultata. Razlika između uzastopnih pozicija za koje se računa konvolucija sa filterom naziva se pomerajem (eng.~{\em stride}).
-Na primer, pomeraj $2$ znači da će se kovolucija sa filterom računati samo na pozicijama sa parnim koordinatama (ukoliko se one računaju počev od $0$). U nekim slučajevima, moguće je da horizontalni i vertikalni pomeraj budu različiti. Takodje je moguće proširiti $I$ nekim vrednostima kako vrednosti na rubu ne bi izgubile na značaju. Često se proširivanje (eng.~{\em padding}) vrši nulama ili vrednostima koje se nalaze na rubu. Primer konvolucije sa pomerajem $2$ i bez proširivanja može se videti na slici \ref{fig:konvolucija_pom_2}.}
+Rezultat primene konvolucije za sve validne pozicije $(x, y)$ manjih je dimenzija od početnog signala, $I$. Ukoliko je signal $I$ dimenzija $k \times l$ a filter $K$ dimenzija $p \times q$, tada je $I \ast K$ dimenzija najviše $k-p+1 \times l-q+1$. Moguće je i vršiti horizontalno i vertikalno preskakanje pozicija prilikom računanja konvolucije, što dodatno smanjuje dimenziju rezultata. Razlika između uzastopnih pozicija za koje se računa konvolucija sa filterom naziva se pomerajem (eng.~{\em stride}).
+Na primer, pomeraj $2$ znači da će se kovolucija sa filterom računati samo na pozicijama sa parnim koordinatama (ukoliko se one računaju počev od $0$). U nekim slučajevima, moguće je da horizontalni i vertikalni pomeraj budu različiti. Takodje je moguće proširiti $I$ nekim vrednostima kako vrednosti na rubu ne bi izgubile na značaju. Često se proširivanje (eng.~{\em padding}) vrši nulama ili vrednostima koje se nalaze na rubu. Primer konvolucije sa pomerajem $2$ i bez proširivanja može se videti na slici \ref{fig:konvolucija_pom_2}.
 \begin{figure}
 	\centering
 	\resizebox{.8\linewidth}{!}{\input{img/konvolucija/stride_2_11.tikz}}
